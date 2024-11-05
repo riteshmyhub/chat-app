@@ -10,7 +10,7 @@ export default defineConfig({
       },
    },
    build: {
-      outDir: "../dist/views",
+      outDir: "../backend/dist/views",
    },
    server: {
       port: 3000,

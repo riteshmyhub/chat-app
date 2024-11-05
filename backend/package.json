@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node ./dist/main.js",
     "dev": "nodemon ./src/main.ts",
-    "build": "tsc -p . && cd ../frontend && npm run build",
-    "deploy":"npm run build && vercel --prod"
+    "build": "tsc -p . && cd ../frontend && npm run build"
   },
   "keywords": [],
   "author": "",
