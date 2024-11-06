@@ -7,7 +7,7 @@ export default class HttpInterceptor {
 
    public static get SERVER_URL() {
       const isProdution = true;
-      return isProdution ? "https://chat-app-olive-psi.vercel.app" : `http://${location.hostname}:8000`;
+      return isProdution ? "https://chat-hrm.vercel.app" : `http://${location.hostname}:8000`;
    }
 
    private get BASE_URL() {

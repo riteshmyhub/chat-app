@@ -4,7 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import useChatHandlerWS from "./handlers/chat-handlers.ws";
 
-const SocketContext = createContext<{ socket: Socket | null }>({
+const SocketContext = createContext<{ socket: any | null }>({
    socket: null,
 });
 
