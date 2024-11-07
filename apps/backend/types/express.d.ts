@@ -5,7 +5,7 @@ import { Socket } from "socket.io";
 declare global {
    namespace Express {
       interface Request {
-         user?: any | undefined;
+         user?: any; // Assuming UserDocument is the type for your User model
       }
    }
 }

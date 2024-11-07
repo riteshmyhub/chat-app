@@ -1,8 +1,9 @@
+import { NextFunction, Request, Response } from "express";
 import createHttpError from "http-errors";
-import createJwtLoginToken from "../../../libs/jwt";
 import { compare } from "bcrypt";
-import { Request, Response, NextFunction } from "express";
 import User from "../../../models/user.model";
+import createJwtLoginToken from "../../../libs/jwt";
+import { Types } from "mongoose";
 
 type ReqBody = { email: string; password: string };
 
@@ -26,8 +27,8 @@ export default async function LoginController(req: Req, res: Response, next: Nex
       if (!match) {
          return next(createHttpError.Unauthorized());
       }
-      const accessToken = createJwtLoginToken(user?._id, res);
-      
+      const accessToken = createJwtLoginToken(user?._id as Types.ObjectId, res);
+
       res.status(200).json({
          message: "login successfully",
          data: accessToken ? { accessToken } : {},

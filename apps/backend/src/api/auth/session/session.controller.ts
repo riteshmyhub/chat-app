@@ -1,5 +1,5 @@
-import { NextFunction, Request, Response } from "express";
 import createHttpError from "http-errors";
+import { Request, Response, NextFunction } from "express";
 
 type ReqBody = {};
 
@@ -9,13 +9,12 @@ type ReqParms = {};
 
 type Req = Request<ReqParms, {}, ReqBody, ReqQuery>;
 
-export default async function DeleteMessagesController(req: Req, res: Response, next: NextFunction) {
+export default async function GetSessionController(req: Req, res: Response, next: NextFunction) {
    try {
-      const body = req.body;
-      res.status(201).json({
+      res.status(200).json({
+         message: "user successfully fatched!",
+         data: { user: (req as any)?.user },
          success: true,
-         data: {},
-         message: "successfully",
       });
    } catch (error) {
       next(createHttpError.InternalServerError());

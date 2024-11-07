@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Document, Types } from "mongoose";
 import { genSalt, hash } from "bcrypt";
 
 const useSchema = new mongoose.Schema({
@@ -30,6 +30,12 @@ const useSchema = new mongoose.Schema({
          type: String,
       },
    },
+   contacts: [
+      {
+         type: mongoose.Schema.Types.ObjectId,
+         ref: "User",
+      },
+   ],
    setting: {
       theme: {
          type: String,
