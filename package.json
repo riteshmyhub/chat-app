@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "This is an official starter Turborepo.",
   "scripts": {
-    "build": "npm run build --prefix apps/backend && npm run build --prefix apps/frontend",
+  "build": "npm install --prefix apps/backend && npm install --prefix apps/frontend && npm run build --prefix apps/backend && npm run build --prefix apps/frontend",
     "dev": "npm run dev --prefix apps/backend && npm run dev --prefix apps/frontend",
     "start": "npm run start --prefix apps/backend",
     "kill": "killall node"
