@@ -19,7 +19,7 @@ interface CustomError extends Error {
 // middlewares
 const app = express();
 const server = http.createServer(app);
-const io = new SocketIOServer(server, { cors: { origin: "http://localhost:3000", credentials: true } });
+const io = new SocketIOServer(server, { cors: { origin: ["https://chat-app-onh1.onrender.com"], credentials: true } });
 
 app.use(express.json());
 app.use(cookieParser());
