@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+     "target": "es2016",                       
+     "experimentalDecorators": true,
+     "emitDecoratorMetadata": true,
+     "module": "commonjs",
+     "rootDir": "./src",
+     "typeRoots": ["./types", "./node_modules/@types"],
+     "outDir": "./dist",
+     "esModuleInterop": true,
+     "forceConsistentCasingInFileNames": true,
+     "strict": true,
+     "skipLibCheck": true /* Skip type checking all .d.ts files. */
+  },
+  "include": ["src/**/*", "types/**/*"]
+}

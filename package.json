@@ -1,25 +1,16 @@
 {
   "name": "chat-app",
   "private": true,
+  "version": "1.0.0",
+  "description": "This is an official starter Turborepo.",
   "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "start": "npm --prefix apps/server start",
-    "kill":"killall node"
+    "build": "npm run build --prefix apps/backend && npm run build --prefix apps/frontend",
+    "dev": "npm run dev --prefix apps/backend && npm run dev --prefix apps/frontend",
+    "start": "npm run start --prefix apps/backend",
+    "kill": "killall node"
   },
-  "devDependencies": {
-    "prettier": "^3.2.5",
-    "turbo": "^2.2.3",
-    "typescript": "5.5.4"
-  },
-  "engines": {
-    "node": ">=18"
-  },
-  "packageManager": "npm@10.2.4",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ]
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
+
