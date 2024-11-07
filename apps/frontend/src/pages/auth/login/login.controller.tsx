@@ -20,9 +20,7 @@ export default function useLoginController() {
       try {
          e.preventDefault();
          await dispatch(authService.login.api(fields)).unwrap();
-         setTimeout(() => {
-            navigate("/", { replace: true });
-         }, 1);
+         navigate("/", { replace: true });
       } catch (error) {
          return;
       }

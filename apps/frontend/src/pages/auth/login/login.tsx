@@ -1,10 +1,10 @@
-import { Button } from "@/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/ui/card";
 import { Input } from "@/ui/input";
 import { Label } from "@/ui/label";
 import { Link } from "react-router-dom";
 import useLoginController from "./login.controller";
 import { LoaderCircleIcon } from "lucide-react";
+import { Button } from "@/ui/button";
 
 export default function LoginPage() {
    const ctrl = useLoginController();

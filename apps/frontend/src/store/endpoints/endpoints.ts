@@ -3,6 +3,7 @@ const ENDPOINTS = Object.seal({
       LOGIN: "/auth/login",
       GET_SESSION: "/auth/session",
       REGISTER: "/auth/register",
+      LOGOUT: "/auth/logout",
    },
    USER: {
       CREATE_PROFILE: "/user/profile",

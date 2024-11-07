@@ -1,15 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider, useDispatch, useSelector } from "react-redux";
+import toastMiddleware from "./middlewares/toast.middleware";
 import { authReducer, authService } from "./services/auth.service";
 import { useEffect } from "react";
-import { SplashScreen } from "@/components";
-import toastMiddleware from "./middlewares/toast.middleware";
-import { chatReducer } from "./services/chat.service";
+import { SplashScreen } from "@/components/splash-screen/SplashScreen";
 
 export const store = configureStore({
    reducer: {
       auth: authReducer,
-      chat: chatReducer,
    },
    middleware(getDefaultMiddleware) {
       return getDefaultMiddleware().concat(toastMiddleware);
@@ -24,6 +22,7 @@ export const useAppSelector = useSelector.withTypes<RootState>();
 type Props = {
    children?: Readonly<React.ReactNode>;
 };
+
 /*----------------------ReduxProvider-----------------*/
 const ReduxProvider = ({ children }: Props) => (
    <Provider store={store}>
@@ -34,39 +33,14 @@ const ReduxProvider = ({ children }: Props) => (
 /* -------------------- AppProvider ------------------*/
 function AppProvider({ children }: Props) {
    const dispatch = useAppDispatch();
-   const { loadings, token } = useAppSelector((state) => state.auth);
+   const { loadings } = useAppSelector((state) => state.auth);
 
    useEffect(() => {
-      if (token) {
-         dispatch(authService.getSession.api());
-         dispatch(authService.getRingtones.api());
-      }
+      dispatch(authService.getSession.api());
       return () => {};
-   }, [token]);
+   }, []);
 
-   return loadings.getSession && token ? <SplashScreen /> : <>{children}</>;
+   return loadings.getSession ? <SplashScreen /> : <>{children}</>;
 }
 
 export default ReduxProvider;
-
-/*
-{
-   user1:{
-     id:1,
-     contacts:[2]
-   },
-   user2:{
-     id:2,
-     contacts:[1]
-   },
-   user3:{
-     id:3,
-     contacts:[]
-   },
-   user4:{
-     id:4,
-     contacts:[1]
-   },
-}
-
-*/
