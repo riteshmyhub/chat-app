@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config({ path: "../../../.env" });
 import express, { Request } from "express";
 import { Server as SocketServer } from "socket.io";
 import http from "http";
@@ -5,6 +7,7 @@ import { AuthSocket } from "../middlewares/auth.middleware";
 import User from "../models/user.model";
 
 const app = express();
+console.log(process.env.CLIENT_URL);
 
 const server = http.createServer(app);
 const io = new SocketServer(server, {
