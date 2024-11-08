@@ -12,8 +12,7 @@ console.log(process.env.CLIENT_URL);
 const server = http.createServer(app);
 const io = new SocketServer(server, {
    cors: {
-      origin: "*", // Dynamically set origin for production
-      methods: ["GET", "POST"],
+      origin: ["https://chat-app-onh1.onrender.com", "http://localhost:3000"],
       credentials: true,
    },
    maxHttpBufferSize: 200 * 1024 * 1024, // 200 mb
@@ -73,11 +72,8 @@ io.on("connection", (socket) => {
    socket.on("TYPING", (data: { members: any[]; chat: string; isTyping: boolean }) => {
       const person = `${socket.user.profile?.first_name} ${socket.user.profile?.last_name}`;
       if (typeof data?.isTyping !== "boolean") return;
-      const chatMembers = getSocketIds(data?.members.map((member) => member?._id.toString()));
-      socket.to(chatMembers).emit("TYPING", {
-         chatID: data.chat,
-         text: data?.isTyping ? `${person} is typing...` : "",
-      });
+      const ids = getSocketIds(data.members);
+      socket.to(ids).emit("TYPING", data?.isTyping ? `${person} is typing...` : "");
    });
 
    // disconnect

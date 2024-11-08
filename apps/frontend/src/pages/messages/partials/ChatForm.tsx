@@ -1,11 +1,13 @@
 import { useSocket } from "@/hooks/socket/useSocket.hook";
 import { useAppSelector } from "@/store/store";
 import { PaperclipIcon, SendHorizontalIcon } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useFileUploader } from "use-hooks-zone";
 
 export default function ChatForm({ id }: { id: string }) {
    const { socket } = useSocket();
+   const [typing, setTyping] = useState(false);
+   const timer = useRef<any>(null);
 
    const { authUser } = useAppSelector((state) => state.auth);
    const upload = useFileUploader({
@@ -19,10 +21,28 @@ export default function ChatForm({ id }: { id: string }) {
 
    const [message, setMessage] = useState("");
 
+   const onTyping = () => {
+      const typingData = {
+         members: [id],
+         chatId: id,
+      };
+
+      if (!typing) {
+         socket?.emit("TYPING", { ...typingData, isTyping: true });
+         setTyping(true);
+      }
+      if (timer.current) clearTimeout(timer.current);
+      timer.current = setTimeout(() => {
+         socket?.emit("TYPING", { ...typingData, isTyping: false });
+         setTyping(false);
+      }, 500);
+   };
+
    const change = (e: React.ChangeEvent<HTMLInputElement>) => {
       switch (e.target.name) {
          case "message":
             setMessage(e.target.value);
+            onTyping();
             break;
          case "attachments":
             upload.onSetFile(e.target.files as FileList);

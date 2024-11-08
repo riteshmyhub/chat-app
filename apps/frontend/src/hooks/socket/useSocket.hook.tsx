@@ -1,9 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
-import { useAppDispatch, useAppSelector } from "@/store/store";
-import { chatActions } from "@/store/services/chat.service";
-import { contactService } from "@/store/services/contect.service";
-import { IMessage } from "@/types/chat.type";
+import { useAppSelector } from "@/store/store";
+import useHandlerWS from "./handlers/handlers.ws";
 
 const SocketContext = createContext<{ socket: any | null }>({
    socket: null,
@@ -13,37 +11,18 @@ function SocketProvider({ children }: { children: Readonly<React.ReactNode> }) {
    const { authUser } = useAppSelector((state) => state.auth);
    const { contactDetails } = useAppSelector((state) => state.contact);
    const [socket, setSocket] = useState<Socket | null>(null);
-   const dispatch = useAppDispatch();
+   const ws = useHandlerWS();
 
    useEffect(() => {
       if (authUser) {
          const socket = io("https://chat-app-onh1.onrender.com", { withCredentials: true });
 
          setSocket(socket);
-         socket.on("ONLINE_USERS", (data) => {
-            console.log(data);
-         });
-
-         socket.on("RECEIVER_MESSAGE", (message: IMessage) => {
-            if (contactDetails?._id === message.chat || contactDetails?._id === message?.sender?._id) {
-               dispatch(chatActions.setMessages(message));
-               if (authUser?._id !== message?.sender?._id) {
-                  new Audio(authUser?.setting.received_message_sound?.src).play();
-               }
-               return;
-            }
-            new Audio(authUser?.setting.notification_sound?.src).play();
-            dispatch(chatActions.setUnreadMessages(message));
-            alert(`${message.sender.name} send new message`);
-         });
-
-         socket.on("refresh_contacts", () => {
-            dispatch(contactService.getContacts.api());
-         });
-
-         socket.on("ALERT", (data) => {
-            console.log(data);
-         });
+         socket.on("ONLINE_USERS", ws.onlineUser);
+         socket.on("TYPING", ws.typing);
+         socket.on("RECEIVER_MESSAGE", ws.receiveMessage);
+         socket.on("refresh_contacts", ws.refreshContacts);
+         socket.on("ALERT", ws.alert);
 
          return () => socket.close();
       } else {

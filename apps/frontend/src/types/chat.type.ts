@@ -42,8 +42,3 @@ export interface IProfile {
    last_name: string;
    about?: string;
 }
-
-export interface ITyping {
-   chatID: string | null;
-   text: string;
-}

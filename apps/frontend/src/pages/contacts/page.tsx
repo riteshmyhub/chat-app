@@ -13,6 +13,8 @@ export default function ContactsPage() {
    const sheetRef = useRef<any>(null);
    const dispatch = useAppDispatch();
    const { loadings, contacts } = useAppSelector((state) => state.contact);
+   const { onlineUsers, typing } = useAppSelector((state) => state.chat);
+   console.log(onlineUsers);
 
    useEffect(() => {
       dispatch(contactService.getContacts.api());
@@ -46,6 +48,7 @@ export default function ContactsPage() {
             ) : (
                <React.Fragment>
                   {contacts?.map((contact, idx) => {
+                     const fullname = `${contact?.profile?.first_name} ${contact?.profile?.last_name}`;
                      const unseenMessages: IMessage[] = [];
                      return (
                         <div key={`contact-${idx}`} className="flex items-center p-2 px-3 gap-3 bg-white hover:bg-[#F0F2F5] border-b-2" role="button" onClick={() => navigate(contact._id)}>
@@ -58,16 +61,16 @@ export default function ContactsPage() {
                                     height={60}
                                     className="mx-auto block rounded-full h-[50px] w-[50px] object-cover"
                                  />
-                                 <span //
-                                    className="absolute bottom-0 right-0 block h-3 w-3 rounded-full bg-green-500 border-2 border-white"
-                                 />
+                                 {onlineUsers?.includes(contact._id) && (
+                                    <span //
+                                       className="absolute bottom-0 right-0 block h-3 w-3 rounded-full bg-green-500 border-2 border-white"
+                                    />
+                                 )}
                               </span>
                            </div>
                            <div className="basis-1/2">
-                              <span className="block text-lg font-normal">
-                                 {contact?.profile?.first_name} {contact?.profile?.last_name}
-                              </span>
-                              {true ? ( //
+                              <span className="block text-lg font-normal">{fullname}</span>
+                              {typing?.includes(fullname) ? ( //
                                  <span className="block text-xs font-medium text-gray-400">typing...</span>
                               ) : (
                                  <span className="block text-xs font-medium">{unseenMessages[unseenMessages?.length - 1]?.content}</span>

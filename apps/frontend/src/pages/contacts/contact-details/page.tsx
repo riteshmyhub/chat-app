@@ -6,11 +6,12 @@ import { useAppDispatch, useAppSelector } from "@/store/store";
 import { Button } from "@/ui/button";
 import { Skeleton } from "@/ui/skeleton";
 import { LoaderCircleIcon } from "lucide-react";
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function ContactDetailsPage() {
    const { loadings, contactDetails } = useAppSelector((state) => state.contact);
+   const { onlineUsers, typing } = useAppSelector((state) => state.chat);
    const asideRef = useRef<any>(null);
    const { id } = useParams();
    const dispatch = useAppDispatch();
@@ -112,7 +113,21 @@ export default function ContactDetailsPage() {
             }
             back="../"
             avatar={contactDetails.profile.avatar}
-            description={<p className="text-xs">typing...</p>}
+            description={
+               <p className="text-xs">
+                  {typing ? (
+                     "typing..."
+                  ) : (
+                     <React.Fragment>
+                        {onlineUsers.includes(contactDetails?._id) ? ( //
+                           <span className="font-semibold text-green-500">Online</span>
+                        ) : (
+                           <span className="font-semibold text-gray-500">Ofline</span>
+                        )}
+                     </React.Fragment>
+                  )}
+               </p>
+            }
          />
          <MessagesPage id={contactDetails?._id} />
       </AsideMenu>
