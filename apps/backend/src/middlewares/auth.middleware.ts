@@ -1,29 +1,41 @@
 import createHttpError from "http-errors";
-import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
-import User from "../models/user.model";
+import { Socket } from "socket.io";
+import { DefaultEventsMap } from "socket.io";
+import { verifyToken } from "../libs/jwt";
 
-export default async function AuthMiddleware(req: Request, res: Response, next: NextFunction) {
+export async function AuthMiddleware(req: Request, res: Response, next: NextFunction) {
    try {
       const accessToken = req?.cookies?.accessToken || req.headers["authorization"]?.split("bearer ")[1];
       if (!accessToken) {
          return next(createHttpError.Unauthorized("your unauthorized"));
       }
-      const verifyUser: any = jwt.verify(accessToken, process.env.JWT_SECRET_KEY as string);
+      const user = await verifyToken(accessToken);
+      req.user = user;
 
-      const user = await User.findById(verifyUser?._id).select("-__v -contacts"); //
-      // .populate("setting.notification_sound")
-      // .populate("setting.received_message_sound")
-      // .populate("setting.send_message_sound");
-
-      if (!user) {
-         return next(createHttpError.Unauthorized("your unauthorized"));
-      }
       req.user = user;
       return next();
    } catch (error: any) {
-      console.log(error);
+      if (error.name === "TokenExpiredError") {
+         return next(createHttpError.Forbidden("Token expired"));
+      }
+      if (error.name === "JsonWebTokenError") {
+         return next(createHttpError.Unauthorized("Invalid token"));
+      }
+      next(createHttpError.InternalServerError());
+   }
+}
 
+export async function AuthSocket(socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>, next: (err?: any) => void) {
+   try {
+      const token = socket.request.headers.cookie?.split("accessToken=")[1];
+      if (!token) {
+         return next(createHttpError.Unauthorized("Your unauthorized"));
+      }
+      const user = await verifyToken(token);
+      socket.user = user;
+      next();
+   } catch (error: any) {
       if (error.name === "TokenExpiredError") {
          return next(createHttpError.Forbidden("Token expired"));
       }

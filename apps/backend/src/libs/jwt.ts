@@ -1,8 +1,10 @@
+import createHttpError from "http-errors";
 import { Response } from "express";
 import jwt from "jsonwebtoken";
 import { Types } from "mongoose";
+import User from "../models/user.model";
 
-export default function createJwtLoginToken(_id: Types.ObjectId, res: Response) {
+export function createJwtLoginToken(_id: Types.ObjectId, res: Response) {
    const [value, unit] = String(process.env.TOKEN_EXPIRES_IN)?.split("-");
    const token = jwt.sign({ _id }, process.env.JWT_SECRET_KEY as string, {
       expiresIn: `${value}${unit}`,
@@ -17,5 +19,17 @@ export default function createJwtLoginToken(_id: Types.ObjectId, res: Response) 
       return null;
    } else {
       return token;
+   }
+}
+export async function verifyToken(accessToken: string) {
+   try {
+      const verifyUser: any = jwt.verify(accessToken, process.env.JWT_SECRET_KEY as string);
+      const user = await User.findById(verifyUser?._id).select("-__v");
+      if (!user) {
+         throw createHttpError.Unauthorized("User not found");
+      }
+      return user;
+   } catch (error: any) {
+      throw error;
    }
 }

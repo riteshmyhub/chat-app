@@ -8,6 +8,10 @@ const ENDPOINTS = Object.seal({
    USER: {
       CREATE_PROFILE: "/user/profile",
       SEARCH_USER: "/user/search",
+      GET_CONTACTS: "/user/get-contacts",
+      GET_CONTACTS_DETAILS: (id: string) => `/user/get-contacts/${id}`,
+      ADD_CONTACT: "/user/add-contact",
+      DELETE_CONTACT: (id: string) => `/user/delete-contact/${id}`,
       SETTING: {
          GET_RINGTONES: "/user/settings/get-ringtones",
          CHANGE_RINGTONES: "/user/settings/change-ringtone",

@@ -4,10 +4,14 @@ import toastMiddleware from "./middlewares/toast.middleware";
 import { authReducer, authService } from "./services/auth.service";
 import { useEffect } from "react";
 import { SplashScreen } from "@/components/splash-screen/SplashScreen";
+import { contactReducer } from "./services/contect.service";
+import { chatReducer } from "./services/chat.service";
 
 export const store = configureStore({
    reducer: {
       auth: authReducer,
+      contact: contactReducer,
+      chat: chatReducer,
    },
    middleware(getDefaultMiddleware) {
       return getDefaultMiddleware().concat(toastMiddleware);

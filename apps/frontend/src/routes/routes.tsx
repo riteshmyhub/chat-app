@@ -2,10 +2,17 @@ import LoginPage from "@/pages/auth/login/login";
 import RegisterPage from "@/pages/auth/register/register";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import AuthGuard from "@/guards/auth.guard";
-import HomePage from "@/pages/home/page";
 import NotFoundPage from "@/pages/404/page";
+import { useMediaQuery } from "@/hooks";
+import SettingsPage from "@/pages/settings/page";
+import ProfilePage from "@/pages/settings/profile/page";
+import ChatSettingPage from "@/pages/settings/chat/page";
+import SoundsPage from "@/pages/settings/sounds/page";
+import ContactsPage from "@/pages/contacts/page";
+import ContactDetailsPage from "@/pages/contacts/contact-details/page";
 
 export default function AppRoutes() {
+   const screen = useMediaQuery();
    return (
       <Routes>
          <Route path="auth" element={<Outlet />}>
@@ -15,7 +22,16 @@ export default function AppRoutes() {
          </Route>
 
          <Route element={<AuthGuard />}>
-            <Route path="/" element={<HomePage />} />
+            <Route index element={<Navigate to="contacts" replace />} />
+            <Route path="contacts" element={<ContactsPage />} />
+            <Route path="contacts/:id" element={<ContactDetailsPage />} />
+
+            <Route path="/settings" element={<SettingsPage />}>
+               {screen.md && <Route index element={<Navigate to="profile" replace />} />}
+               <Route path="profile" element={<ProfilePage />} />
+               <Route path="chat" element={<ChatSettingPage />} />
+               <Route path="sounds" element={<SoundsPage />} />
+            </Route>
          </Route>
          <Route path="*" element={<NotFoundPage />} />
       </Routes>

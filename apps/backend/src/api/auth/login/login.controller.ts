@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import createHttpError from "http-errors";
 import { compare } from "bcrypt";
 import User from "../../../models/user.model";
-import createJwtLoginToken from "../../../libs/jwt";
+import {createJwtLoginToken} from "../../../libs/jwt";
 import { Types } from "mongoose";
 
 type ReqBody = { email: string; password: string };

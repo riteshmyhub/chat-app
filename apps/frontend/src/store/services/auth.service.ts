@@ -87,6 +87,59 @@ class AuthService extends HttpInterceptor {
       },
    };
 
+   /*-----------------------updateProfile------------------------*/
+   updateProfile = {
+      api: createAsyncThunk("updateProfile", async (payload: FormData, thunkAPI) => {
+         try {
+            return (await this.http.put(ENDPOINTS.USER.CREATE_PROFILE, payload)).data;
+         } catch (error) {
+            return thunkAPI.rejectWithValue(this.errorMessage(error));
+         }
+      }),
+      reducer(builder: ActionReducerMapBuilder<typeof initialState>) {
+         builder.addCase(this.api.pending, (state) => {
+            state.loadings.updateProfile = true;
+         });
+         builder.addCase(this.api.fulfilled, (state, action) => {
+            state.loadings.updateProfile = false;
+            if (state.authUser && action?.payload?.data?.profile) {
+               state.authUser.profile = action?.payload?.data?.profile;
+            }
+         });
+         builder.addCase(this.api.rejected, (state) => {
+            state.loadings.updateProfile = false;
+         });
+      },
+   };
+
+   /*-------------------------updateRingtone----------------------*/
+   updateRingtone = {
+      api: createAsyncThunk("updateRingtone", async (paylaod: FormData, thunkAPI) => {
+         try {
+            return (await this.http.post(ENDPOINTS.USER.SETTING.CHANGE_RINGTONES, paylaod)).data;
+         } catch (error) {
+            return thunkAPI.rejectWithValue(this.errorMessage(error));
+         }
+      }),
+      reducer(builder: ActionReducerMapBuilder<typeof initialState>) {
+         builder.addCase(this.api.pending, (state) => {
+            state.loadings.updateRingtone = true;
+         });
+         builder.addCase(this.api.fulfilled, (state, action) => {
+            const ringtone = action.payload?.data?.ringtone;
+
+            state.loadings.updateRingtone = false;
+            if (state.authUser?.setting && ringtone) {
+               state.authUser.setting.notification_sound = ringtone?.notification_sound;
+               state.authUser.setting.send_message_sound = ringtone?.send_message_sound;
+               state.authUser.setting.received_message_sound = ringtone?.received_message_sound;
+            }
+         });
+         builder.addCase(this.api.rejected, (state) => {
+            state.loadings.updateRingtone = false;
+         });
+      },
+   };
    logout = {
       api: createAsyncThunk("logout", async (_, thunkAPI) => {
          try {
@@ -119,6 +172,8 @@ class AuthService extends HttpInterceptor {
          this.getSession.reducer(builder);
          this.logout.reducer(builder);
          this.register.reducer(builder);
+         this.updateProfile.reducer(builder);
+         this.updateRingtone.reducer(builder);
       },
    });
    actions = this.slice.actions;

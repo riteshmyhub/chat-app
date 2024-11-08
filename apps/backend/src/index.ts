@@ -7,9 +7,8 @@ import routes from "./routes/routes";
 import createHttpError from "http-errors";
 import fileUpload from "express-fileupload";
 import "./database/database";
-import { Server as SocketIOServer } from "socket.io";
-import http from "http";
 import path from "path";
+import { app, server } from "./socket/socket";
 
 const PORT = process.env.PORT || 8000;
 
@@ -17,9 +16,6 @@ interface CustomError extends Error {
    status?: number;
 }
 // middlewares
-const app = express();
-const server = http.createServer(app);
-const io = new SocketIOServer(server, { cors: { origin: ["https://chat-app-onh1.onrender.com"], credentials: true } });
 
 app.use(express.json());
 app.use(cookieParser());
@@ -34,23 +30,12 @@ if (fs.existsSync(client + "/index.html")) {
       res.sendFile(client + "/index.html");
    });
 }
-
 app.use(async (req, res, next) => {
    next(createHttpError.NotFound());
 });
 app.use((err: CustomError, req: Request, res: Response, next: NextFunction) => {
    res.status(err.status || 500);
    res.send({ error: { status: err.status || 500, message: err.message } });
-});
-
-io.on("connection", (socket) => {
-   console.log("User connected:", socket.id);
-
-   socket.emit("ONLINE_USERS", { s: "ss" });
-
-   socket.on("disconnect", () => {
-      console.log("User disconnected:", socket.id);
-   });
 });
 
 // server
