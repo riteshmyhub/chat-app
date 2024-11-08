@@ -17,7 +17,7 @@ function SocketProvider({ children }: { children: Readonly<React.ReactNode> }) {
 
    useEffect(() => {
       if (authUser) {
-         const socket = io("http://localhost:8000", { withCredentials: true });
+         const socket = io("https://chat-app-onh1.onrender.com", { withCredentials: true });
 
          setSocket(socket);
          socket.on("ONLINE_USERS", (data) => {

@@ -12,7 +12,8 @@ console.log(process.env.CLIENT_URL);
 const server = http.createServer(app);
 const io = new SocketServer(server, {
    cors: {
-      origin: ["https://chat-app-onh1.onrender.com", "http://localhost:3000"], // Dynamically set origin for production
+      origin: "*", // Dynamically set origin for production
+      methods: ["GET", "POST"],
       credentials: true,
    },
    maxHttpBufferSize: 200 * 1024 * 1024, // 200 mb
