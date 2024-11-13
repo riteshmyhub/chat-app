@@ -11,6 +11,7 @@ import SoundsPage from "@/pages/settings/sounds/page";
 import ContactsPage from "@/pages/contacts/page";
 import ChannelsPage from "@/pages/channels/page";
 import MessagesPage from "@/pages/messages/page";
+import NotificationsPage from "@/pages/notifications/page";
 
 export default function AppRoutes() {
    const screen = useMediaQuery();
@@ -34,7 +35,9 @@ export default function AppRoutes() {
                <Route path="chat" element={<ChatSettingPage />} />
                <Route path="sounds" element={<SoundsPage />} />
             </Route>
+            <Route path="notifications" element={<NotificationsPage />} />
          </Route>
+
          <Route path="*" element={<NotFoundPage />} />
       </Routes>
    );

@@ -15,6 +15,7 @@ import UpdateChannelController from "../api/user/channels/update-channel/update-
 import AddMembersController from "../api/user/channels/add-member/add-member.controller";
 import RemoveMemberController from "../api/user/channels/remove-member/remove-member.controller";
 import GetChatDetailsController from "../api/chat/get-chat-details/get-chat-details.controller";
+import ChangeRingtoneController from "../api/user/settings/change-ringtone/change-ringtone.controller";
 
 const router = Router();
 
@@ -50,6 +51,14 @@ router.use(
    "/chat",
    (function () {
       router.get("/chat-details/:id", [AuthMiddleware], GetChatDetailsController);
+      return router;
+   })()
+);
+
+router.use(
+   "/settings",
+   (function () {
+      router.post("/change-ringtone", [AuthMiddleware], ChangeRingtoneController);
       return router;
    })()
 );

@@ -24,7 +24,11 @@ export function createJwtLoginToken(_id: Types.ObjectId, res: Response) {
 export async function verifyToken(accessToken: string) {
    try {
       const verifyUser: any = jwt.verify(accessToken, process.env.JWT_SECRET_KEY as string);
-      const user = await User.findById(verifyUser?._id).select("-__v");
+      const user = await User.findById(verifyUser?._id) //
+         .select("-__v")
+         .populate("setting.notification_sound")
+         .populate("setting.received_message_sound")
+         .populate("setting.send_message_sound");
       if (!user) {
          throw createHttpError.Unauthorized("User not found");
       }

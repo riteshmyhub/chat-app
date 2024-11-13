@@ -13,8 +13,7 @@ const ENDPOINTS = Object.seal({
       ADD_CONTACT: "/user/add-contact",
       DELETE_CONTACT: (id: string) => `/user/delete-contact/${id}`,
       SETTING: {
-         GET_RINGTONES: "/user/settings/get-ringtones",
-         CHANGE_RINGTONES: "/user/settings/change-ringtone",
+         CHANGE_RINGTONES: "/settings/change-ringtone",
       },
       CHANNEL: {
          CREATE_CHANNEL: "/user/create-channel",

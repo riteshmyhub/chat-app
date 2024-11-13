@@ -12,11 +12,12 @@ const initialState = {
       logout: false,
       updateProfile: false,
       updateRingtone: false,
-      getRingtones: true,
    },
    token: localStorage.getItem("accessToken") || null,
    authUser: null as IUser | null,
-   ringtones: [] as IRingtone[],
+   appSettings: null as {
+      ringtones: IRingtone[];
+   } | null,
 };
 
 class AuthService extends HttpInterceptor {
@@ -79,10 +80,12 @@ class AuthService extends HttpInterceptor {
          builder.addCase(this.api.fulfilled, (state, action) => {
             state.loadings.getSession = false;
             state.authUser = action.payload?.data?.user;
+            state.appSettings = action.payload?.data?.appSettings;
          });
          builder.addCase(this.api.rejected, (state) => {
             state.loadings.getSession = false;
             state.authUser = null;
+            state.appSettings = null;
          });
       },
    };

@@ -56,9 +56,7 @@ export default function ProfilePage() {
                <img //
                   src={typeof fields?.avatar === "object" ? URL.createObjectURL(fields?.avatar) : fields?.avatar || "/images/user-placeholder.png"}
                   alt="avatar"
-                  width={120}
-                  height={120}
-                  className="rounded-full border mx-auto"
+                  className="rounded-full border mx-auto w-[120px] h-[120px] object-cover"
                />
                <label htmlFor="avatar">
                   <CameraIcon size={30} className="bg-white p-1 rounded-full border absolute bottom-0 right-0" />

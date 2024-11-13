@@ -4,13 +4,12 @@ import express, { Request } from "express";
 import { Server as SocketServer } from "socket.io";
 import http from "http";
 import { AuthSocket } from "../middlewares/auth.middleware";
-import User from "../models/user.model";
 
 const app = express();
 const server = http.createServer(app);
 const io = new SocketServer(server, {
    cors: {
-      origin: ["https://chat-app-onh1.onrender.com", "http://192.168.1.153:3000"],
+      origin: ["https://chat-app-onh1.onrender.com", "http://192.168.1.153:3000", "http://192.168.1.43:3000"],
       credentials: true,
    },
    maxHttpBufferSize: 200 * 1024 * 1024, // 200 mb
@@ -41,7 +40,7 @@ io.on("connection", (socket) => {
             avatar: socket?.user?.profile?.avatar,
          },
          chat,
-         content,                
+         content,
          createdAt: new Date().toISOString(),
          attachments,
       };

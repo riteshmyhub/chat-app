@@ -14,7 +14,7 @@ type SelectedRingtone = {
 export default function SoundsPage() {
    const dispatch = useAppDispatch();
    const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
-   const { loadings, ringtones, authUser } = useAppSelector((state) => state.auth);
+   const { loadings, authUser, appSettings } = useAppSelector((state) => state.auth);
    const [selectedRingtone, setRingtone] = useState<SelectedRingtone>({
       received_message_sound: null,
       send_message_sound: null,
@@ -52,6 +52,8 @@ export default function SoundsPage() {
 
    useEffect(() => {
       if (authUser?.setting) {
+         console.log(authUser?.setting);
+         
          setRingtone({
             received_message_sound: authUser?.setting?.received_message_sound || null,
             send_message_sound: authUser?.setting?.send_message_sound || null,
@@ -71,7 +73,7 @@ export default function SoundsPage() {
                </Button>
             </div>
          </div>
-         {ringtones?.map((ringtone) => {
+         {appSettings?.ringtones?.map((ringtone) => {
             const title = !soundTypes.has(ringtone.type);
             soundTypes.add(ringtone.type);
             return (

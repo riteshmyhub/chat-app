@@ -4,6 +4,7 @@ import { contactService } from "@/store/services/contect.service";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { IMessage } from "@/types/chat.type";
 import { LocalDatabase } from "@/utils";
+import toast from "react-hot-toast";
 
 export default function useHandlerWS() {
    const { authUser } = useAppSelector((state) => state.auth);
@@ -25,7 +26,13 @@ export default function useHandlerWS() {
       }
       new Audio(authUser?.setting.notification_sound?.src).play();
       dispatch(chatActions.setUnreadMessages(message));
-      alert(`${message.sender.name} send new message`);
+      toast(`${message.sender.name} send new message`, {
+         style: {
+            borderRadius: "30px",
+            background: "#333",
+            color: "#fff",
+         },
+      });
    };
 
    const refreshContacts = () => {

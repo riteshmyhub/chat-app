@@ -1,3 +1,4 @@
+export { InstallApp } from "./install-app/InstallApp";
 export { Footer } from "./footer/Footer";
 export { Loading } from "./loading/Loading";
 export { AudioPlayer } from "./audio-player/AudioPlayer";

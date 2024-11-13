@@ -5,7 +5,12 @@ import path from "path";
 
 // https://vite.dev/config/
 export default defineConfig({
-   plugins: [react(), VitePWA({ registerType: "autoUpdate" })],
+   plugins: [
+      react(),
+      VitePWA({
+         registerType: "autoUpdate",
+      }),
+   ],
    resolve: {
       alias: {
          "@": path.resolve(__dirname, "./src"),

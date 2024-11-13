@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { Footer, Navbar } from "./components";
+import { Footer, InstallApp, Navbar } from "./components";
 import AppRoutes from "./routes/routes";
 
 function App() {
@@ -11,6 +11,7 @@ function App() {
    }
    return (
       <>
+         <InstallApp />
          <Navbar //
             title={<span className="text-3xl capitalize">{pathname.split("/")[1]}</span>}
             {...(pathname.includes("/contacts") ? {} : { back: -1 })}

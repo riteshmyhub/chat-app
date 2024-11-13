@@ -9,7 +9,8 @@ import { AsideMenu } from "@/components";
 import ContactDetailsPage from "../contacts/contact-details/page";
 import ChannelDetailsPage from "../channels/channel-details/page";
 import { Skeleton } from "@/ui/skeleton";
-import { ArrowLeftIcon } from "lucide-react";
+import { AlertCircleIcon, ArrowLeftIcon } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/ui/alert";
 
 export default function MessagesPage() {
    const { id } = useParams();
@@ -63,7 +64,15 @@ export default function MessagesPage() {
       );
    }
    if (!chatDetails) {
-      return "no chat";
+      return (
+         <div className="h-screen p-3">
+            <Alert variant="destructive" className="bg-white">
+               <AlertCircleIcon className="h-4 w-4" />
+               <AlertTitle>Error</AlertTitle>
+               <AlertDescription>Chat not found! It may have been deleted </AlertDescription>
+            </Alert>
+         </div>
+      );
    }
    const isOnline = chatDetails?.members.every((member) => onlineUsers.includes(member?._id));
 

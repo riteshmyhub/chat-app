@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import createHttpError from "http-errors";
 import { isValidObjectId } from "mongoose";
 import User from "../../../../models/user.model";
+import Chat from "../../../../models/chat.model";
+import { SocketEmitter } from "../../../../socket/socket";
 
 type ReqBody = {};
 
@@ -14,20 +16,22 @@ type Req = Request<ReqParms, {}, ReqBody, ReqQuery>;
 export default async function DeleteContactController(req: Req, res: Response, next: NextFunction) {
    try {
       const { id } = req.params;
-      if (!id || !isValidObjectId(id) || id.toString() === req.user?._id.toString()) {
-         return next(createHttpError.BadRequest("Invaild user"));
+      if (!id || !isValidObjectId(id)) {
+         return next(createHttpError.BadRequest("chatID required or invalid chatID!"));
       }
-      const user = await User.findOne({ _id: req.user?._id, contacts: id }).select("-profile -setting -email -isSetup -__v");
-      if (!user) {
-         return next(createHttpError.NotFound("Contact not found"));
-      }
-      user.contacts = user?.contacts?.filter((contact) => contact.toString() !== id.toString());
-      await user.save();
+      const chat = await Chat.findOne({ _id: id, members: req.user });
+      await chat?.deleteOne();
 
-      res.status(201).json({
-         success: true,
+      SocketEmitter({
+         req: req,
+         eventName: "refresh_contacts",
+         to: chat?.members,
+      });
+
+      res.status(200).json({
+         message: "Contact deleted successfully",
          data: {},
-         message: "contact successfully delete",
+         success: true,
       });
    } catch (error) {
       next(createHttpError.InternalServerError());
