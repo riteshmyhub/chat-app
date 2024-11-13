@@ -1,3 +1,4 @@
+import { channelService } from "@/store/services/channel.service";
 import { chatActions } from "@/store/services/chat.service";
 import { contactService } from "@/store/services/contect.service";
 import { useAppDispatch, useAppSelector } from "@/store/store";
@@ -6,7 +7,7 @@ import { LocalDatabase } from "@/utils";
 
 export default function useHandlerWS() {
    const { authUser } = useAppSelector((state) => state.auth);
-   const { contactDetails } = useAppSelector((state) => state.contact);
+   const { chatDetails } = useAppSelector((state) => state.chat);
    const dispatch = useAppDispatch();
 
    const onlineUser = (data: string[]) => {
@@ -15,7 +16,7 @@ export default function useHandlerWS() {
 
    const receiveMessage = async (message: IMessage) => {
       LocalDatabase.messageCollection.add(message);
-      if (contactDetails?._id === message.chat || contactDetails?._id === message?.sender?._id) {
+      if (chatDetails?._id === message?.chat || chatDetails?._id === message?.sender?._id) {
          dispatch(chatActions.setMessages(message));
          if (authUser?._id !== message?.sender?._id) {
             new Audio(authUser?.setting.received_message_sound?.src).play();
@@ -31,6 +32,10 @@ export default function useHandlerWS() {
       dispatch(contactService.getContacts.api());
    };
 
+   const refreshChannels = () => {
+      dispatch(channelService.getChannels.api());
+   };
+
    const alert = (data: any) => {
       console.log(data);
    };
@@ -39,5 +44,5 @@ export default function useHandlerWS() {
       dispatch(chatActions.setTyping(data));
    };
 
-   return { onlineUser, receiveMessage, refreshContacts, alert, typing };
+   return { onlineUser, receiveMessage, refreshContacts, alert, typing, refreshChannels };
 }

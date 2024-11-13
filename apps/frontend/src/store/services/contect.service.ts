@@ -1,17 +1,15 @@
 import { ActionReducerMapBuilder, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import HttpInterceptor from "../interceptors/http.interceptor";
 import ENDPOINTS from "../endpoints/endpoints";
-import { IContact } from "@/types/contact.type";
+import { IChatDetails } from "@/types/chat.type";
 
 const initialState = {
    loadings: {
       getContacts: true,
-      getContactDetails: true,
       addContact: false,
       deleteContact: false,
    },
-   contacts: [] as IContact[],
-   contactDetails: null as IContact | null,
+   contacts: [] as IChatDetails[],
 };
 
 class ContactService extends HttpInterceptor {
@@ -62,26 +60,6 @@ class ContactService extends HttpInterceptor {
       },
    };
 
-   getContactDetails = {
-      api: createAsyncThunk("getContactDetails*", async (id: string) => {
-         const { data } = await this.http.get(ENDPOINTS.USER.GET_CONTACTS_DETAILS(id));
-         return data;
-      }),
-      reducer(builder: ActionReducerMapBuilder<typeof initialState>) {
-         builder.addCase(this.api.pending, (state) => {
-            state.loadings.getContactDetails = true;
-         });
-         builder.addCase(this.api.fulfilled, (state, action) => {
-            state.loadings.getContactDetails = false;
-            state.contactDetails = action.payload?.data?.details;
-         });
-         builder.addCase(this.api.rejected, (state) => {
-            state.loadings.getContactDetails = false;
-            state.contactDetails = null;
-         });
-      },
-   };
-
    deleteContact = {
       api: createAsyncThunk("deleteContact", async (id: string, thunkAPI) => {
          try {
@@ -119,15 +97,10 @@ class ContactService extends HttpInterceptor {
    private silce = createSlice({
       name: "ContactService",
       initialState: initialState,
-      reducers: {
-         clearContectDetails(state) {
-            state.contactDetails = null;
-         },
-      },
+      reducers: {},
       extraReducers: (builder) => {
          this.getContacts.reducer(builder);
          this.addContact.reducer(builder);
-         this.getContactDetails.reducer(builder);
          this.deleteContact.reducer(builder);
       },
    });

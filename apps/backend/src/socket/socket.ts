@@ -7,12 +7,10 @@ import { AuthSocket } from "../middlewares/auth.middleware";
 import User from "../models/user.model";
 
 const app = express();
-console.log(process.env.CLIENT_URL);
-
 const server = http.createServer(app);
 const io = new SocketServer(server, {
    cors: {
-      origin: ["https://chat-app-onh1.onrender.com", "http://localhost:3000"],
+      origin: ["https://chat-app-onh1.onrender.com", "http://192.168.1.153:3000"],
       credentials: true,
    },
    maxHttpBufferSize: 200 * 1024 * 1024, // 200 mb
@@ -34,38 +32,21 @@ io.on("connection", (socket) => {
    io.emit("ONLINE_USERS", Array.from(userSocketMap.keys()));
 
    //SEND_MESSAGE
-   socket.on("SEND_MESSAGE", async ({ chat, members, content, groupChat, attachments }) => {
-      try {
-         // Create message object
-         const message = {
-            groupChat,
-            sender: {
-               _id: socket?.user?._id,
-               name: `${socket?.user?.profile?.first_name} ${socket?.user?.profile?.last_name}`,
-               avatar: socket?.user?.profile?.avatar,
-            },
-            chat,
-            content,
-            createdAt: new Date().toISOString(),
-            attachments,
-         };
-
-         // Emit the message to all member socket IDs
-         const memberSocketIds = getSocketIds(members);
-         io.to(memberSocketIds).emit("RECEIVER_MESSAGE", message);
-
-         const userExists = await User.exists({ _id: chat, contacts: userID });
-
-         if (!userExists) {
-            await User.findByIdAndUpdate(chat, {
-               $addToSet: { contacts: userID },
-            });
-            // Emit 'refresh_contacts' only when a new contact is added
-            io.to(getSocketIds([chat])).emit("refresh_contacts");
-         }
-      } catch (error) {
-         console.error("Error sending message:", error);
-      }
+   socket.on("SEND_MESSAGE", async ({ chat, content, members, groupChat, attachments }) => {
+      const message = {
+         groupChat,
+         sender: {
+            _id: socket?.user?._id,
+            name: `${socket?.user?.profile?.first_name} ${socket?.user?.profile?.last_name}`,
+            avatar: socket?.user?.profile?.avatar,
+         },
+         chat,
+         content,                
+         createdAt: new Date().toISOString(),
+         attachments,
+      };
+      const ids = getSocketIds(members?.map((member: any) => member?._id));
+      io.to(ids).emit("RECEIVER_MESSAGE", message);
    });
 
    //TYPING
@@ -77,7 +58,7 @@ io.on("connection", (socket) => {
    });
 
    // disconnect
-   socket.on("disconnect", () => {
+   socket.on("disconnect", async () => {
       for (const [userID, socketID] of userSocketMap.entries()) {
          if (socketID === socket.id) {
             userSocketMap.delete(userID);
@@ -91,7 +72,7 @@ io.on("connection", (socket) => {
 
 type ISocketEmitter = {
    req: Request;
-   eventName: "ALERT" | "REFRESH_CHATS";
+   eventName: "ALERT" | "refresh_contacts" | "REFRESH_CHANNEL";
    to: any;
    data?: any;
 };

@@ -9,6 +9,7 @@ import fileUpload from "express-fileupload";
 import "./database/database";
 import path from "path";
 import { app, server } from "./socket/socket";
+import { bucket } from "./libs/cloudinary";
 
 const PORT = process.env.PORT || 8000;
 
@@ -16,7 +17,7 @@ interface CustomError extends Error {
    status?: number;
 }
 // middlewares
-
+bucket.init();
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));

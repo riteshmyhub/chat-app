@@ -9,7 +9,7 @@ const SocketContext = createContext<{ socket: any | null }>({
 
 function SocketProvider({ children }: { children: Readonly<React.ReactNode> }) {
    const { authUser } = useAppSelector((state) => state.auth);
-   const { contactDetails } = useAppSelector((state) => state.contact);
+   const { chatDetails } = useAppSelector((state) => state.chat);
    const [socket, setSocket] = useState<Socket | null>(null);
    const ws = useHandlerWS();
 
@@ -22,6 +22,8 @@ function SocketProvider({ children }: { children: Readonly<React.ReactNode> }) {
          socket.on("TYPING", ws.typing);
          socket.on("RECEIVER_MESSAGE", ws.receiveMessage);
          socket.on("refresh_contacts", ws.refreshContacts);
+         socket.on("REFRESH_CHANNEL", ws.refreshChannels);
+
          socket.on("ALERT", ws.alert);
 
          return () => socket.close();
@@ -32,7 +34,7 @@ function SocketProvider({ children }: { children: Readonly<React.ReactNode> }) {
          }
       }
       return () => {};
-   }, [authUser, contactDetails]);
+   }, [authUser, chatDetails]);
 
    return <SocketContext.Provider value={{ socket }}>{children}</SocketContext.Provider>;
 }

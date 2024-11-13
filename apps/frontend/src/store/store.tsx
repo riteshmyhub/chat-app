@@ -6,12 +6,14 @@ import { useEffect } from "react";
 import { SplashScreen } from "@/components/splash-screen/SplashScreen";
 import { contactReducer } from "./services/contect.service";
 import { chatReducer } from "./services/chat.service";
+import { channelReducer } from "./services/channel.service";
 
 export const store = configureStore({
    reducer: {
       auth: authReducer,
       contact: contactReducer,
       chat: chatReducer,
+      channel: channelReducer,
    },
    middleware(getDefaultMiddleware) {
       return getDefaultMiddleware().concat(toastMiddleware);

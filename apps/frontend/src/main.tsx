@@ -11,6 +11,6 @@ createRoot(document.getElementById("root")!).render(
          <SocketProvider>
             <App />
          </SocketProvider>
-      </ReduxProvider>
+      </ReduxProvider> 
    </BrowserRouter>
 );

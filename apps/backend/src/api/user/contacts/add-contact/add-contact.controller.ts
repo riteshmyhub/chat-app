@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import createHttpError from "http-errors";
 import { isValidObjectId, ObjectId } from "mongoose";
 import User from "../../../../models/user.model";
+import Chat from "../../../../models/chat.model";
+import { SocketEmitter } from "../../../../socket/socket";
 
 type ReqBody = { userID: string };
 
@@ -18,24 +20,32 @@ export default async function AddContactController(req: Req, res: Response, next
       if (!userID || !isValidObjectId(userID) || req.user?._id.toString() === userID.toString()) {
          return next(createHttpError.BadRequest("invaild user"));
       }
+      const user = await User.findById(userID);
 
-      const [user, reqUser] = await Promise.all([User.findById(userID), User.findById(req.user?._id)]);
-
-      if (!user || !reqUser || reqUser._id.toString() === userID.toString()) {
+      if (!user || req.user?._id.toString() === userID.toString()) {
          return next(createHttpError.NotFound("user not found"));
       }
+      const personWithAuthUser = [userID, req?.user?._id];
 
-      if (reqUser.contacts.some((contact) => contact.toString() === userID.toString())) {
-         return next(createHttpError.BadRequest("this contact is already exist"));
-      }
-      reqUser.contacts.push(userID as any);
-      await reqUser.save();
+      const oneToOneChat = await new Chat({
+         groupChat: false,
+         creator: req?.user?._id,
+         members: personWithAuthUser,
+      });
+      await oneToOneChat.save();
+
+      SocketEmitter({
+         req: req,
+         eventName: "refresh_contacts",
+         to: personWithAuthUser,
+      });
 
       res.status(201).json({
+         message: "contact successfully added",
          success: true,
          data: {},
-         message: "contact successfully added",
-      });
+      });   
+      
    } catch (error) {
       next(createHttpError.InternalServerError());
    }

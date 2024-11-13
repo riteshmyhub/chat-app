@@ -61,6 +61,9 @@ const useSchema = new mongoose.Schema({
       type: Boolean,
       default: false,
    },
+   last_seen: {
+      type: String,
+   },
 });
 
 useSchema.pre("save", async function (next) {

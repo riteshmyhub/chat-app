@@ -1,3 +1,5 @@
+export { Footer } from "./footer/Footer";
+export { Loading } from "./loading/Loading";
 export { AudioPlayer } from "./audio-player/AudioPlayer";
 export { Navbar } from "./navbar/Navbar";
 export { AsideMenu } from "./aside-menu/AsideMenu";

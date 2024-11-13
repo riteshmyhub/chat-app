@@ -127,7 +127,6 @@ class AuthService extends HttpInterceptor {
          });
          builder.addCase(this.api.fulfilled, (state, action) => {
             const ringtone = action.payload?.data?.ringtone;
-
             state.loadings.updateRingtone = false;
             if (state.authUser?.setting && ringtone) {
                state.authUser.setting.notification_sound = ringtone?.notification_sound;

@@ -1,10 +1,11 @@
 import { useSocket } from "@/hooks/socket/useSocket.hook";
 import { useAppSelector } from "@/store/store";
+import { IChatDetails } from "@/types/chat.type";
 import { PaperclipIcon, SendHorizontalIcon } from "lucide-react";
 import { useRef, useState } from "react";
 import { useFileUploader } from "use-hooks-zone";
 
-export default function ChatForm({ id }: { id: string }) {
+export default function ChatForm({ chatDetails }: { chatDetails: IChatDetails }) {
    const { socket } = useSocket();
    const [typing, setTyping] = useState(false);
    const timer = useRef<any>(null);
@@ -23,8 +24,8 @@ export default function ChatForm({ id }: { id: string }) {
 
    const onTyping = () => {
       const typingData = {
-         members: [id],
-         chatId: id,
+         // members: [id],
+         // chatId: id,
       };
 
       if (!typing) {
@@ -56,10 +57,10 @@ export default function ChatForm({ id }: { id: string }) {
       e.preventDefault();
       if (!message && !upload.files?.length) return;
       const payload = Object.seal({
-         chat: id,
+         chat: chatDetails._id,
          content: message,
-         groupChat: false,
-         members: [id, authUser?._id],
+         members: chatDetails.members,
+         groupChat: chatDetails.groupChat,
          attachments:
             upload?.files?.map((file) => ({
                src: file.base64,
@@ -68,6 +69,7 @@ export default function ChatForm({ id }: { id: string }) {
                name: file.name,
             })) || [],
       });
+
       socket?.emit("SEND_MESSAGE", payload);
       console.log(authUser?.setting.send_message_sound?.src);
       new Audio(authUser?.setting.send_message_sound?.src).play();

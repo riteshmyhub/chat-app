@@ -9,7 +9,8 @@ import ProfilePage from "@/pages/settings/profile/page";
 import ChatSettingPage from "@/pages/settings/chat/page";
 import SoundsPage from "@/pages/settings/sounds/page";
 import ContactsPage from "@/pages/contacts/page";
-import ContactDetailsPage from "@/pages/contacts/contact-details/page";
+import ChannelsPage from "@/pages/channels/page";
+import MessagesPage from "@/pages/messages/page";
 
 export default function AppRoutes() {
    const screen = useMediaQuery();
@@ -24,7 +25,8 @@ export default function AppRoutes() {
          <Route element={<AuthGuard />}>
             <Route index element={<Navigate to="contacts" replace />} />
             <Route path="contacts" element={<ContactsPage />} />
-            <Route path="contacts/:id" element={<ContactDetailsPage />} />
+            <Route path="channels" element={<ChannelsPage />} />
+            <Route path="chat/:id" element={<MessagesPage />} />
 
             <Route path="/settings" element={<SettingsPage />}>
                {screen.md && <Route index element={<Navigate to="profile" replace />} />}

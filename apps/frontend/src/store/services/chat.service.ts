@@ -1,28 +1,31 @@
 import { ActionReducerMapBuilder, createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import HttpInterceptor from "../interceptors/http.interceptor";
-import { IMessage } from "@/types/chat.type";
+import { IChatDetails, IMessage } from "@/types/chat.type";
 import { LocalDatabase } from "@/utils";
+import ENDPOINTS from "../endpoints/endpoints";
 
 const initialState = {
    loadings: {
       getMessages: true,
+      getChatDetails: true,
    },
    messages: [] as IMessage[],
    unreadMessages: [] as IMessage[],
    onlineUsers: [] as string[],
    typing: "" as string,
+   chatDetails: null as IChatDetails | null,
 };
 
 class ChatService extends HttpInterceptor {
    getMessages = {
-      api: createAsyncThunk("getMessages*", async (_: string) => {
+      api: createAsyncThunk("getMessages*", async (chatID: string, thunkAPI) => {
          try {
             //const { data } = await this.privateHttp.get(ENDPOINTS.CHAT.MESSAGES.GET_MESSAGES(chatID));
-            const messages: IMessage[] = await LocalDatabase.messageCollection.find();
+            const messages: IMessage[] = await LocalDatabase.messageCollection.find({ chat: chatID });
             const data = { data: { messages } };
             return data;
          } catch (error) {
-            return error;
+            return thunkAPI.rejectWithValue(this.errorMessage(error));
          }
       }),
       reducer(builder: ActionReducerMapBuilder<typeof initialState>) {
@@ -30,12 +33,40 @@ class ChatService extends HttpInterceptor {
             state.loadings.getMessages = true;
          });
          builder.addCase(this.api.fulfilled, (state, action) => {
+            const chatID = action.meta.arg;
             state.loadings.getMessages = false;
+            /*----filter unread messages-----*/
             state.messages = (action.payload as any)?.data?.messages;
+            /*----remaining unread messages-----*/
+            state.unreadMessages = state.unreadMessages?.filter((message) => message?.chat !== chatID);
          });
          builder.addCase(this.api.rejected, (state) => {
             state.loadings.getMessages = false;
             state.messages = [];
+         });
+      },
+   };
+
+   getChatDetails = {
+      api: createAsyncThunk("getChatDetails*", async (chatID: string, thunkAPI) => {
+         try {
+            const { data } = await this.http.get(ENDPOINTS.CHAT.GET_CHATS_DETAILS(chatID));
+            return data;
+         } catch (error) {
+            return thunkAPI.rejectWithValue(this.errorMessage(error));
+         }
+      }),
+      reducer(builder: ActionReducerMapBuilder<typeof initialState>) {
+         builder.addCase(this.api.pending, (state) => {
+            state.loadings.getChatDetails = true;
+         });
+         builder.addCase(this.api.fulfilled, (state, action) => {
+            state.loadings.getChatDetails = false;
+            state.chatDetails = action.payload?.data?.details;
+         });
+         builder.addCase(this.api.rejected, (state) => {
+            state.loadings.getChatDetails = false;
+            state.chatDetails = null;
          });
       },
    };
@@ -56,9 +87,19 @@ class ChatService extends HttpInterceptor {
          setTyping(state, { payload }: PayloadAction<string>) {
             state.typing = payload;
          },
+         clearChatDetails(state) {
+            state.chatDetails = null;
+         },
+         updateChatDetails(state, action) {
+            state.chatDetails = {
+               ...state.chatDetails,
+               ...action.payload,
+            };
+         },
       },
       extraReducers: (builder) => {
          this.getMessages.reducer(builder);
+         this.getChatDetails.reducer(builder);
       },
    });
    public chatActions = this.silce.actions;
