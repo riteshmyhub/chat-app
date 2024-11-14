@@ -7,40 +7,43 @@ const SettingsMenu = () => {
    const logout = useLogoutPage();
    const navigate = useNavigate();
    return (
-      <ul className="md:w-[450px] p-3 border-r">
-         <li //
-            className="flex items-center gap-3 py-3 md:py-3"
-            onClick={() => navigate("profile")}
-            role="button">
-            <CircleUserRoundIcon size={23} />
-            <span className="block text-md font-medium capitalize">profile</span>
-         </li>
-         <li //
-            className="flex items-center gap-3 py-3 md:py-3"
-            onClick={() => navigate("chat")}
-            role="button">
-            <MessageCircleIcon size={23} />
-            <span className="block text-md font-medium capitalize">chat</span>
-         </li>
-         <li //
-            className="flex items-center gap-3 py-3 md:py-3"
-            onClick={() => navigate("sounds")}
-            role="button">
-            <BellIcon size={23} />
-            <span className="block text-md font-medium capitalize">sounds Settings</span>
-         </li>
-         <li //
-            className="flex items-center gap-3 py-3 md:py-3 text-red-600"
-            role="button"
-            onClick={logout.function}>
-            {logout.loading ? ( //
-               <LoaderCircle size={20} className="spin" />
-            ) : (
-               <LogOutIcon size={20} />
-            )}
-            <span className="block text-md font-medium capitalize">Logout</span>
-         </li>
-      </ul>
+      <div className="p-3 md:p-8">
+         <h1 className="text-3xl mb-4">Settings</h1>
+         <ul className="md:w-[450px] border-r">
+            <li //
+               className="flex items-center gap-3 py-3 md:py-3"
+               onClick={() => navigate("profile")}
+               role="button">
+               <CircleUserRoundIcon size={23} />
+               <span className="block text-md font-medium capitalize">profile</span>
+            </li>
+            <li //
+               className="flex items-center gap-3 py-3 md:py-3"
+               onClick={() => navigate("chat")}
+               role="button">
+               <MessageCircleIcon size={23} />
+               <span className="block text-md font-medium capitalize">chat</span>
+            </li>
+            <li //
+               className="flex items-center gap-3 py-3 md:py-3"
+               onClick={() => navigate("sounds")}
+               role="button">
+               <BellIcon size={23} />
+               <span className="block text-md font-medium capitalize">sounds Settings</span>
+            </li>
+            <li //
+               className="flex items-center gap-3 py-3 md:py-3 text-red-600"
+               role="button"
+               onClick={logout.function}>
+               {logout.loading ? ( //
+                  <LoaderCircle size={20} className="spin" />
+               ) : (
+                  <LogOutIcon size={20} />
+               )}
+               <span className="block text-md font-medium capitalize">Logout</span>
+            </li>
+         </ul>
+      </div>
    );
 };
 export default function SettingsPage() {
@@ -50,10 +53,12 @@ export default function SettingsPage() {
    if (screen.md) {
       return (
          <div className="flex h-full">
-            <SettingsMenu />
-            <div className="w-full p-3">
+            <aside className="md:block w-[350px] border-r border-gray-300">
+               <SettingsMenu />
+            </aside>
+            <main className="flex-1 h-full">
                <Outlet />
-            </div>
+            </main>
          </div>
       );
    }

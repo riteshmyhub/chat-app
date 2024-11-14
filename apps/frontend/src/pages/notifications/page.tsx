@@ -1,13 +1,10 @@
 import { Alert, AlertDescription, AlertTitle } from "@/ui/alert";
-import { Badge } from "@/ui/badge";
 import { MessageCircleIcon, UserPlusIcon, UserXIcon } from "lucide-react";
 
 export default function NotificationsPage() {
    return (
       <div className="p-2 overflow-y-auto h-full">
-         <div className="text-center my-3">
-            <Badge variant="outline">Nov 12, 2024</Badge>
-         </div>
+         <b className="mb-2 block">Nov 10, 2024</b>
          <Alert className="mb-2 block md:flex justify-between items-center">
             <div className="flex items-center">
                <MessageCircleIcon className="h-5 w-5 mr-5" />
@@ -64,9 +61,7 @@ export default function NotificationsPage() {
             <div className="text-xs text-gray-500">11:25 AM</div>
          </Alert>
 
-         <div className="text-center my-3">
-            <Badge variant="outline">Nov 13, 2024</Badge>
-         </div>
+         <b className="mb-2 block">Nov 13, 2024</b>
 
          <Alert className="mb-2 block md:flex justify-between items-center">
             <div className="flex items-center">
@@ -91,9 +86,7 @@ export default function NotificationsPage() {
             <div className="text-xs text-gray-500">10:40 AM</div>
          </Alert>
 
-         <div className="text-center my-3">
-            <Badge variant="outline">today</Badge>
-         </div>
+         <b className="mb-2 block">today</b>
 
          {/* Request Rejected Notification */}
          <Alert className="mb-2 block md:flex justify-between items-center">

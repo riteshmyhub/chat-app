@@ -1,5 +1,8 @@
+export { EmptyChat } from "./EmptyChat/EmptyChat";
+export { SendMessage } from "./SendMessage/SendMessage";
+export { ChatMessages } from "./ChatMessages/ChatMessages";
 export { InstallApp } from "./install-app/InstallApp";
-export { Footer } from "./footer/Footer";
+export { NavigationMenu } from "./NavigationMenu/NavigationMenu";
 export { Loading } from "./loading/Loading";
 export { AudioPlayer } from "./audio-player/AudioPlayer";
 export { Navbar } from "./navbar/Navbar";

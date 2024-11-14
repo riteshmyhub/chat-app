@@ -1,7 +1,7 @@
-import { AudioPlayer } from "@/components";
 import { dateFromNow } from "@/pipes";
 import { IAttachment, IMessage } from "@/types/chat.type";
 import { DownloadIcon } from "lucide-react";
+import { AudioPlayer } from "../audio-player/AudioPlayer";
 
 type Props = {
    message: IMessage;
@@ -15,7 +15,7 @@ export default function Message({ message, me, isGroupChat }: Props) {
          <span className="inline-flex p-2 mb-2 gap-3">
             {!me && isGroupChat && (
                <div>
-                  <img src={message?.sender?.avatar} alt="avatar" height={40} width={40} className="rounded-full" />
+                  <img src={message?.sender?.avatar} alt="avatar" className="rounded-full h-10 w-10 object-cover" />
                </div>
             )}
             <div style={{ background: me ? "#6876AA" : "#ffffff" }}>

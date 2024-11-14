@@ -53,7 +53,7 @@ export default function SoundsPage() {
    useEffect(() => {
       if (authUser?.setting) {
          console.log(authUser?.setting);
-         
+
          setRingtone({
             received_message_sound: authUser?.setting?.received_message_sound || null,
             send_message_sound: authUser?.setting?.send_message_sound || null,

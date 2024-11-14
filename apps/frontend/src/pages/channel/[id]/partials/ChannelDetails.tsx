@@ -34,7 +34,7 @@ export default function ChannelDetailsPage({ chatDetails }: { chatDetails: IChat
       <div className="p-3">
          <span className="text-lg block font-semibold">Channel Details</span>
          <div>
-            <img src={chatDetails.avatar || "/images/group-chat-placeholder.png"} alt="avatar" className="h-36 w-36 mx-auto rounded-full" />
+            <img src={chatDetails.avatar || "/images/group-chat-placeholder.png"} alt="avatar" className="h-36 w-36 mx-auto rounded-full border" />
             <h3 className="text-2xl text-center mb-2 font-medium">{chatDetails?.name}</h3>
             <h3 className="text-md text-center font-normal">{chatDetails?.about}</h3>
          </div>
@@ -103,7 +103,7 @@ export default function ChannelDetailsPage({ chatDetails }: { chatDetails: IChat
                         <img //
                            src={member.profile.avatar || "/images/user-placeholder.png"}
                            alt="member-avatar"
-                           className="w-11 h-11 rounded-full "
+                           className="w-11 h-11 rounded-full"
                         />
                         {onlineUsers.includes(member._id) && member._id !== authUser?._id && (
                            <span //

@@ -8,10 +8,12 @@ import SettingsPage from "@/pages/settings/page";
 import ProfilePage from "@/pages/settings/profile/page";
 import ChatSettingPage from "@/pages/settings/chat/page";
 import SoundsPage from "@/pages/settings/sounds/page";
-import ContactsPage from "@/pages/contacts/page";
-import ChannelsPage from "@/pages/channels/page";
-import MessagesPage from "@/pages/messages/page";
+import ContactLayout from "@/pages/contact/contact.layout";
 import NotificationsPage from "@/pages/notifications/page";
+import SingleChannelPage from "@/pages/channel/[id]/page";
+import SingleContactPage from "@/pages/contact/[id]/page";
+import { EmptyChat } from "@/components";
+import ChannelLayout from "@/pages/channel/channel.layout";
 
 export default function AppRoutes() {
    const screen = useMediaQuery();
@@ -25,11 +27,16 @@ export default function AppRoutes() {
 
          <Route element={<AuthGuard />}>
             <Route index element={<Navigate to="contacts" replace />} />
-            <Route path="contacts" element={<ContactsPage />} />
-            <Route path="channels" element={<ChannelsPage />} />
-            <Route path="chat/:id" element={<MessagesPage />} />
+            <Route path="contacts" element={<ContactLayout />}>
+               <Route index element={<EmptyChat />} />
+               <Route path=":id" element={<SingleContactPage />} />
+            </Route>
+            <Route path="channels" element={<ChannelLayout />}>
+               <Route index element={<EmptyChat />} />
+               <Route path=":id" element={<SingleChannelPage />} />
+            </Route>
 
-            <Route path="/settings" element={<SettingsPage />}>
+            <Route path="settings" element={<SettingsPage />}>
                {screen.md && <Route index element={<Navigate to="profile" replace />} />}
                <Route path="profile" element={<ProfilePage />} />
                <Route path="chat" element={<ChatSettingPage />} />

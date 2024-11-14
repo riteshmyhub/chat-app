@@ -2,12 +2,14 @@ import { Link, useLocation } from "react-router-dom";
 import { BellIcon, MessagesSquareIcon, SettingsIcon, UsersRoundIcon } from "lucide-react";
 import { useAppSelector } from "@/store/store";
 import { useCallback } from "react";
+import { useMediaQuery } from "@/hooks";
 
-export function Footer() {
+export function NavigationMenu() {
    const { unreadMessages } = useAppSelector((state) => state.chat);
    const groupsMessages = unreadMessages?.filter((message) => message.groupChat);
    const messages = unreadMessages?.filter((message) => !message.groupChat);
    const location = useLocation();
+   const screen = useMediaQuery();
 
    const activeStyle = useCallback(
       (pathname: string) => {
@@ -17,37 +19,37 @@ export function Footer() {
    );
 
    return (
-      <ul className="flex justify-evenly items-center bg-white h-[60px] border-t">
+      <ul className={screen.md ? "flex flex-col justify-start gap-5 border-r w-[90px] py-4" : "flex flex-row justify-evenly gap-3 h-[75px] border-t items-center"}>
          <Link to="/contacts" className="flex flex-col items-center">
             <span //
                className={activeStyle("/contacts")}
                {...(Boolean(messages?.length) ? { "data-badge": messages?.length } : {})}>
-               <MessagesSquareIcon size={17} className="mx-auto" />
+               <MessagesSquareIcon size={20} className="mx-auto" />
             </span>
-            <small>contacts</small>
+            <small className="text-xs">contacts</small>
          </Link>
          <Link to="/channels" className="flex flex-col items-center">
             <span //
                className={activeStyle("/channels")}
                {...(Boolean(groupsMessages?.length) ? { "data-badge": groupsMessages?.length } : {})}>
-               <UsersRoundIcon size={17} className="mx-auto" />
+               <UsersRoundIcon size={20} className="mx-auto" />
             </span>
-            <small>channels</small>
+            <small className="text-xs">channels</small>
          </Link>
          <Link to="/notifications" className="flex flex-col items-center">
             <span //
                className={activeStyle("/notifications")}
                data-badge="3">
-               <BellIcon size={17} className="mx-auto" />
+               <BellIcon size={20} className="mx-auto" />
             </span>
-            <small>notifications</small>
+            <small className="text-xs">notifications</small>
          </Link>
          <Link to="/settings" className="flex flex-col items-center">
             <span //
                className={activeStyle("/settings")}>
-               <SettingsIcon size={17} className="mx-auto" />
+               <SettingsIcon size={20} className="mx-auto" />
             </span>
-            <small>settings</small>
+            <small className="text-xs">settings</small>
          </Link>
       </ul>
    );

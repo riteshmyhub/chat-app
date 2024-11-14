@@ -1,26 +1,21 @@
 import { useLocation } from "react-router-dom";
-import { Footer, InstallApp, Navbar } from "./components";
 import AppRoutes from "./routes/routes";
+import { NavigationMenu } from "./components";
 
 function App() {
    const { pathname } = useLocation();
-   const pages = ["auth", "chat"];
+   const pages = ["auth"];
 
-   if (pathname.split("/")?.some((path) => pages.includes(path)) && pathname.split("/")[2]) {
+   if (pages.some((page) => pathname.includes(page))) {
       return <AppRoutes />;
    }
    return (
-      <>
-         <InstallApp />
-         <Navbar //
-            title={<span className="text-3xl capitalize">{pathname.split("/")[1]}</span>}
-            {...(pathname.includes("/contacts") ? {} : { back: -1 })}
-         />
-         <div style={{ height: "calc(100vh - (65px + 60px))" }}>
+      <div className="flex md:flex-row flex-col-reverse">
+         <NavigationMenu />
+         <div className="h-[calc(100vh-75px)] md:h-screen w-full">
             <AppRoutes />
          </div>
-         <Footer />
-      </>
+      </div>
    );
 }
 

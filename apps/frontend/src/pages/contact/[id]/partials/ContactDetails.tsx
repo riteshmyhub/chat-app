@@ -21,7 +21,7 @@ export default function ContactDetailsPage({ chatDetails }: { chatDetails: IChat
       <div className="p-3">
          <span className="text-lg block font-semibold">Contact Details</span>
          <div>
-            <img src={chatDetails.avatar || "/images/group-chat-placeholder.png"} alt="avatar" className="h-36 w-36 mx-auto rounded-full" />
+            <img src={chatDetails.avatar || "/images/group-chat-placeholder.png"} alt="avatar" className="h-36 w-36 mx-auto rounded-full border" />
             <h3 className="text-xl text-center mb-2 font-medium">{chatDetails.name}</h3>
             <h3 className="text-sm text-center font-normal">{chatDetails.about}</h3>
          </div>

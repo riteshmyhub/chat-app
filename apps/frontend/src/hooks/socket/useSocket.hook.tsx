@@ -16,7 +16,6 @@ function SocketProvider({ children }: { children: Readonly<React.ReactNode> }) {
    useEffect(() => {
       if (authUser) {
          const socket = io("https://chat-app-onh1.onrender.com", { withCredentials: true });
-
          setSocket(socket);
          socket.on("ONLINE_USERS", ws.onlineUser);
          socket.on("TYPING", ws.typing);
