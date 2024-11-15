@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { useAppSelector } from "@/store/store";
 import useHandlerWS from "./handlers/handlers.ws";
+import ENVIRONMENT from "@/environment/environment";
 
 const SocketContext = createContext<{ socket: any | null }>({
    socket: null,
@@ -15,7 +16,7 @@ function SocketProvider({ children }: { children: Readonly<React.ReactNode> }) {
 
    useEffect(() => {
       if (authUser) {
-         const socket = io("https://chat-app-onh1.onrender.com", { withCredentials: true });
+         const socket = io(ENVIRONMENT.BASE_URL, { withCredentials: true });
 
          setSocket(socket);
          socket.on("ONLINE_USERS", ws.onlineUser);
