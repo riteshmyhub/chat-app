@@ -2,14 +2,26 @@ import { useLocation } from "react-router-dom";
 import AppRoutes from "./routes/routes";
 import { NavigationMenu } from "./components";
 import PWABadge from "./pwa/PWABadge";
+import { useMediaQuery } from "./hooks";
 
 function App() {
    const { pathname } = useLocation();
-   const pages = ["auth"];
+   const screen = useMediaQuery();
 
-   if (pages.some((page) => pathname.includes(page))) {
-      return <AppRoutes />;
+   const condtions = [
+      pathname.includes("auth"), //
+      pathname.includes("channels/") && !screen.md, //
+      pathname.includes("contacts/") && !screen.md,
+   ];
+
+   if (condtions.some((condtion) => condtion)) {
+      return (
+         <div className="h-screen w-full">
+            <AppRoutes />
+         </div>
+      );
    }
+
    return (
       <>
          <div className="flex md:flex-row flex-col-reverse">

@@ -1,3 +1,4 @@
+import { MediaList } from "@/components";
 import { contactService } from "@/store/services/contect.service";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { IChatDetails } from "@/types/chat.type";
@@ -25,9 +26,12 @@ export default function ContactDetailsPage({ chatDetails }: { chatDetails: IChat
             <h3 className="text-xl text-center mb-2 font-medium">{chatDetails.name}</h3>
             <h3 className="text-sm text-center font-normal">{chatDetails.about}</h3>
          </div>
+         {/* ------------------MediaList--------------------- */}
+         <MediaList />
          <div className="text-center my-3">
             <Button type="button" variant="destructive" size="sm" onClick={() => deleteContact(chatDetails._id)} disabled={loadings.deleteContact}>
-               {loadings.deleteContact && <LoaderCircleIcon className="spin" />} Delete Contact
+               {loadings.deleteContact && <LoaderCircleIcon className="spin" />}
+               Delete Contact
             </Button>
          </div>
       </div>

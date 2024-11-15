@@ -1,6 +1,6 @@
 import { ActionReducerMapBuilder, createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import HttpInterceptor from "../interceptors/http.interceptor";
-import { IChatDetails, IMessage } from "@/types/chat.type";
+import { IChatDetails, IMessage, IAttachment } from "@/types/chat.type";
 import { LocalDatabase } from "@/utils";
 import ENDPOINTS from "../endpoints/endpoints";
 
@@ -14,6 +14,7 @@ const initialState = {
    onlineUsers: [] as string[],
    typing: "" as string,
    chatDetails: null as IChatDetails | null,
+   mediaList: [] as IAttachment[],
 };
 
 class ChatService extends HttpInterceptor {
@@ -34,9 +35,11 @@ class ChatService extends HttpInterceptor {
          });
          builder.addCase(this.api.fulfilled, (state, action) => {
             const chatID = action.meta.arg;
+            const messages = (action.payload as any)?.data?.messages;
             state.loadings.getMessages = false;
             /*----filter unread messages-----*/
-            state.messages = (action.payload as any)?.data?.messages;
+            state.messages = messages;
+            state.mediaList = messages?.map((message: IMessage) => message.attachments)?.flat();
             /*----remaining unread messages-----*/
             state.unreadMessages = state.unreadMessages?.filter((message) => message?.chat !== chatID);
          });

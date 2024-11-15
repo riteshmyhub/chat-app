@@ -1,4 +1,4 @@
-import { DebounceSearch, Loading } from "@/components";
+import { DebounceSearch, Loading, MediaList } from "@/components";
 import { channelService } from "@/store/services/channel.service";
 import { contactService } from "@/store/services/contect.service";
 import { useAppDispatch, useAppSelector } from "@/store/store";
@@ -38,6 +38,10 @@ export default function ChannelDetailsPage({ chatDetails }: { chatDetails: IChat
             <h3 className="text-2xl text-center mb-2 font-medium">{chatDetails?.name}</h3>
             <h3 className="text-md text-center font-normal">{chatDetails?.about}</h3>
          </div>
+
+         {/* ------------------MediaList--------------------- */}
+         <MediaList />
+
          <div className="py-2">
             <span className="text-md text-gray-500">Members {chatDetails?.members?.length}</span>
             {isAdmin && (

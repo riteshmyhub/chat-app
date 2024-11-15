@@ -116,7 +116,6 @@ export function SendMessage({ chatDetails }: Props) {
                <PaperclipIcon size={18} className="text-white bg-blue-600 h-9 w-9 p-2 rounded-full cursor-pointer" />
             </label>
             <Button type="submit" size="sm">
-               Send
                <SendHorizontalIcon size={22} />
             </Button>
          </div>

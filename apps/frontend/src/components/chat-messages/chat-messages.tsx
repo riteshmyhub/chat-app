@@ -1,5 +1,5 @@
 import { ScrollArea } from "@/ui/scroll-area";
-import Message from "../Message/Message";
+import Message from "../message/message";
 import { IMessage } from "@/types/chat.type";
 import { useEffect, useRef } from "react";
 import { useAppSelector } from "@/store/store";

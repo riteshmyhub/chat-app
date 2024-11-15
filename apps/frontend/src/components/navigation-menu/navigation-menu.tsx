@@ -6,6 +6,7 @@ import { useMediaQuery } from "@/hooks";
 
 export function NavigationMenu() {
    const { unreadMessages } = useAppSelector((state) => state.chat);
+   const { authUser } = useAppSelector((state) => state.auth);
    const groupsMessages = unreadMessages?.filter((message) => message.groupChat);
    const messages = unreadMessages?.filter((message) => !message.groupChat);
    const location = useLocation();
@@ -20,6 +21,9 @@ export function NavigationMenu() {
 
    return (
       <ul className={screen.md ? "flex flex-col justify-start gap-5 border-r w-[90px] py-4" : "flex flex-row justify-evenly gap-3 h-[75px] border-t items-center"}>
+         <Link to="/settings/profile" className="hidden flex-col items-center md:flex">
+            <img src={authUser?.profile?.avatar} alt="avatar" className="w-[60px] h-[60px] rounded-full border-2 object-cover" />
+         </Link>
          <Link to="/contacts" className="flex flex-col items-center">
             <span //
                className={activeStyle("/contacts")}
