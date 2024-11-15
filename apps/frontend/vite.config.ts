@@ -11,7 +11,7 @@ export default defineConfig({
          registerType: "autoUpdate",
          includeAssets: ["favicon.ico", "apple-touch-icon.png", "mask-icon.svg"],
          manifest: {
-            name: "Vite PWA Project",
+            name: "We Conjoin",
             short_name: "Vite PWA",
             theme_color: "#ffffff",
             icons: [
