@@ -36,6 +36,6 @@ export const onNotification = async () => {
    return new Promise((resolve) => {
       onMessage(messaging, (args) => {
          resolve(args);
-      });
+      }); 
    });
 };
