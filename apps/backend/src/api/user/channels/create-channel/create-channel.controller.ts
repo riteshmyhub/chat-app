@@ -59,6 +59,7 @@ export default async function CreateChannelController(req: Req, res: Response, n
       await newChannel.save();
 
       SocketEmitter({ req: req, eventName: "REFRESH_CHANNEL", to: membersWithReqUser });
+
       SocketEmitter({
          req: req,
          eventName: "ALERT",

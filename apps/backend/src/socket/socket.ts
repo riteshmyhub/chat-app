@@ -9,7 +9,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new SocketServer(server, {
    cors: {
-      origin: ["https://chat-app-onh1.onrender.com", "http://192.168.1.153:3000", "http://192.168.1.43:3000"],
+      origin: ["https://chat-app-onh1.onrender.com", "http://192.168.1.153:3000", "http://192.168.1.43:3000", "http://localhost:3000"],
       credentials: true,
    },
    maxHttpBufferSize: 200 * 1024 * 1024, // 200 mb

@@ -19,6 +19,7 @@
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",
         "crypto-js": "^4.2.0",
+        "firebase": "^11.0.2",
         "lucide-react": "^0.454.0",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
@@ -55,5 +56,5 @@
     "overrides": {
         "sharp": "0.32.6",
         "sharp-ico": "0.1.5"
-      }
+    }
 }

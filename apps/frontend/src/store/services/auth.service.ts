@@ -3,6 +3,7 @@ import HttpInterceptor from "../interceptors/http.interceptor";
 import { IUser } from "@/types/user.type";
 import { ActionReducerMapBuilder, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import ENDPOINTS from "../endpoints/endpoints";
+import { firebaseService } from "./firebase.service";
 
 const initialState = {
    loadings: {
@@ -45,7 +46,8 @@ class AuthService extends HttpInterceptor {
    login = {
       api: createAsyncThunk("login", async (payload: any, thunkAPI) => {
          try {
-            const { data } = await this.http.post(ENDPOINTS.AUTH.LOGIN, payload);
+            const fcmToken = await thunkAPI.dispatch(firebaseService.getFcmToken.api()).unwrap();
+            const { data } = await this.http.post(ENDPOINTS.AUTH.LOGIN, { ...payload, fcmToken });
             thunkAPI.dispatch(this.getSession.api());
             return data;
          } catch (error) {

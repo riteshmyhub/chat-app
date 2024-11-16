@@ -5,6 +5,7 @@ import { duplicateFinder } from "../../../../pipes";
 import User from "../../../../models/user.model";
 import { SocketEmitter } from "../../../../socket/socket";
 import Chat from "../../../../models/chat.model";
+import FirebaseNotification from "../../../../firebase/notification/notification";
 
 type ReqBody = { channelID: string; members: string[] };
 
@@ -46,7 +47,14 @@ export default async function AddMembersController(req: Req, res: Response, next
       channel.members = [...channel.members, ...members] as Types.ObjectId[];
       await channel.save();
       SocketEmitter({ req: req, eventName: "REFRESH_CHANNEL", to: channel.members });
+
       const updatedChannel = await channel.populate("members", "profile _id email");
+
+      await FirebaseNotification({
+         userIds: updatedChannel?.members,
+         title: "Channel",
+         body: `Members successfully added`,
+      });
 
       res.status(201).json({
          success: true,

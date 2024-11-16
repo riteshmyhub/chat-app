@@ -3,6 +3,7 @@ import AppRoutes from "./routes/routes";
 import { NavigationMenu } from "./components";
 import PWABadge from "./pwa/PWABadge";
 import { useMediaQuery } from "./hooks";
+import { onNotification } from "./utils";
 
 function App() {
    const { pathname } = useLocation();
@@ -13,6 +14,11 @@ function App() {
       pathname.includes("channels/") && !screen.md, //
       pathname.includes("contacts/") && !screen.md,
    ];
+
+   onNotification().then((data) => {
+         console.log(data);
+      })
+      .catch((e) => e);
 
    if (condtions.some((condtion) => condtion)) {
       return (
