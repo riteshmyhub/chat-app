@@ -35,7 +35,7 @@ export const requestFcmToken = async () => {
 export const onNotification = async () => {
    return new Promise((resolve) => {
       onMessage(messaging, (args) => {
-         resolve(args);
+         resolve(args); 
       }); 
    });
 };
