@@ -4,6 +4,7 @@ import { isValidObjectId, ObjectId } from "mongoose";
 import User from "../../../../models/user.model";
 import Chat from "../../../../models/chat.model";
 import { SocketEmitter } from "../../../../socket/socket";
+import FirebaseNotification from "../../../../firebase/notification/notification";
 
 type ReqBody = { userID: string };
 
@@ -39,13 +40,23 @@ export default async function AddContactController(req: Req, res: Response, next
          eventName: "refresh_contacts",
          to: personWithAuthUser,
       });
-
+      await Promise.all([
+         FirebaseNotification({
+            userIds: [userID],
+            title: "New Contact Added",
+            body: `${req.user?.profile?.firstName || "Someone"} has added you as a contact.`,
+         }), //
+         FirebaseNotification({
+            userIds: [req.user?._id],
+            title: "Contact Added",
+            body: `You have successfully added ${user?.profile?.first_name || "the user"} as a contact.`,
+         }),
+      ]);
       res.status(201).json({
          message: "contact successfully added",
          success: true,
          data: {},
-      });   
-      
+      });
    } catch (error) {
       next(createHttpError.InternalServerError());
    }

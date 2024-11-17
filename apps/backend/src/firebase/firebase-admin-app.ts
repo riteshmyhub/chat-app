@@ -1,5 +1,11 @@
 import * as admin from "firebase-admin";
-import serviceAccount from "./firebase.json";
+
+const serviceAccount = {
+   project_id: process.env.FIREBASE_PROJECT_ID,
+   private_key: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n"), // Handle escaped newlines
+   client_email: process.env.FIREBASE_CLIENT_EMAIL,
+   client_x509_cert_url: process.env.FIREBASE_CLIENT_X509_CERT_URL,
+};
 
 if (!admin.apps.length) {
    admin.initializeApp({
