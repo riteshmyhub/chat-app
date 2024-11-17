@@ -19,7 +19,6 @@ class FirebaseService {
             state.loading.getFcmToken = true;
          });
          builder.addCase(this.api.fulfilled, (state, action) => {
-            console.log(action.payload);
             state.loading.getFcmToken = false;
             state.fcmToken = action.payload;
          });

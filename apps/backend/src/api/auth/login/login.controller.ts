@@ -19,7 +19,7 @@ export default async function LoginController(req: Req, res: Response, next: Nex
       if (!email || !password) {
          return next(createHttpError.BadRequest("email , password required!"));
       }
-      const user = await User.findOne({ email }).select("+password +fcm_token");
+      const user = await User.findOne({ email }).select("+password +fcm_tokens");
       if (!user) {
          return next(createHttpError.NotFound("entry not exist"));
       }
@@ -29,9 +29,12 @@ export default async function LoginController(req: Req, res: Response, next: Nex
       }
 
       const accessToken = createJwtLoginToken(user?._id as Types.ObjectId, res);
-
-      if (user?.fcm_token !== fcmToken) {
-         user.fcm_token = fcmToken;
+      if (!user?.fcm_tokens && fcmToken) {
+         user.fcm_tokens = [];
+         await user.save();
+      }
+      if (fcmToken && !user?.fcm_tokens?.includes(fcmToken)) {
+         user.fcm_tokens = [fcmToken, ...user?.fcm_tokens];
          await user.save();
       }
 

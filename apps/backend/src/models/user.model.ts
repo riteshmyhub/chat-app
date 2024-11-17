@@ -10,10 +10,12 @@ const useSchema = new mongoose.Schema({
       lowercase: true,
       match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "invalid email"],
    },
-   fcm_token: {
-      type: String,
-      select: false,
-   },
+   fcm_tokens: [
+      {
+         type: String,
+         select: false,
+      },
+   ],
 
    password: {
       type: String,
