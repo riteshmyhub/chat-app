@@ -12,31 +12,26 @@ type Param = {
 
 export default async function FirebaseNotification({ userIds, title, body, imageUrl, data }: Param) {
    try {
-      // Retrieve all users by their IDs
-      const users = await User.find({ _id: { $in: userIds } }).select("+fcm_token");
-
-      // Filter out users who don't have a valid fcm_token
-      const validUsers = users.filter((user) => user?.fcm_token);
-      console.log(validUsers);
-
+      const users = await User.find({ _id: { $in: userIds } }).select("+fcm_tokens");
+      const validUsers = users.map((user) => user?.fcm_tokens).flat();
       if (validUsers.length === 0) {
          return null; // No users with a valid FCM token
       }
 
       // Create the message payload for each user
-      const messages: Message[] = validUsers.map((user) => ({
-         token: user?.fcm_token || "",
+      const messages: any = validUsers?.map((token) => ({
+         token: token,
          notification: {
             title: body,
             body: title,
             ...(imageUrl ? { imageUrl: imageUrl } : {}),
          },
-         data: data,
+         ...(data ? { data } : {}),
       }));
+      console.log(messages);
 
-      // Send notifications to all valid users in parallel using Promise.all
-      const responses = await Promise.all(messages.map((message) => admin.messaging().send(message)));
-      return responses; // Return the response for each message
+      const responses = await Promise.all(messages?.map((message: Message) => admin.messaging().send(message)));
+      return responses;
    } catch (error) {
       console.log(error);
       return null;
