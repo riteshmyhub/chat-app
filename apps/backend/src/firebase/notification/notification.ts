@@ -13,13 +13,14 @@ type Param = {
 export default async function FirebaseNotification({ userIds, title, body, imageUrl, data }: Param) {
    try {
       const users = await User.find({ _id: { $in: userIds } }).select("+fcm_tokens");
-      const validUsers = users.map((user) => user?.fcm_tokens).flat();
-      if (validUsers.length === 0) {
+      const tokens = users.map((user) => user?.fcm_tokens).flat();
+
+      if (!tokens?.length) {
          return null; // No users with a valid FCM token
       }
 
       // Create the message payload for each user
-      const messages: any = validUsers?.map((token) => ({
+      const messages: any = tokens?.map((token) => ({
          token: token,
          notification: {
             title: body,
@@ -28,12 +29,9 @@ export default async function FirebaseNotification({ userIds, title, body, image
          },
          ...(data ? { data } : {}),
       }));
-      console.log(messages);
-
       const responses = await Promise.all(messages?.map((message: Message) => admin.messaging().send(message)));
       return responses;
    } catch (error) {
-      console.log(error);
       return null;
    }
 }
