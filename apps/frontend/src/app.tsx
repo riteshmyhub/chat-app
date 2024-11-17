@@ -15,7 +15,8 @@ function App() {
       pathname.includes("contacts/") && !screen.md,
    ];
 
-   onNotification().then((data) => {
+   onNotification()
+      .then((data) => {
          console.log(data);
       })
       .catch((e) => e);

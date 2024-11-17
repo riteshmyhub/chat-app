@@ -4,6 +4,7 @@ import express, { Request } from "express";
 import { Server as SocketServer } from "socket.io";
 import http from "http";
 import { AuthSocket } from "../middlewares/auth.middleware";
+import FirebaseNotification from "../firebase/notification/notification";
 
 const app = express();
 const server = http.createServer(app);
@@ -44,8 +45,15 @@ io.on("connection", (socket) => {
          createdAt: new Date().toISOString(),
          attachments,
       };
-      const ids = getSocketIds(members?.map((member: any) => member?._id));
+      const userIds = members?.map((member: any) => member?._id);
+      const ids = getSocketIds(userIds);
       io.to(ids).emit("RECEIVER_MESSAGE", message);
+
+      await FirebaseNotification({
+         userIds: userIds?.filter((id: string) => id?.toString() !== socket?.user?._id?.toString()),
+         title: `${message?.sender?.name} send new messages ${groupChat ? "channel" : ""}`,
+         body: content || `${attachments?.length || 0} attachment(s) sent.`,
+      });
    });
 
    //TYPING
@@ -83,8 +91,6 @@ const getSocketIds = (members: any[]) => {
 
 const SocketEmitter = async ({ req, eventName, to, data }: ISocketEmitter) => {
    let io = req.app.get("io");
-  
-   console.log({ to, data });
    io.to(getSocketIds(to)).emit(eventName, data);
 };
 

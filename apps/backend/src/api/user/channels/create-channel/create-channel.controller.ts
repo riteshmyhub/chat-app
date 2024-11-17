@@ -5,6 +5,7 @@ import { bucket } from "../../../../libs/cloudinary";
 import { isValidObjectId } from "mongoose";
 import { SocketEmitter } from "../../../../socket/socket";
 import Chat from "../../../../models/chat.model";
+import FirebaseNotification from "../../../../firebase/notification/notification";
 
 type ReqBody = { name: string; "members[]": string[]; about: string };
 
@@ -60,15 +61,10 @@ export default async function CreateChannelController(req: Req, res: Response, n
 
       SocketEmitter({ req: req, eventName: "REFRESH_CHANNEL", to: membersWithReqUser });
 
-      SocketEmitter({
-         req: req,
-         eventName: "ALERT",
-         to: membersWithReqUser,
-         data: {
-            title: "You've Been Added to a New Channel!",
-            description: `Welcome to ${name} channel`,
-            action: `/channels/${newChannel._id}`,
-         },
+      await FirebaseNotification({
+         userIds: members,
+         title: `You've Been Added to a New Channel!`,
+         body: `Welcome to ${name} channel`,
       });
 
       res.status(201).json({

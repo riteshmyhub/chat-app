@@ -4,6 +4,7 @@ import createHttpError from "http-errors";
 import { isValidObjectId } from "mongoose";
 import { SocketEmitter } from "../../../../socket/socket";
 import Chat from "../../../../models/chat.model";
+import FirebaseNotification from "../../../../firebase/notification/notification";
 
 type ReqBody = {};
 
@@ -44,6 +45,19 @@ export default async function RemoveMemberController(req: Req, res: Response, ne
       await channel.save();
 
       SocketEmitter({ req: req, eventName: "REFRESH_CHANNEL", to: [...members, memberID] });
+
+      await Promise.all([
+         FirebaseNotification({
+            userIds: [memberID],
+            title: `Removed from ${channel.name}`,
+            body: `You have been removed from the channel ${channel.name}.`,
+         }),
+         FirebaseNotification({
+            userIds: channel.members.map((member) => member._id.toString()),
+            title: `Member Removed from ${channel.name}`,
+            body: `A member has been removed from the channel ${channel.name}.`,
+         }),
+      ]);
 
       res.status(201).json({
          success: true,

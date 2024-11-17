@@ -12,8 +12,8 @@ type Param = {
 
 export default async function FirebaseNotification({ userIds, title, body, imageUrl, data }: Param) {
    try {
-      const users = await User.find({ _id: { $in: userIds } }).select("+fcm_tokens");
-      const tokens = users.map((user) => user?.fcm_tokens).flat();
+      const users = await User.find({ _id: { $in: userIds } }).select("+fcm_token");
+      const tokens = users.map((user) => user?.fcm_token);
 
       if (!tokens?.length) {
          return null; // No users with a valid FCM token
