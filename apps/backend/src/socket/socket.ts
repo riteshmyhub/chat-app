@@ -81,8 +81,10 @@ const getSocketIds = (members: any[]) => {
    return ids;
 };
 
-const SocketEmitter = ({ req, eventName, to, data }: ISocketEmitter) => {
+const SocketEmitter = async ({ req, eventName, to, data }: ISocketEmitter) => {
    let io = req.app.get("io");
+  
+   console.log({ to, data });
    io.to(getSocketIds(to)).emit(eventName, data);
 };
 
