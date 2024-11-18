@@ -3,7 +3,8 @@ import HttpInterceptor from "../interceptors/http.interceptor";
 import { IUser } from "@/types/user.type";
 import { ActionReducerMapBuilder, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import ENDPOINTS from "../endpoints/endpoints";
-import { requestFcmToken } from "@/utils";
+import { getToken } from "firebase/messaging";
+import { messaging } from "@/utils/firebase/config.firebase";
 
 const initialState = {
    loadings: {
@@ -13,8 +14,10 @@ const initialState = {
       logout: false,
       updateProfile: false,
       updateRingtone: false,
+      getFcmToken: true,
    },
    token: localStorage.getItem("accessToken") || null,
+   fcmToken: null as string | null,
    authUser: null as IUser | null,
    appSettings: null as {
       ringtones: IRingtone[];
@@ -22,6 +25,34 @@ const initialState = {
 };
 
 class AuthService extends HttpInterceptor {
+   getFcmToken = {
+      api: createAsyncThunk("getFcmToken*", async (_, thunkAPI) => {
+         try {
+            const permission = await Notification.requestPermission();
+            if (permission !== "granted") {
+               throw new Error("Permission not granted");
+            }
+            const vapidKey = "BPSK7k9CTrLfDOLaPF4XY4KfegsaX0S_AT4btgpesXWbhLLK7yVZ4I8Ht4waE8kCWjSKZai-SL-i7zOLQ-aIduc";
+            const fcmToken = await getToken(messaging, { vapidKey: vapidKey });
+            return { data: { fcmToken } };
+         } catch (error) {
+            return thunkAPI.rejectWithValue(this.errorMessage(error));
+         }
+      }),
+      reducer(builder: ActionReducerMapBuilder<typeof initialState>) {
+         builder.addCase(this.api.pending, (state) => {
+            state.loadings.getFcmToken = true;
+         });
+         builder.addCase(this.api.fulfilled, (state, action) => {
+            state.loadings.getFcmToken = false;
+            state.fcmToken = action.payload?.data.fcmToken;
+         });
+         builder.addCase(this.api.rejected, (state) => {
+            state.loadings.getFcmToken = false;
+         });
+      },
+   };
+
    register = {
       api: createAsyncThunk("register", async (payload: { email: string; password: string; confirmPassword: string }, thunkAPI) => {
          try {
@@ -46,7 +77,7 @@ class AuthService extends HttpInterceptor {
    login = {
       api: createAsyncThunk("login", async (payload: any, thunkAPI) => {
          try {
-            const fcmToken = await requestFcmToken();
+            const fcmToken = (thunkAPI.getState() as any)?.auth?.fcmToken;
             const { data } = await this.http.post(ENDPOINTS.AUTH.LOGIN, { ...payload, fcmToken });
             thunkAPI.dispatch(this.getSession.api());
             return data;
@@ -178,6 +209,7 @@ class AuthService extends HttpInterceptor {
          this.register.reducer(builder);
          this.updateProfile.reducer(builder);
          this.updateRingtone.reducer(builder);
+         this.getFcmToken.reducer(builder);
       },
    });
    actions = this.slice.actions;

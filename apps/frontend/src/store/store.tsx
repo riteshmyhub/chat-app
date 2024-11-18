@@ -46,6 +46,11 @@ function AppProvider({ children }: Props) {
       return () => {};
    }, []);
 
+   useEffect(() => {
+      dispatch(authService.getFcmToken.api());
+      return () => {};
+   }, []);
+
    return loadings.getSession ? <SplashScreen /> : <>{children}</>;
 }
 

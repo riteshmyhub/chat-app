@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken } from "firebase/messaging";
+import { getMessaging } from "firebase/messaging";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -12,18 +12,5 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
+export const app = initializeApp(firebaseConfig);
 export const messaging = getMessaging(app);
-
-export const requestFcmToken = async () => {
-   try {
-      const permission = await Notification.requestPermission();
-      if (permission !== "granted") {
-         throw new Error("Permission not granted");
-      }
-      return await getToken(messaging, { vapidKey: "BPSK7k9CTrLfDOLaPF4XY4KfegsaX0S_AT4btgpesXWbhLLK7yVZ4I8Ht4waE8kCWjSKZai-SL-i7zOLQ-aIduc" });
-   } catch (error) {
-      return error;
-   }
-};

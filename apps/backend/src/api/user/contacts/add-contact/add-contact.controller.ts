@@ -40,18 +40,12 @@ export default async function AddContactController(req: Req, res: Response, next
          eventName: "refresh_contacts",
          to: personWithAuthUser,
       });
-      await Promise.all([
-         FirebaseNotification({
-            userIds: [userID],
-            title: "New Contact Added",
-            body: `${req.user?.profile?.firstName || "Someone"} has added you as a contact.`,
-         }), //
-         FirebaseNotification({
-            userIds: [req.user?._id],
-            title: "Contact Added",
-            body: `You have successfully added ${user?.profile?.first_name || "the user"} as a contact.`,
-         }),
-      ]);
+      await FirebaseNotification({
+         userIds: [userID],
+         title: "New Contact Added",
+         body: `${req.user?.profile?.firstName || "Someone"} has added you as a contact.`,
+      });
+
       res.status(201).json({
          message: "contact successfully added",
          success: true,
