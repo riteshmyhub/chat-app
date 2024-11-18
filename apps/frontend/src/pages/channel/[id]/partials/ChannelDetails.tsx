@@ -1,4 +1,4 @@
-import { DebounceSearch, Loading, MediaList } from "@/components";
+import { DebounceSearch, Image, Loading, MediaList } from "@/components";
 import { channelService } from "@/store/services/channel.service";
 import { contactService } from "@/store/services/contect.service";
 import { useAppDispatch, useAppSelector } from "@/store/store";
@@ -34,7 +34,12 @@ export default function ChannelDetailsPage({ chatDetails }: { chatDetails: IChat
       <div className="p-3">
          <span className="text-lg block font-semibold">Channel Details</span>
          <div>
-            <img src={chatDetails.avatar || "/images/group-chat-placeholder.png"} alt="avatar" className="h-36 w-36 mx-auto rounded-full border" />
+            <Image //
+               src={chatDetails.avatar}
+               alt="avatar"
+               className="h-36 w-36 mx-auto rounded-full border"
+               noImg="/images/group-chat-placeholder.png"
+            />
             <h3 className="text-2xl text-center mb-2 font-medium">{chatDetails?.name}</h3>
             <h3 className="text-md text-center font-normal">{chatDetails?.about}</h3>
          </div>
@@ -64,10 +69,11 @@ export default function ChannelDetailsPage({ chatDetails }: { chatDetails: IChat
                                  {items?.map((user: IMember) => (
                                     <div key={user._id} className="flex gap-4 items-center p-2">
                                        <div className="basis-1/5">
-                                          <img //
-                                             src={user.profile.avatar || "/images/user-placeholder.png"}
+                                          <Image //
+                                             src={user.profile.avatar}
                                              alt="avatar"
                                              className="w-10 h-10 rounded-full mx-auto"
+                                             asAvatar
                                           />
                                        </div>
                                        <div className="basis-1/2">
@@ -104,10 +110,11 @@ export default function ChannelDetailsPage({ chatDetails }: { chatDetails: IChat
                <div key={member?._id} className="flex gap-4 items-center p-2">
                   <div className="basis-1/6">
                      <span className="relative inline-block">
-                        <img //
-                           src={member.profile.avatar || "/images/user-placeholder.png"}
+                        <Image //
+                           src={member.profile.avatar}
                            alt="member-avatar"
                            className="w-11 h-11 rounded-full"
+                           asAvatar
                         />
                         {onlineUsers.includes(member._id) && member._id !== authUser?._id && (
                            <span //

@@ -1,4 +1,4 @@
-import { MediaList } from "@/components";
+import { Image, MediaList } from "@/components";
 import { contactService } from "@/store/services/contect.service";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { IChatDetails } from "@/types/chat.type";
@@ -22,7 +22,12 @@ export default function ContactDetailsPage({ chatDetails }: { chatDetails: IChat
       <div className="p-3">
          <span className="text-lg block font-semibold">Contact Details</span>
          <div>
-            <img src={chatDetails.avatar || "/images/group-chat-placeholder.png"} alt="avatar" className="h-36 w-36 mx-auto rounded-full border" />
+            <Image //
+               src={chatDetails.avatar}
+               alt="avatar"
+               className="h-36 w-36 mx-auto rounded-full border"
+               asAvatar
+            />
             <h3 className="text-xl text-center mb-2 font-medium">{chatDetails.name}</h3>
             <h3 className="text-sm text-center font-normal">{chatDetails.about}</h3>
          </div>

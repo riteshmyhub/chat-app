@@ -1,4 +1,4 @@
-import { DebounceSearch } from "@/components";
+import { DebounceSearch, Image } from "@/components";
 import { contactService } from "@/store/services/contect.service";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { IChatContact } from "@/types/chat.type";
@@ -59,7 +59,7 @@ export default function SearchPage({ onClose }: Props) {
                            <div key={user._id} className="flex items-center p-2 bg-white hover:bg-[#F0F2F5] border-b-2 px-3 mt-2 gap-3">
                               <div className="basis-1/6">
                                  <span className="relative">
-                                    <img src={user?.profile?.avatar || "/images/user-placeholder.png"} alt="avatar" className="h-14 w-14 rounded-full object-cover" />
+                                    <Image src={user?.profile?.avatar} alt="avatar" className="h-14 w-14 rounded-full object-cover" asAvatar />
                                  </span>
                               </div>
                               <div className="basis-1/2">

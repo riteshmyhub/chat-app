@@ -58,7 +58,7 @@ export default function SingleContactPage() {
    return (
       <AsideMenu ref={asideRef} position="right" aside={<ContactDetailsPage chatDetails={chatDetails} />}>
          <Navbar //
-            avatar={chatDetails?.avatar || "/images/group-chat-placeholder.png"}
+            avatar={chatDetails?.avatar || "/images/user-placeholder.png"}
             title={<b onClick={toggleAside}>{chatDetails.name}</b>}
             description={
                <>
