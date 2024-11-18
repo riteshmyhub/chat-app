@@ -1,4 +1,4 @@
-import { BellIcon, CircleUserRoundIcon, LoaderCircle, LogOutIcon, MessageCircleIcon } from "lucide-react";
+import { BellIcon, CircleUserRoundIcon, InfoIcon, LoaderCircle, LogOutIcon, MessageCircleIcon } from "lucide-react";
 import useLogoutPage from "../auth/logout/logout.page";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useMediaQuery } from "@/hooks";
@@ -33,6 +33,13 @@ const SettingsMenu = () => {
                <span className="block text-lg font-medium capitalize">sounds Settings</span>
             </li>
             <li //
+               className="flex items-center gap-3 py-3 md:py-3"
+               onClick={() => navigate("app-info")}
+               role="button">
+               <InfoIcon size={23} />
+               <span className="block text-lg font-medium capitalize">App info</span>
+            </li>
+            <li //
                className="flex items-center gap-3 py-3 md:py-3 text-red-600"
                role="button"
                onClick={logout.function}>
@@ -47,7 +54,7 @@ const SettingsMenu = () => {
       </div>
    );
 };
-export default function SettingsPage() {
+export default function SettingsLayout() {
    const screen = useMediaQuery();
    const { pathname } = useLocation();
 
@@ -58,7 +65,7 @@ export default function SettingsPage() {
                <SettingsMenu />
             </aside>
             <main className="flex-1 h-full">
-               <Navbar title={<span className="text-xl capitalize font-medium">{pathname.split("/")[2]}</span>} />
+               <Navbar title={<span className="text-xl capitalize font-medium">{pathname?.split("/")[2]?.replace(/-/g, " ")}</span>} />
                <Outlet />
             </main>
          </div>
@@ -68,7 +75,7 @@ export default function SettingsPage() {
       <div>
          {pathname?.split("/")[2] ? ( //
             <div>
-               <Navbar title={<span className="text-xl capitalize font-medium">{pathname.split("/")[2]}</span>} back="/settings" />
+               <Navbar title={<span className="text-xl capitalize font-medium">{pathname?.split("/")[2]?.replace(/-/g, " ")}</span>} back="/settings" />
                <Outlet />
             </div>
          ) : (

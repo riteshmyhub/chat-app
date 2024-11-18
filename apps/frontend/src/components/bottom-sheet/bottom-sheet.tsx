@@ -14,7 +14,10 @@ export const BottomSheet = forwardRef(({ children, heading, className }: Props, 
 
    return (
       <Sheet open={isOpen}>
-         <SheetContent side="bottom" className={`h-screen md:w-[50%] mx-auto p-0 ${className}`}>
+         <SheetContent //
+            side="bottom"
+            className={`h-screen md:w-[50%] mx-auto p-0 ${className}`}
+            onOpenAutoFocus={(e) => e.preventDefault()}>
             {heading && (
                <div className="flex justify-between mb-3">
                   <h1 className="text-xl capitalize font-medium">{heading}</h1>

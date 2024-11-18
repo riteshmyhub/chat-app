@@ -1,4 +1,4 @@
-import { BottomSheet } from "@/components";
+import { BottomSheet, Image } from "@/components";
 import { useAppSelector } from "@/store/store";
 import { Skeleton } from "@/ui/skeleton";
 import React, { useRef } from "react";
@@ -50,10 +50,11 @@ export default function ContactsPage() {
                      <Link role="button" to={`/contacts/${contact._id}`} key={`contact-${idx}`} className={`flex items-center p-2 px-3 gap-3 hover:bg-[#F0F2F5] border-b-[1px] ${activeClass}`}>
                         <div className="basis-1/4 flex justify-center">
                            <span className="relative inline-block">
-                              <img //
-                                 src={contact?.avatar || "/images/user-placeholder.png"}
+                              <Image //
+                                 src={contact?.avatar}
                                  alt="avatar"
                                  className="mx-auto block rounded-full h-[60px] w-[60px] border  object-contain"
+                                 asAvatar
                               />
                               {contact.members.every((user) => onlineUsers.includes(user._id)) && ( //
                                  <span //

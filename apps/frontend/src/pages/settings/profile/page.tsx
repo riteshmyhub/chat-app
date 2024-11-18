@@ -1,3 +1,4 @@
+import { Image } from "@/components";
 import { authService } from "@/store/services/auth.service";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { Button } from "@/ui/button";
@@ -53,10 +54,11 @@ export default function ProfilePage() {
       <form onSubmit={submit} className="grid grid-cols-12 gap-3 p-3">
          <div className="col-span-12">
             <div className="relative inline-block">
-               <img //
-                  src={typeof fields?.avatar === "object" ? URL.createObjectURL(fields?.avatar) : fields?.avatar || "/images/user-placeholder.png"}
+               <Image //
+                  src={typeof fields?.avatar === "object" ? URL.createObjectURL(fields?.avatar) : fields?.avatar}
                   alt="avatar"
                   className="rounded-full border mx-auto w-[120px] h-[120px] object-cover"
+                  asAvatar
                />
                <label htmlFor="avatar">
                   <CameraIcon size={30} className="bg-white p-1 rounded-full border absolute bottom-0 right-0" />

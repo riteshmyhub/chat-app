@@ -1,4 +1,4 @@
-import { BottomSheet } from "@/components";
+import { BottomSheet, Image } from "@/components";
 import { useAppSelector } from "@/store/store";
 import { Skeleton } from "@/ui/skeleton";
 import { PlusIcon } from "lucide-react";
@@ -29,9 +29,6 @@ export default function ChannelsPage() {
          </React.Fragment>
       );
    }
-   if (!channels.length) {
-      return "No Contact";
-   }
 
    return (
       <React.Fragment>
@@ -50,10 +47,11 @@ export default function ChannelsPage() {
                   return (
                      <Link key={`chat-${idx}`} className={`flex items-center p-2 px-3 gap-3 hover:bg-[#F0F2F5] border-b-[1px] ${activeClass}`} role="button" to={`/channels/${channel._id}`}>
                         <div className="basis-1/4">
-                           <img //
-                              src={channel?.avatar || "/images/group-chat-placeholder.png"}
+                           <Image //
+                              src={channel?.avatar}
                               alt="avatar"
                               className="mx-auto block rounded-full h-[60px] w-[60px] border  object-contain"
+                              noImg="/images/group-chat-placeholder.png"
                            />
                         </div>
                         <div className="basis-1/2">

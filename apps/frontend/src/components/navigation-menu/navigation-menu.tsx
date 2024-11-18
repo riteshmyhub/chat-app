@@ -3,6 +3,7 @@ import { BellIcon, MessagesSquareIcon, SettingsIcon, UsersRoundIcon } from "luci
 import { useAppSelector } from "@/store/store";
 import { useCallback } from "react";
 import { useMediaQuery } from "@/hooks";
+import { Image } from "../image/Image";
 
 export function NavigationMenu() {
    const { unreadMessages } = useAppSelector((state) => state.chat);
@@ -22,7 +23,12 @@ export function NavigationMenu() {
    return (
       <ul className={screen.md ? "flex flex-col justify-start gap-5 border-r w-[90px] py-4" : "flex flex-row justify-evenly gap-3 h-[75px] border-t items-center"}>
          <Link to="/settings/profile" className="hidden flex-col items-center md:flex">
-            <img src={authUser?.profile?.avatar} alt="avatar" className="w-[60px] h-[60px] rounded-full border-2 object-cover" />
+            <Image //
+               src={authUser?.profile?.avatar}
+               alt="avatar"
+               className="w-[60px] h-[60px] rounded-full border-2 object-cover"
+               asAvatar
+            />
          </Link>
          <Link to="/contacts" className="flex flex-col items-center">
             <span //
