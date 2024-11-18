@@ -16,8 +16,8 @@ const initialState = {
       updateRingtone: false,
       getFcmToken: true,
    },
-   token: localStorage.getItem("accessToken") || null,
    fcmToken: null as string | null,
+   accessToken: localStorage.getItem("accessToken") || null,
    authUser: null as IUser | null,
    appSettings: null as {
       ringtones: IRingtone[];
@@ -79,7 +79,6 @@ class AuthService extends HttpInterceptor {
          try {
             const fcmToken = (thunkAPI.getState() as any)?.auth?.fcmToken;
             const { data } = await this.http.post(ENDPOINTS.AUTH.LOGIN, { ...payload, fcmToken });
-            thunkAPI.dispatch(this.getSession.api());
             return data;
          } catch (error) {
             return thunkAPI.rejectWithValue(this.errorMessage(error));
@@ -89,8 +88,13 @@ class AuthService extends HttpInterceptor {
          builder.addCase(this.api.pending, (state) => {
             state.loadings.login = true;
          });
-         builder.addCase(this.api.fulfilled, (state) => {
+         builder.addCase(this.api.fulfilled, (state, action) => {
             state.loadings.login = false;
+            const accessToken = action.payload?.data?.accessToken;
+            if (accessToken) {
+               localStorage.setItem("accessToken", accessToken);
+               state.accessToken = accessToken;
+            }
          });
          builder.addCase(this.api.rejected, (state) => {
             state.loadings.login = false;
@@ -178,7 +182,9 @@ class AuthService extends HttpInterceptor {
    logout = {
       api: createAsyncThunk("logout", async (_, thunkAPI) => {
          try {
-            return (await this.http.get(ENDPOINTS.AUTH.LOGOUT)).data;
+            const { data } = await this.http.get(ENDPOINTS.AUTH.LOGOUT);
+            localStorage.removeItem("accessToken");
+            return data;
          } catch (error) {
             return thunkAPI.rejectWithValue(this.errorMessage(error));
          }
@@ -190,6 +196,7 @@ class AuthService extends HttpInterceptor {
          builder.addCase(this.api.fulfilled, (state) => {
             state.loadings.logout = false;
             state.authUser = null;
+            state.accessToken = null;
          });
          builder.addCase(this.api.rejected, (state) => {
             state.loadings.logout = false;

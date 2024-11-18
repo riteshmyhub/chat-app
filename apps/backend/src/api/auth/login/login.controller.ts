@@ -16,8 +16,8 @@ type Req = Request<ReqParms, {}, ReqBody, ReqQuery>;
 export default async function LoginController(req: Req, res: Response, next: NextFunction) {
    try {
       const { email, password, fcmToken } = req.body;
-      if (!email || !password) {
-         return next(createHttpError.BadRequest("email , password required!"));
+      if (!email || !password || !fcmToken) {
+         return next(createHttpError.BadRequest("email , password ,fcmToken  required!"));
       }
       const user = await User.findOne({ email }).select("+password +fcm_token");
       if (!user) {
@@ -27,13 +27,11 @@ export default async function LoginController(req: Req, res: Response, next: Nex
       if (!match) {
          return next(createHttpError.Unauthorized());
       }
+      user.fcm_token = fcmToken;
+      await user.save();
 
-      const accessToken = createJwtLoginToken(user?._id as Types.ObjectId, res);
-
-      if (fcmToken !== user?.fcm_token) {
-         user.fcm_token = fcmToken;
-         await user.save();
-      }
+      const tokenData = { _id: user?._id, deviceToken: user?.fcm_token };
+      const accessToken = createJwtLoginToken(tokenData, res);
 
       res.status(200).json({
          message: "login successfully",

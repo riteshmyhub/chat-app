@@ -21,6 +21,8 @@ export default defineConfig({
             short_name: "we conjoin",
             description: "workspace chat app",
             theme_color: "#ffffff",
+            start_url: ".",
+            display: "standalone",
          },
 
          workbox: {

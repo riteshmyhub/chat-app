@@ -53,7 +53,7 @@ export default function ContactsPage() {
                               <Image //
                                  src={contact?.avatar}
                                  alt="avatar"
-                                 className="mx-auto block rounded-full h-[60px] w-[60px] border  object-contain"
+                                 className="block rounded-full h-[60px] w-[60px] object-cover mx-auto border" 
                                  asAvatar
                               />
                               {contact.members.every((user) => onlineUsers.includes(user._id)) && ( //

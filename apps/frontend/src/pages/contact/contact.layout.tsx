@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { Outlet, useParams } from "react-router-dom";
-
 import { useAppDispatch } from "@/store/store";
 import { contactService } from "@/store/services/contect.service";
 import ContactsPage from "./contacts/contacts.page";

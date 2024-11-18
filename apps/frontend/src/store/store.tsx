@@ -39,19 +39,18 @@ const ReduxProvider = ({ children }: Props) => (
 /* -------------------- AppProvider ------------------*/
 function AppProvider({ children }: Props) {
    const dispatch = useAppDispatch();
-   const { loadings } = useAppSelector((state) => state.auth);
-
-   useEffect(() => {
-      dispatch(authService.getSession.api());
-      return () => {};
-   }, []);
-
+   const { loadings, accessToken } = useAppSelector((state) => state.auth);
    useEffect(() => {
       dispatch(authService.getFcmToken.api());
       return () => {};
    }, []);
 
-   return loadings.getSession ? <SplashScreen /> : <>{children}</>;
+   useEffect(() => {
+      if (accessToken) dispatch(authService.getSession.api());
+      return () => {};
+   }, [accessToken]);
+
+   return accessToken && loadings.getSession ? <SplashScreen /> : <>{children}</>;
 }
 
 export default ReduxProvider;
