@@ -23,8 +23,8 @@ export default async function FirebaseNotification({ userIds, title, body, image
       const messages: any = tokens?.map((token) => ({
          token: token,
          notification: {
-            title: body,
-            body: title,
+            title: title,
+            body: body,
             ...(imageUrl ? { imageUrl: imageUrl } : {}),
          },
          ...(data ? { data } : {}),

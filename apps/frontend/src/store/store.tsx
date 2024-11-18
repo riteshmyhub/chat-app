@@ -7,7 +7,6 @@ import { SplashScreen } from "@/components/splash-screen/splash-screen";
 import { contactReducer } from "./services/contect.service";
 import { chatReducer } from "./services/chat.service";
 import { channelReducer } from "./services/channel.service";
-import { firebaseReducer, firebaseService } from "./services/firebase.service";
 
 export const store = configureStore({
    reducer: {
@@ -15,7 +14,6 @@ export const store = configureStore({
       contact: contactReducer,
       chat: chatReducer,
       channel: channelReducer,
-      firebase: firebaseReducer,
    },
    middleware(getDefaultMiddleware) {
       return getDefaultMiddleware().concat(toastMiddleware);
@@ -42,11 +40,6 @@ const ReduxProvider = ({ children }: Props) => (
 function AppProvider({ children }: Props) {
    const dispatch = useAppDispatch();
    const { loadings } = useAppSelector((state) => state.auth);
-
-   useEffect(() => {
-     dispatch(firebaseService.getFcmToken.api());
-      return () => {};
-   }, []);
 
    useEffect(() => {
       dispatch(authService.getSession.api());

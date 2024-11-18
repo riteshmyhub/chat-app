@@ -29,9 +29,6 @@ export default function ContactsPage() {
          </React.Fragment>
       );
    }
-   if (!contacts.length) {
-      return "No Contact";
-   }
 
    return (
       <React.Fragment>
@@ -44,41 +41,47 @@ export default function ContactsPage() {
                <SearchPage onClose={() => sheetRef.current.setToggle(false)} />
             </BottomSheet>
          </div>
-         {contacts?.map((contact, idx) => {
-            const unseenMessages = unreadMessages?.filter((message) => message?.chat === contact?._id);
-            const activeClass = id === contact._id ? "bg-[#F0F2F5]" : "bg-white";
-            return (
-               <Link role="button" to={`/contacts/${contact._id}`} key={`contact-${idx}`} className={`flex items-center p-2 px-3 gap-3 hover:bg-[#F0F2F5] border-b-[1px] ${activeClass}`}>
-                  <div className="basis-1/4 flex justify-center">
-                     <span className="relative inline-block">
-                        <img //
-                           src={contact?.avatar || "/images/user-placeholder.png"}
-                           alt="avatar"
-                           className="mx-auto block rounded-full h-[60px] w-[60px] border  object-contain"
-                        />
-                        {contact.members.every((user) => onlineUsers.includes(user._id)) && ( //
-                           <span //
-                              className="absolute bottom-0 right-0 block h-3 w-3 rounded-full bg-green-500 border-2 border-white"
-                           />
-                        )}
-                     </span>
-                  </div>
-                  <div className="basis-1/2">
-                     <span className="block text-lg font-normal">{contact?.name}</span>
-                     {typing ? ( //
-                        <span className="block text-xs font-medium text-gray-400">typing...</span>
-                     ) : (
-                        <span className="block text-xs font-medium">{unseenMessages[unseenMessages?.length - 1]?.content}</span>
-                     )}
-                  </div>
-                  <div className="basis-1/4 flex justify-center items-center">
-                     {/*  */}
-                     {Boolean(unseenMessages?.length) && <span data-badge={unseenMessages?.length} />}
-                     {/*  */}
-                  </div>
-               </Link>
-            );
-         })}
+         {contacts.length ? (
+            <React.Fragment>
+               {contacts?.map((contact, idx) => {
+                  const unseenMessages = unreadMessages?.filter((message) => message?.chat === contact?._id);
+                  const activeClass = id === contact._id ? "bg-[#F0F2F5]" : "bg-white";
+                  return (
+                     <Link role="button" to={`/contacts/${contact._id}`} key={`contact-${idx}`} className={`flex items-center p-2 px-3 gap-3 hover:bg-[#F0F2F5] border-b-[1px] ${activeClass}`}>
+                        <div className="basis-1/4 flex justify-center">
+                           <span className="relative inline-block">
+                              <img //
+                                 src={contact?.avatar || "/images/user-placeholder.png"}
+                                 alt="avatar"
+                                 className="mx-auto block rounded-full h-[60px] w-[60px] border  object-contain"
+                              />
+                              {contact.members.every((user) => onlineUsers.includes(user._id)) && ( //
+                                 <span //
+                                    className="absolute bottom-0 right-0 block h-3 w-3 rounded-full bg-green-500 border-2 border-white"
+                                 />
+                              )}
+                           </span>
+                        </div>
+                        <div className="basis-1/2">
+                           <span className="block text-lg font-normal">{contact?.name}</span>
+                           {typing ? ( //
+                              <span className="block text-xs font-medium text-gray-400">typing...</span>
+                           ) : (
+                              <span className="block text-xs font-medium">{unseenMessages[unseenMessages?.length - 1]?.content}</span>
+                           )}
+                        </div>
+                        <div className="basis-1/4 flex justify-center items-center">
+                           {/*  */}
+                           {Boolean(unseenMessages?.length) && <span data-badge={unseenMessages?.length} />}
+                           {/*  */}
+                        </div>
+                     </Link>
+                  );
+               })}
+            </React.Fragment>
+         ) : (
+            ""
+         )}
       </React.Fragment>
    );
 }
