@@ -43,13 +43,9 @@ export default function useHandlerWS() {
       dispatch(channelService.getChannels.api());
    };
 
-   const alert = (data: any) => {
-      console.log(data);
-   };
-
    const typing = (data: string) => {
       dispatch(chatActions.setTyping(data));
    };
 
-   return { onlineUser, receiveMessage, refreshContacts, alert, typing, refreshChannels };
+   return { onlineUser, receiveMessage, refreshContacts, typing, refreshChannels };
 }

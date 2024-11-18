@@ -79,7 +79,7 @@ io.on("connection", (socket) => {
 
 type ISocketEmitter = {
    req: Request;
-   eventName: "ALERT" | "refresh_contacts" | "REFRESH_CHANNEL";
+   eventName: "refresh_contacts" | "REFRESH_CHANNEL";
    to: any;
    data?: any;
 };
