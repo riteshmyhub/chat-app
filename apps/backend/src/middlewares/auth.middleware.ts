@@ -12,8 +12,6 @@ export async function AuthMiddleware(req: Request, res: Response, next: NextFunc
       }
       const user = await verifyToken(accessToken);
       req.user = user;
-
-      req.user = user;
       return next();
    } catch (error: any) {
       if (error.name === "TokenExpiredError") {
@@ -28,11 +26,11 @@ export async function AuthMiddleware(req: Request, res: Response, next: NextFunc
 
 export async function AuthSocket(socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>, next: (err?: any) => void) {
    try {
-      const token = socket.request.headers.cookie?.split("accessToken=")[1];
-      if (!token) {
+      const accessToken = socket.request.headers.cookie?.split("accessToken=")[1] || socket.handshake.auth?.accessToken;
+      if (!accessToken) {
          return next(createHttpError.Unauthorized("Your unauthorized"));
       }
-      const user = await verifyToken(token);
+      const user = await verifyToken(accessToken);
       socket.user = user;
       next();
    } catch (error: any) {

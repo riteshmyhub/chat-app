@@ -9,14 +9,16 @@ const SocketContext = createContext<{ socket: any | null }>({
 });
 
 function SocketProvider({ children }: { children: Readonly<React.ReactNode> }) {
-   const { authUser } = useAppSelector((state) => state.auth);
+   const { authUser ,accessToken} = useAppSelector((state) => state.auth);
    const { chatDetails } = useAppSelector((state) => state.chat);
    const [socket, setSocket] = useState<Socket | null>(null);
    const ws = useHandlerWS();
 
    useEffect(() => {
       if (authUser) {
-         const socket = io(ENVIRONMENT.BASE_URL, { withCredentials: true });
+         const socket = io(ENVIRONMENT.BASE_URL, { withCredentials: true ,auth:{
+            accessToken
+         }});
 
          setSocket(socket);
          socket.on("ONLINE_USERS", ws.onlineUser);
