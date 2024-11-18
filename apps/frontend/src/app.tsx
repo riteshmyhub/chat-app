@@ -3,7 +3,10 @@ import AppRoutes from "./routes/routes";
 import { NavigationMenu } from "./components";
 import PWABadge from "./pwa/PWABadge";
 import { useMediaQuery } from "./hooks";
-import { onNotification } from "./utils";
+import { requestFcmToken } from "./utils";
+import { useEffect } from "react";
+import { onMessage } from "firebase/messaging";
+import { messaging } from "./utils/firebase/config.firebase";
 
 function App() {
    const { pathname } = useLocation();
@@ -15,11 +18,13 @@ function App() {
       pathname.includes("contacts/") && !screen.md,
    ];
 
-   onNotification()
-      .then((data) => {
-         console.log(data);
-      })
-      .catch((e) => e);
+   useEffect(() => {
+      requestFcmToken();
+      onMessage(messaging, (args) => {
+         console.log(args);
+      });
+      return () => {};
+   }, []);
 
    if (condtions.some((condtion) => condtion)) {
       return (

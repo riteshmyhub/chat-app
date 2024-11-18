@@ -42,30 +42,36 @@ export default function ChannelsPage() {
                <CreateChannelPage onClose={() => sheetRef.current.setToggle(false)} />
             </BottomSheet>
          </div>
-         {channels?.map((channel, idx) => {
-            const unseenMessages = unreadMessages?.filter((message) => message?.chat === channel?._id);
-            const activeClass = id === channel._id ? "bg-[#F0F2F5]" : "bg-white";
-            return (
-               <Link key={`chat-${idx}`} className={`flex items-center p-2 px-3 gap-3 hover:bg-[#F0F2F5] border-b-[1px] ${activeClass}`} role="button" to={`/channels/${channel._id}`}>
-                  <div className="basis-1/4">
-                     <img //
-                        src={channel?.avatar || "/images/group-chat-placeholder.png"}
-                        alt="avatar"
-                        className="mx-auto block rounded-full h-[60px] w-[60px] border  object-contain"
-                     />
-                  </div>
-                  <div className="basis-1/2">
-                     <span className="block text-lg font-normal">{channel.name}</span>
-                     {typing && channel._id === typing ? ( //
-                        <span className="block text-xs font-medium text-gray-400">{typing}</span>
-                     ) : (
-                        <span className="block text-xs font-medium">{unseenMessages[unseenMessages?.length - 1]?.content}</span>
-                     )}
-                  </div>
-                  <div className="basis-1/4 flex justify-center">{Boolean(unseenMessages?.length) && <span data-badge={unseenMessages?.length} />}</div>
-               </Link>
-            );
-         })}
+         {channels.length ? (
+            <React.Fragment>
+               {channels?.map((channel, idx) => {
+                  const unseenMessages = unreadMessages?.filter((message) => message?.chat === channel?._id);
+                  const activeClass = id === channel._id ? "bg-[#F0F2F5]" : "bg-white";
+                  return (
+                     <Link key={`chat-${idx}`} className={`flex items-center p-2 px-3 gap-3 hover:bg-[#F0F2F5] border-b-[1px] ${activeClass}`} role="button" to={`/channels/${channel._id}`}>
+                        <div className="basis-1/4">
+                           <img //
+                              src={channel?.avatar || "/images/group-chat-placeholder.png"}
+                              alt="avatar"
+                              className="mx-auto block rounded-full h-[60px] w-[60px] border  object-contain"
+                           />
+                        </div>
+                        <div className="basis-1/2">
+                           <span className="block text-lg font-normal">{channel.name}</span>
+                           {typing && channel._id === typing ? ( //
+                              <span className="block text-xs font-medium text-gray-400">{typing}</span>
+                           ) : (
+                              <span className="block text-xs font-medium">{unseenMessages[unseenMessages?.length - 1]?.content}</span>
+                           )}
+                        </div>
+                        <div className="basis-1/4 flex justify-center">{Boolean(unseenMessages?.length) && <span data-badge={unseenMessages?.length} />}</div>
+                     </Link>
+                  );
+               })}
+            </React.Fragment>
+         ) : (
+            ""
+         )}
       </React.Fragment>
    );
 }

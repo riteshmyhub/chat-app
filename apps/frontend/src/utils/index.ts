@@ -1,2 +1,2 @@
-export { requestFcmToken, onNotification } from "./firebase/config.firebase";
+export { requestFcmToken } from "./firebase/config.firebase";
 export { LocalDatabase } from "./storage/storage";
