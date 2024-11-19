@@ -40,6 +40,23 @@ const useSchema = new mongoose.Schema({
          ref: "User",
       },
    ],
+   notifications: {
+      type: [
+         {
+            title: {
+               type: String,
+            },
+            body: {
+               type: String,
+            },
+            date: {
+               type: Date,
+               default: Date.now,
+            },
+         },
+      ],
+      select: false,
+   },
    setting: {
       theme: {
          type: String,

@@ -7,31 +7,43 @@ type Param = {
    title: string;
    body: string;
    imageUrl?: string;
-   data?: { [key: string]: string } | undefined;
+   data?: { [key: string]: string };
 };
 
 export default async function FirebaseNotification({ userIds, title, body, imageUrl, data }: Param) {
    try {
-      const users = await User.find({ _id: { $in: userIds } }).select("+fcm_token");
-      const tokens = users.map((user) => user?.fcm_token);
+      const users = await User.find({ _id: { $in: userIds } }).select("+fcm_token +notifications");
 
-      if (!tokens?.length) {
-         return null; // No users with a valid FCM token
+      if (!users.length) {
+         return null; // No users found
       }
 
-      // Create the message payload for each user
-      const messages: any = tokens?.map((token) => ({
-         token: token,
+      const tokens: string[] = [];
+      users.forEach((user) => {
+         if (user.fcm_token) {
+            tokens.push(user.fcm_token);
+            user.notifications.push({ title, body });
+         }
+      });
+
+      if (!tokens.length) {
+         return null;
+      }
+      const messages: Message[] = tokens.map((token) => ({
+         token,
          notification: {
-            title: title,
-            body: body,
-            ...(imageUrl ? { imageUrl: imageUrl } : {}),
+            title,
+            body,
+            ...(imageUrl ? { imageUrl } : {}),
          },
          ...(data ? { data } : {}),
       }));
-      const responses = await Promise.all(messages?.map((message: Message) => admin.messaging().send(message)));
+
+      const responses = await Promise.all(messages.map((message) => admin.messaging().send(message)));
+      await Promise.all(users.map((user) => user.save()));
+
       return responses;
    } catch (error) {
-      return null;
+      return null; // Return null on error
    }
 }

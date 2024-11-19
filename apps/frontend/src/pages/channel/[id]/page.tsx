@@ -26,7 +26,7 @@ export default function SingleChannelPage() {
       };
    }, [id]);
 
-   if (loadings.getChatDetails) {
+   if (loadings.getChatDetails || loadings.getMessages) {
       return (
          <div className="space-y-4">
             <Skeleton className="h-16 w-full" />

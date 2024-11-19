@@ -5,6 +5,7 @@ import { Server as SocketServer } from "socket.io";
 import http from "http";
 import { AuthSocket } from "../middlewares/auth.middleware";
 import FirebaseNotification from "../firebase/notification/notification";
+import { firebaseDB } from "../firebase/firebase-admin-app";
 
 const app = express();
 const server = http.createServer(app);
@@ -33,27 +34,32 @@ io.on("connection", (socket) => {
 
    //SEND_MESSAGE
    socket.on("SEND_MESSAGE", async ({ chat, content, members, groupChat, attachments }) => {
-      const message = {
-         groupChat,
-         sender: {
-            _id: socket?.user?._id,
-            name: `${socket?.user?.profile?.first_name} ${socket?.user?.profile?.last_name}`,
-            avatar: socket?.user?.profile?.avatar,
-         },
-         chat,
-         content,
-         createdAt: new Date().toISOString(),
-         attachments,
-      };
-      const userIds = members?.map((member: any) => member?._id);
-      const ids = getSocketIds(userIds);
-      io.to(ids).emit("RECEIVER_MESSAGE", message);
+      try {
+         const message = {
+            groupChat,
+            sender: {
+               _id: socket?.user?._id?.toString() || null, // Convert ObjectId to string
+               name: `${socket?.user?.profile?.first_name ?? ""} ${socket?.user?.profile?.last_name ?? ""}`.trim(),
+               avatar: socket?.user?.profile?.avatar || null,
+            },
+            chat,
+            content,
+            createdAt: new Date().toISOString(),
+            attachments: attachments ?? [],
+         };
+         const userIds = members?.map((member: any) => member?._id);
+         const ids = getSocketIds(userIds);
+         io.to(ids).emit("RECEIVER_MESSAGE", message);
 
-      await FirebaseNotification({
-         userIds: userIds?.filter((id: string) => id?.toString() !== socket?.user?._id?.toString()),
-         title: `${message?.sender?.name} send new messages ${groupChat ? "from channel" : ""}`,
-         body: content || `${attachments?.length || 0} attachment(s) sent.`,
-      });
+         await FirebaseNotification({
+            userIds: userIds?.filter((id: string) => id?.toString() !== socket?.user?._id?.toString()),
+            title: `${message?.sender?.name} send new messages ${groupChat ? "from channel" : ""}`,
+            body: content || `${attachments?.length || 0} attachment(s) sent.`,
+         });
+         await firebaseDB.collection("messages").add(message);
+      } catch (error) {
+         console.log(error);
+      }
    });
 
    //TYPING

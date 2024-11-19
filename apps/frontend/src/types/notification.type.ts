@@ -1,7 +1,9 @@
 export interface INotification {
-   title: string;
-   description: string;
-   action: string;
+   _id: string;
+   messageId: string;
+   title?: string;
+   date: string;
+   body?: string;
 }
 export interface IRingtone {
    _id: string;

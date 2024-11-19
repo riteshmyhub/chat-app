@@ -1,7 +1,7 @@
-import { IRingtone } from "@/types/notification.type";
+import { INotification, IRingtone } from "@/types/notification.type";
 import HttpInterceptor from "../interceptors/http.interceptor";
 import { IUser } from "@/types/user.type";
-import { ActionReducerMapBuilder, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { ActionReducerMapBuilder, createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import ENDPOINTS from "../endpoints/endpoints";
 import { getToken } from "firebase/messaging";
 import { messaging } from "@/utils/firebase/config.firebase";
@@ -15,16 +15,35 @@ const initialState = {
       updateProfile: false,
       updateRingtone: false,
       getFcmToken: true,
+      getNotifications: true,
    },
    fcmToken: null as string | null,
    accessToken: localStorage.getItem("accessToken") || null,
    authUser: null as IUser | null,
+   notifications: [] as INotification[],
    appSettings: null as {
       ringtones: IRingtone[];
    } | null,
 };
 
 class AuthService extends HttpInterceptor {
+   getNotifications = {
+      api: createAsyncThunk("getNotifications*", async (_) => {
+         return (await this.http.get(ENDPOINTS.USER.GET_NOTIFICATIONS)).data;
+      }),
+      reducer(builder: ActionReducerMapBuilder<typeof initialState>) {
+         builder.addCase(this.api.pending, (state) => {
+            state.loadings.getNotifications = true;
+         });
+         builder.addCase(this.api.fulfilled, (state, action) => {
+            state.loadings.getNotifications = false;
+            state.notifications = action.payload?.data.notifications;
+         });
+         builder.addCase(this.api.rejected, (state) => {
+            state.loadings.getNotifications = false;
+         });
+      },
+   };
    getFcmToken = {
       api: createAsyncThunk("getFcmToken*", async (_, thunkAPI) => {
          try {
@@ -208,8 +227,13 @@ class AuthService extends HttpInterceptor {
    private slice = createSlice({
       name: "AuthService",
       initialState: initialState,
-      reducers: {},
+      reducers: {
+         setINotification(state, action: PayloadAction<INotification>) {
+            state.notifications = [action.payload, ...state.notifications];
+         },
+      },
       extraReducers: (builder) => {
+         this.getNotifications.reducer(builder);
          this.login.reducer(builder);
          this.getSession.reducer(builder);
          this.logout.reducer(builder);

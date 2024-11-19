@@ -12,5 +12,5 @@ if (!admin.apps.length) {
       credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
    });
 }
-
+export const firebaseDB = admin.firestore();
 export default admin;

@@ -7,7 +7,7 @@ import { Image } from "../image/Image";
 
 export function NavigationMenu() {
    const { unreadMessages } = useAppSelector((state) => state.chat);
-   const { authUser } = useAppSelector((state) => state.auth);
+   const { authUser, notifications } = useAppSelector((state) => state.auth);
    const groupsMessages = unreadMessages?.filter((message) => message.groupChat);
    const messages = unreadMessages?.filter((message) => !message.groupChat);
    const location = useLocation();
@@ -49,7 +49,7 @@ export function NavigationMenu() {
          <Link to="/notifications" className="flex flex-col items-center">
             <span //
                className={activeStyle("/notifications")}
-               data-badge="3">
+               {...(Boolean(notifications?.length) ? { "data-badge": notifications?.length } : {})}>
                <BellIcon size={20} className="mx-auto" />
             </span>
             <small className="text-xs">notifications</small>

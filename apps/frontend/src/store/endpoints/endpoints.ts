@@ -22,11 +22,12 @@ const ENDPOINTS = Object.seal({
          ADD_MEMBERS: "/user/add-members",
          REMOVE_MEMBER: "/user/remove-member",
       },
+      GET_NOTIFICATIONS: "/user/notifications",
    },
    CHAT: {
       GET_CHATS_DETAILS: (chatID: string) => `/chat/chat-details/${chatID}`,
       MESSAGES: {
-         GET_MESSAGES: (chatID: string) => `/chat/get-messages/${chatID}`,
+         GET_MESSAGES: (chatID: string) => `/chat/messages/${chatID}`,
          DELETE_MESSAGES: (chatID: string) => `/chat/delete-messages/${chatID}`,
       },
    },

@@ -16,6 +16,8 @@ import AddMembersController from "../api/user/channels/add-member/add-member.con
 import RemoveMemberController from "../api/user/channels/remove-member/remove-member.controller";
 import GetChatDetailsController from "../api/chat/get-chat-details/get-chat-details.controller";
 import ChangeRingtoneController from "../api/user/settings/change-ringtone/change-ringtone.controller";
+import GetMessagesController from "../api/chat/get-messages/get-messages.controller";
+import GetNotificationsController from "../api/notifications/get-notifications/get-notifications.controller";
 
 const router = Router();
 
@@ -33,6 +35,7 @@ router.use(
 router.use(
    "/user",
    (function () {
+      router.get("/notifications", [AuthMiddleware], GetNotificationsController);
       router.put("/profile", [AuthMiddleware], UpdateProfileController);
       router.get("/search", [AuthMiddleware], SearchUserController);
       router.get("/get-contacts", [AuthMiddleware], GetContactsController);
@@ -51,6 +54,8 @@ router.use(
    "/chat",
    (function () {
       router.get("/chat-details/:id", [AuthMiddleware], GetChatDetailsController);
+      router.get("/messages/:id", [AuthMiddleware], GetMessagesController);
+
       return router;
    })()
 );

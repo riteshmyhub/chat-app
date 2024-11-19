@@ -1,7 +1,6 @@
 import { ActionReducerMapBuilder, createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import HttpInterceptor from "../interceptors/http.interceptor";
 import { IChatDetails, IMessage, IAttachment } from "@/types/chat.type";
-import { LocalDatabase } from "@/utils";
 import ENDPOINTS from "../endpoints/endpoints";
 
 const initialState = {
@@ -21,9 +20,7 @@ class ChatService extends HttpInterceptor {
    getMessages = {
       api: createAsyncThunk("getMessages*", async (chatID: string, thunkAPI) => {
          try {
-            //const { data } = await this.privateHttp.get(ENDPOINTS.CHAT.MESSAGES.GET_MESSAGES(chatID));
-            const messages: IMessage[] = await LocalDatabase.messageCollection.find({ chat: chatID });
-            const data = { data: { messages } };
+            const { data } = await this.http.get(ENDPOINTS.CHAT.MESSAGES.GET_MESSAGES(chatID));
             return data;
          } catch (error) {
             return thunkAPI.rejectWithValue(this.errorMessage(error));
