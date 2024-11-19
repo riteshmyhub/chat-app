@@ -40,13 +40,18 @@ const ReduxProvider = ({ children }: Props) => (
 function AppProvider({ children }: Props) {
    const dispatch = useAppDispatch();
    const { loadings, accessToken } = useAppSelector((state) => state.auth);
+
+  
    useEffect(() => {
       dispatch(authService.getFcmToken.api());
       return () => {};
    }, []);
 
    useEffect(() => {
-      if (accessToken) dispatch(authService.getSession.api());
+      if (accessToken) {
+         dispatch(authService.getSession.api());
+         dispatch(authService.getNotifications.api());
+      }
       return () => {};
    }, [accessToken]);
 

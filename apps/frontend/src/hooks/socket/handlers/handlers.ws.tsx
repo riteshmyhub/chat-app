@@ -1,9 +1,12 @@
+import { authAction } from "@/store/services/auth.service";
 import { channelService } from "@/store/services/channel.service";
 import { chatActions } from "@/store/services/chat.service";
 import { contactService } from "@/store/services/contect.service";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { IMessage } from "@/types/chat.type";
-import { LocalDatabase } from "@/utils";
+import { messaging } from "@/utils/firebase/config.firebase";
+import { onMessage } from "firebase/messaging";
+import { useEffect } from "react";
 import toast from "react-hot-toast";
 
 export default function useHandlerWS() {
@@ -16,7 +19,6 @@ export default function useHandlerWS() {
    };
 
    const receiveMessage = async (message: IMessage) => {
-      LocalDatabase.messageCollection.add(message);
       if (chatDetails?._id === message?.chat || chatDetails?._id === message?.sender?._id) {
          dispatch(chatActions.setMessages(message));
          if (authUser?._id !== message?.sender?._id) {
@@ -46,6 +48,28 @@ export default function useHandlerWS() {
    const typing = (data: string) => {
       dispatch(chatActions.setTyping(data));
    };
+
+   useEffect(() => {
+      onMessage(messaging, (args) => {
+         dispatch(
+            authAction.setINotification({
+               _id: args?.messageId,
+               messageId: args?.messageId,
+               title: args?.notification?.title,
+               body: args?.notification?.body,
+               date: args?.data?.date as string,
+            })
+         );
+         /* {
+    "messageId": "6436d836-7756-4349-ad73-212da01cd188",
+    "notification": {
+        "title": "test user send new messages from channel",
+        "body": "sdsd"
+    }
+}*/
+      });
+      return () => {};
+   }, []);
 
    return { onlineUser, receiveMessage, refreshContacts, typing, refreshChannels };
 }
