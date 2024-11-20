@@ -55,6 +55,7 @@ io.on("connection", (socket) => {
             userIds: userIds?.filter((id: string) => id?.toString() !== socket?.user?._id?.toString()),
             title: `${message?.sender?.name} send new messages ${groupChat ? "from channel" : ""}`,
             body: content || `${attachments?.length || 0} attachment(s) sent.`,
+            url: groupChat ? "/channels" : "/contacts" + "/" + chat,
          });
          await firebaseDB.collection("messages").add(message);
       } catch (error) {

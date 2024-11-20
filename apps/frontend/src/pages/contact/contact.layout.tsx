@@ -1,19 +1,10 @@
-import { useEffect } from "react";
 import { Outlet, useParams } from "react-router-dom";
-import { useAppDispatch } from "@/store/store";
-import { contactService } from "@/store/services/contect.service";
 import ContactsPage from "./contacts/contacts.page";
 import { useMediaQuery } from "@/hooks";
 
 export default function ContactLayout() {
    const screen = useMediaQuery();
-   const dispatch = useAppDispatch();
    const { id } = useParams();
-
-   useEffect(() => {
-      dispatch(contactService.getContacts.api());
-      return () => {};
-   }, []);
 
    if (screen.md) {
       return (

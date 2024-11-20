@@ -4,9 +4,9 @@ import toastMiddleware from "./middlewares/toast.middleware";
 import { authReducer, authService } from "./services/auth.service";
 import { useEffect } from "react";
 import { SplashScreen } from "@/components/splash-screen/splash-screen";
-import { contactReducer } from "./services/contect.service";
+import { contactReducer, contactService } from "./services/contect.service";
 import { chatReducer } from "./services/chat.service";
-import { channelReducer } from "./services/channel.service";
+import { channelReducer, channelService } from "./services/channel.service";
 
 export const store = configureStore({
    reducer: {
@@ -41,7 +41,6 @@ function AppProvider({ children }: Props) {
    const dispatch = useAppDispatch();
    const { loadings, accessToken } = useAppSelector((state) => state.auth);
 
-  
    useEffect(() => {
       dispatch(authService.getFcmToken.api());
       return () => {};
@@ -50,6 +49,8 @@ function AppProvider({ children }: Props) {
    useEffect(() => {
       if (accessToken) {
          dispatch(authService.getSession.api());
+         dispatch(contactService.getContacts.api());
+         dispatch(channelService.getChannels.api());
          dispatch(authService.getNotifications.api());
       }
       return () => {};
