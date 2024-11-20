@@ -4,6 +4,7 @@ export interface INotification {
    title?: string;
    date: string;
    body?: string;
+   url?: string;
 }
 export interface IRingtone {
    _id: string;

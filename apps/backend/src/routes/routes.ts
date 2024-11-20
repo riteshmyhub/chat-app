@@ -18,6 +18,7 @@ import GetChatDetailsController from "../api/chat/get-chat-details/get-chat-deta
 import ChangeRingtoneController from "../api/user/settings/change-ringtone/change-ringtone.controller";
 import GetMessagesController from "../api/chat/get-messages/get-messages.controller";
 import GetNotificationsController from "../api/notifications/get-notifications/get-notifications.controller";
+import DeleteNotificationController from "../api/notifications/delete-notification/delete-notification.controller";
 
 const router = Router();
 
@@ -35,7 +36,9 @@ router.use(
 router.use(
    "/user",
    (function () {
-      router.get("/notifications", [AuthMiddleware], GetNotificationsController);
+      router.route("/notifications") //
+         .get([AuthMiddleware], GetNotificationsController)
+         .delete([AuthMiddleware], DeleteNotificationController);
       router.put("/profile", [AuthMiddleware], UpdateProfileController);
       router.get("/search", [AuthMiddleware], SearchUserController);
       router.get("/get-contacts", [AuthMiddleware], GetContactsController);

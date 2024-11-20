@@ -51,6 +51,8 @@ export default function useHandlerWS() {
 
    useEffect(() => {
       onMessage(messaging, (args) => {
+         console.log(args);
+
          dispatch(
             authAction.setINotification({
                _id: args?.messageId,
@@ -58,15 +60,9 @@ export default function useHandlerWS() {
                title: args?.notification?.title,
                body: args?.notification?.body,
                date: args?.data?.date as string,
+               url: args?.data?.url as string,
             })
          );
-         /* {
-    "messageId": "6436d836-7756-4349-ad73-212da01cd188",
-    "notification": {
-        "title": "test user send new messages from channel",
-        "body": "sdsd"
-    }
-}*/
       });
       return () => {};
    }, []);

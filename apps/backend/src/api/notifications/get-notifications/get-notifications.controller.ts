@@ -12,7 +12,7 @@ type Req = Request<ReqParms, {}, ReqBody, ReqQuery>;
 
 export default async function GetNotificationsController(req: Req, res: Response, next: NextFunction) {
    try {
-      const user = await User.findById(req?.user?._id).select("+notifications").sort({ "notifications.date": -1 });
+      const user = await User.findById(req?.user?._id).select("+notifications");
       res.status(200).json({
          success: true,
          data: {

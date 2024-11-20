@@ -20,7 +20,24 @@ if (messaging) {
    messaging.onBackgroundMessage((payload) => {
       self.registration.showNotification(payload.notification.title, {
          body: payload.notification.body,
-         icon: payload.notification.image, // Path to your app's icon
+         icon: payload.notification.icon, // Path to your app's icon
+         data: {
+            date: payload.data?.date,
+            url: payload.data?.url,
+         },
       });
    });
 }
+// Handle notification click
+self.addEventListener("notificationclick", (event) => {
+   const notification = event.notification;
+   const url = notification.data?.url;
+   // Close the notification
+   notification.close();
+   // Open the URL in a new tab
+   if (url) {
+      event.waitUntil(
+         clients.openWindow(url) // Open the URL when the notification is clicked
+      );
+   }
+});

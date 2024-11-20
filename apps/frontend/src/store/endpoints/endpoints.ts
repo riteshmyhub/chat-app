@@ -23,6 +23,8 @@ const ENDPOINTS = Object.seal({
          REMOVE_MEMBER: "/user/remove-member",
       },
       GET_NOTIFICATIONS: "/user/notifications",
+      DELETE_NOTIFICATIONS: `/user/notifications`,
+      //
    },
    CHAT: {
       GET_CHATS_DETAILS: (chatID: string) => `/chat/chat-details/${chatID}`,

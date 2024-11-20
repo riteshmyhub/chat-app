@@ -53,6 +53,9 @@ const useSchema = new mongoose.Schema({
                type: Date,
                default: Date.now,
             },
+            url: {
+               type: String,
+            },
          },
       ],
       select: false,

@@ -16,6 +16,8 @@ const initialState = {
       updateRingtone: false,
       getFcmToken: true,
       getNotifications: true,
+      deleteNotification: false,
+      deleteAllNotification: false,
    },
    fcmToken: null as string | null,
    accessToken: localStorage.getItem("accessToken") || null,
@@ -44,6 +46,32 @@ class AuthService extends HttpInterceptor {
          });
       },
    };
+
+   deleteNotification = {
+      api: createAsyncThunk("deleteNotification", async (paylaod: { id?: string; all?: boolean }, thunkAPI) => {
+         try {
+            const { data } = await this.http.delete(ENDPOINTS.USER.DELETE_NOTIFICATIONS, {
+               params: paylaod,
+            });
+            return data;
+         } catch (error) {
+            return thunkAPI.rejectWithValue(this.errorMessage(error));
+         }
+      }),
+      reducer(builder: ActionReducerMapBuilder<typeof initialState>) {
+         builder.addCase(this.api.pending, (state) => {
+            state.loadings.deleteNotification = true;
+         });
+         builder.addCase(this.api.fulfilled, (state, action) => {
+            state.loadings.deleteNotification = false;
+            state.notifications = action.payload?.data.notifications;
+         });
+         builder.addCase(this.api.rejected, (state) => {
+            state.loadings.deleteNotification = false;
+         });
+      },
+   };
+
    getFcmToken = {
       api: createAsyncThunk("getFcmToken*", async (_, thunkAPI) => {
          try {
@@ -241,6 +269,7 @@ class AuthService extends HttpInterceptor {
          this.updateProfile.reducer(builder);
          this.updateRingtone.reducer(builder);
          this.getFcmToken.reducer(builder);
+         this.deleteNotification.reducer(builder);
       },
    });
    actions = this.slice.actions;
