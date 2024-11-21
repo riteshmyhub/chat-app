@@ -16,7 +16,7 @@ export default async function LogoutController(req: Req, res: Response, next: Ne
       if (!user) {
          return next(createHttpError.NotFound("User not found"));
       }
-      user.fcm_token = null;
+      user.deviceToken = null;
       await user.save();
       res.cookie("accessToken", "", { maxAge: 0 });
       res.status(200).json({

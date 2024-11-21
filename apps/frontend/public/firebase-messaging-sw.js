@@ -24,6 +24,7 @@ if (messaging) {
          data: {
             date: payload.data?.date,
             url: payload.data?.url,
+            notificationId: payload.data?.notificationId,
          },
       });
    });

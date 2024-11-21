@@ -5,7 +5,7 @@ import { isValidObjectId } from "mongoose";
 
 type ReqBody = {};
 
-type ReqQuery = { id: string; all: "true" };
+type ReqQuery = { notificationId: string; all: "true" };
 
 type ReqParms = {};
 
@@ -13,15 +13,11 @@ type Req = Request<ReqParms, {}, ReqBody, ReqQuery>;
 
 export default async function DeleteNotificationController(req: Req, res: Response, next: NextFunction) {
    try {
-      const { id, all } = req.query;
-
-      const quary =  all === "true" //
+      const { notificationId, all } = req.query;
+      const quary = all === "true" //
             ? { $set: { notifications: [] } }
-            : { $pull: { notifications: { _id: id } } };
+            : { $pull: { notifications: { notificationId } } };
 
-      if (all !== "true" && (!id || !isValidObjectId(id))) {
-         return next(createHttpError.BadRequest("Invalid notification ID"));
-      }
       const user = await User.findByIdAndUpdate(req.user?.id, quary, { new: true }).select("+notifications");
 
       if (!user) {

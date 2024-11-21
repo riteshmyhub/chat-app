@@ -5,7 +5,7 @@ import User from "../../../models/user.model";
 import { createJwtLoginToken } from "../../../libs/jwt";
 import { Types } from "mongoose";
 
-type ReqBody = { email: string; password: string; fcmToken: string };
+type ReqBody = { email: string; password: string; deviceToken: string };
 
 type ReqQuery = {};
 
@@ -15,11 +15,11 @@ type Req = Request<ReqParms, {}, ReqBody, ReqQuery>;
 
 export default async function LoginController(req: Req, res: Response, next: NextFunction) {
    try {
-      const { email, password, fcmToken } = req.body;
-      if (!email || !password || !fcmToken) {
-         return next(createHttpError.BadRequest("email , password ,fcmToken  required!"));
+      const { email, password, deviceToken } = req.body;
+      if (!email || !password || !deviceToken) {
+         return next(createHttpError.BadRequest("email , password ,deviceToken  required!"));
       }
-      const user = await User.findOne({ email }).select("+password +fcm_token");
+      const user = await User.findOne({ email }).select("+password +deviceToken");
       if (!user) {
          return next(createHttpError.NotFound("entry not exist"));
       }
@@ -27,10 +27,10 @@ export default async function LoginController(req: Req, res: Response, next: Nex
       if (!match) {
          return next(createHttpError.Unauthorized());
       }
-      user.fcm_token = fcmToken;
+      user.deviceToken = deviceToken;
       await user.save();
 
-      const tokenData = { _id: user?._id, deviceToken: user?.fcm_token };
+      const tokenData = { _id: user?._id, deviceToken: user?.deviceToken };
       const accessToken = createJwtLoginToken(tokenData, res);
 
       res.status(200).json({

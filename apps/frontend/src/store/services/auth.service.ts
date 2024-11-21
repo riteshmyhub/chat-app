@@ -48,7 +48,7 @@ class AuthService extends HttpInterceptor {
    };
 
    deleteNotification = {
-      api: createAsyncThunk("deleteNotification", async (paylaod: { id?: string; all?: boolean }, thunkAPI) => {
+      api: createAsyncThunk("deleteNotification", async (paylaod: { notificationId?: string; all?: boolean }, thunkAPI) => {
          try {
             const { data } = await this.http.delete(ENDPOINTS.USER.DELETE_NOTIFICATIONS, {
                params: paylaod,
@@ -124,8 +124,8 @@ class AuthService extends HttpInterceptor {
    login = {
       api: createAsyncThunk("login", async (payload: any, thunkAPI) => {
          try {
-            const fcmToken = (thunkAPI.getState() as any)?.auth?.fcmToken;
-            const { data } = await this.http.post(ENDPOINTS.AUTH.LOGIN, { ...payload, fcmToken });
+            const deviceToken = (thunkAPI.getState() as any)?.auth?.fcmToken;
+            const { data } = await this.http.post(ENDPOINTS.AUTH.LOGIN, { ...payload, deviceToken });
             return data;
          } catch (error) {
             return thunkAPI.rejectWithValue(this.errorMessage(error));

@@ -14,41 +14,35 @@ type Param = {
 
 export default async function FirebaseNotification({ userIds, title, body, url, imageUrl, data }: Param) {
    try {
-      const users = await User.find({ _id: { $in: userIds } }).select("+fcm_token +notifications");
+      const users = await User.find({ _id: { $in: userIds } }).select("+deviceToken +notifications");
 
-      if (!users.length) {
-         return null; // No users found
-      }
+      if (!users.length) return null;
+
       const dynaminUrl = url ? (url?.startsWith("http") ? url : `https://chat-app-onh1.onrender.com${url}`) : "https://chat-app-onh1.onrender.com";
-      const tokens: string[] = [];
-      users.forEach((user) => {
-         if (user.fcm_token) {
-            tokens.push(user.fcm_token);
-            user.notifications.push({ title, body, url: dynaminUrl });
-         }
-      });
 
-      if (!tokens.length) {
-         return null;
-      }
-      const messages: Message[] = tokens.map((token) => ({
-         token,
-         notification: {
-            title: title,
-            body: body,
-            ...(imageUrl ? { imageUrl } : {}),
-         },
+      const tokensWithUid = users
+         .filter((user) => user.deviceToken)
+         .map((user) => {
+            const notificationId = uuidv4();
+            user.notifications.push({ notificationId, title, body, url: dynaminUrl });
+            return { token: user.deviceToken, notificationId };
+         });
+
+      if (!tokensWithUid.length) return null;
+
+      const messages: any[] = tokensWithUid.map((item) => ({
+         token: item.token,
+         notification: { title: title, body: body },
          data: {
             date: new Date().toISOString(),
             url: dynaminUrl,
-            uid: uuidv4(),
+            notificationId: item.notificationId,
             ...data,
          },
       }));
 
       const responses = await Promise.all(messages.map((message) => admin.messaging().send(message)));
       await Promise.all(users.map((user) => user.save()));
-
       return responses;
    } catch (error) {
       return null; // Return null on error
