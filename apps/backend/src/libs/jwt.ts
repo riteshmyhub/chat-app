@@ -12,7 +12,7 @@ export function createJwtLoginToken(tokenData: TokenData, res: Response) {
    const [value, unit] = String(process.env.TOKEN_EXPIRES_IN)?.split("-");
    const token = jwt.sign(tokenData, process.env.JWT_SECRET_KEY as string, {
       expiresIn: `${value}${unit}`,
-   }); 
+   });
    if (process.env.AUTH_MODE === "HTTP_COOKIE") {
       res.cookie("accessToken", token, {
          expires: new Date(Date.now() + Number(value) * 60 * 1000),
@@ -30,14 +30,14 @@ export async function verifyToken(accessToken: string) {
       const verifyUser: any = jwt.verify(accessToken, process.env.JWT_SECRET_KEY as string);
 
       const user = await User.findById(verifyUser?._id) //
-         .select("-__v +fcm_token")
+         .select("-__v +deviceToken")
          .populate("setting.notification_sound")
          .populate("setting.received_message_sound")
          .populate("setting.send_message_sound");
       if (!user) {
          throw createHttpError.Unauthorized("User not found");
       }
-      if (user.fcm_token !== verifyUser?.deviceToken) {
+      if (user.deviceToken !== verifyUser?.deviceToken) {
          throw createHttpError.Unauthorized("Unauthorized devive");
       }
       return user;

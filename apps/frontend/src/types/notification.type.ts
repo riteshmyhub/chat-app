@@ -1,6 +1,5 @@
 export interface INotification {
-   _id: string;
-   messageId: string;
+   notificationId: string;
    title?: string;
    date: string;
    body?: string;

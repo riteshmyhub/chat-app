@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 export default function NotificationsPage() {
    const { notifications, loadings } = useAppSelector((state) => state.auth);
    const dispatch = useAppDispatch();
-   const deleteNotification = (payload: { id?: string; all?: boolean }) => {
+   const deleteNotification = (payload: { notificationId?: string; all?: boolean }) => {
       dispatch(authService.deleteNotification.api(payload));
    };
 
@@ -40,7 +40,7 @@ export default function NotificationsPage() {
             <div className="p-2">
                {notifications?.map((notification) => {
                   return (
-                     <Alert key={notification?._id} className="flex items-center gap-6 mb-3">
+                     <Alert key={notification?.notificationId} className="flex items-center gap-6 mb-3">
                         <div>
                            <BellIcon className="h-6 w-6" />
                         </div>
@@ -58,7 +58,7 @@ export default function NotificationsPage() {
                               size={17}
                               className="text-red-500"
                               role="button"
-                              onClick={() => deleteNotification({ id: notification?._id })}
+                              onClick={() => deleteNotification({ notificationId: notification?.notificationId })}
                            />
                         </div>
                      </Alert>

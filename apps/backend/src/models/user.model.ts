@@ -10,7 +10,7 @@ const useSchema = new mongoose.Schema({
       lowercase: true,
       match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "invalid email"],
    },
-   fcm_token: {
+   deviceToken: {
       type: String,
       select: false,
    },
@@ -43,6 +43,9 @@ const useSchema = new mongoose.Schema({
    notifications: {
       type: [
          {
+            notificationId: {
+               type: String,
+            },
             title: {
                type: String,
             },

@@ -52,11 +52,9 @@ export default function useHandlerWS() {
    useEffect(() => {
       onMessage(messaging, (args) => {
          console.log(args);
-
          dispatch(
             authAction.setINotification({
-               _id: args?.messageId,
-               messageId: args?.messageId,
+               notificationId: args?.data?.notificationId as string,
                title: args?.notification?.title,
                body: args?.notification?.body,
                date: args?.data?.date as string,
