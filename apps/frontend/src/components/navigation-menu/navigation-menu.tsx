@@ -7,7 +7,8 @@ import { Image } from "../image/Image";
 
 export function NavigationMenu() {
    const { unreadMessages } = useAppSelector((state) => state.chat);
-   const { authUser, notifications } = useAppSelector((state) => state.auth);
+   const { authUser } = useAppSelector((state) => state.auth);
+   const { notifications } = useAppSelector((state) => state.notification);
    const groupsMessages = unreadMessages?.filter((message) => message.groupChat);
    const messages = unreadMessages?.filter((message) => !message.groupChat);
    const location = useLocation();

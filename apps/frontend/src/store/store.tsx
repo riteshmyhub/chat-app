@@ -7,6 +7,7 @@ import { SplashScreen } from "@/components/splash-screen/splash-screen";
 import { contactReducer, contactService } from "./services/contect.service";
 import { chatReducer } from "./services/chat.service";
 import { channelReducer, channelService } from "./services/channel.service";
+import { notificationReducer, notificationService } from "./services/notification.service";
 
 export const store = configureStore({
    reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
       contact: contactReducer,
       chat: chatReducer,
       channel: channelReducer,
+      notification: notificationReducer,
    },
    middleware(getDefaultMiddleware) {
       return getDefaultMiddleware().concat(toastMiddleware);
@@ -42,7 +44,7 @@ function AppProvider({ children }: Props) {
    const { loadings, accessToken } = useAppSelector((state) => state.auth);
 
    useEffect(() => {
-      dispatch(authService.getFcmToken.api());
+      dispatch(notificationService.getDeviceToken.api());
       return () => {};
    }, []);
 
@@ -51,7 +53,7 @@ function AppProvider({ children }: Props) {
          dispatch(authService.getSession.api());
          dispatch(contactService.getContacts.api());
          dispatch(channelService.getChannels.api());
-         dispatch(authService.getNotifications.api());
+         dispatch(notificationService.getNotifications.api());
       }
       return () => {};
    }, [accessToken]);
