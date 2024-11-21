@@ -1,7 +1,7 @@
-import { authAction } from "@/store/services/auth.service";
 import { channelService } from "@/store/services/channel.service";
 import { chatActions } from "@/store/services/chat.service";
 import { contactService } from "@/store/services/contect.service";
+import { notificationAction } from "@/store/services/notification.service";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { IMessage } from "@/types/chat.type";
 import { messaging } from "@/utils/firebase/config.firebase";
@@ -53,7 +53,7 @@ export default function useHandlerWS() {
       onMessage(messaging, (args) => {
          console.log(args);
          dispatch(
-            authAction.setINotification({
+            notificationAction.setINotification({
                notificationId: args?.data?.notificationId as string,
                title: args?.notification?.title,
                body: args?.notification?.body,

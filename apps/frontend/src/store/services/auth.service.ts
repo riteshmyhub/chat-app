@@ -1,10 +1,8 @@
-import { INotification, IRingtone } from "@/types/notification.type";
+import { IRingtone } from "@/types/notification.type";
 import HttpInterceptor from "../interceptors/http.interceptor";
 import { IUser } from "@/types/user.type";
-import { ActionReducerMapBuilder, createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ActionReducerMapBuilder, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import ENDPOINTS from "../endpoints/endpoints";
-import { getToken } from "firebase/messaging";
-import { messaging } from "@/utils/firebase/config.firebase";
 
 const initialState = {
    loadings: {
@@ -14,92 +12,15 @@ const initialState = {
       logout: false,
       updateProfile: false,
       updateRingtone: false,
-      getFcmToken: true,
-      getNotifications: true,
-      deleteNotification: false,
-      deleteAllNotification: false,
    },
-   fcmToken: null as string | null,
    accessToken: localStorage.getItem("accessToken") || null,
    authUser: null as IUser | null,
-   notifications: [] as INotification[],
    appSettings: null as {
       ringtones: IRingtone[];
    } | null,
 };
 
 class AuthService extends HttpInterceptor {
-   getNotifications = {
-      api: createAsyncThunk("getNotifications*", async (_) => {
-         return (await this.http.get(ENDPOINTS.USER.GET_NOTIFICATIONS)).data;
-      }),
-      reducer(builder: ActionReducerMapBuilder<typeof initialState>) {
-         builder.addCase(this.api.pending, (state) => {
-            state.loadings.getNotifications = true;
-         });
-         builder.addCase(this.api.fulfilled, (state, action) => {
-            state.loadings.getNotifications = false;
-            state.notifications = action.payload?.data.notifications;
-         });
-         builder.addCase(this.api.rejected, (state) => {
-            state.loadings.getNotifications = false;
-         });
-      },
-   };
-
-   deleteNotification = {
-      api: createAsyncThunk("deleteNotification", async (paylaod: { notificationId?: string; all?: boolean }, thunkAPI) => {
-         try {
-            const { data } = await this.http.delete(ENDPOINTS.USER.DELETE_NOTIFICATIONS, {
-               params: paylaod,
-            });
-            return data;
-         } catch (error) {
-            return thunkAPI.rejectWithValue(this.errorMessage(error));
-         }
-      }),
-      reducer(builder: ActionReducerMapBuilder<typeof initialState>) {
-         builder.addCase(this.api.pending, (state) => {
-            state.loadings.deleteNotification = true;
-         });
-         builder.addCase(this.api.fulfilled, (state, action) => {
-            state.loadings.deleteNotification = false;
-            state.notifications = action.payload?.data.notifications;
-         });
-         builder.addCase(this.api.rejected, (state) => {
-            state.loadings.deleteNotification = false;
-         });
-      },
-   };
-
-   getFcmToken = {
-      api: createAsyncThunk("getFcmToken*", async (_, thunkAPI) => {
-         try {
-            const permission = await Notification.requestPermission();
-            if (permission !== "granted") {
-               throw new Error("Permission not granted");
-            }
-            const vapidKey = "BPSK7k9CTrLfDOLaPF4XY4KfegsaX0S_AT4btgpesXWbhLLK7yVZ4I8Ht4waE8kCWjSKZai-SL-i7zOLQ-aIduc";
-            const fcmToken = await getToken(messaging, { vapidKey: vapidKey });
-            return { data: { fcmToken } };
-         } catch (error) {
-            return thunkAPI.rejectWithValue(this.errorMessage(error));
-         }
-      }),
-      reducer(builder: ActionReducerMapBuilder<typeof initialState>) {
-         builder.addCase(this.api.pending, (state) => {
-            state.loadings.getFcmToken = true;
-         });
-         builder.addCase(this.api.fulfilled, (state, action) => {
-            state.loadings.getFcmToken = false;
-            state.fcmToken = action.payload?.data.fcmToken;
-         });
-         builder.addCase(this.api.rejected, (state) => {
-            state.loadings.getFcmToken = false;
-         });
-      },
-   };
-
    register = {
       api: createAsyncThunk("register", async (payload: { email: string; password: string; confirmPassword: string }, thunkAPI) => {
          try {
@@ -124,7 +45,7 @@ class AuthService extends HttpInterceptor {
    login = {
       api: createAsyncThunk("login", async (payload: any, thunkAPI) => {
          try {
-            const deviceToken = (thunkAPI.getState() as any)?.auth?.fcmToken;
+            const deviceToken = (thunkAPI.getState() as any)?.notification?.deviceToken;
             const { data } = await this.http.post(ENDPOINTS.AUTH.LOGIN, { ...payload, deviceToken });
             return data;
          } catch (error) {
@@ -255,21 +176,14 @@ class AuthService extends HttpInterceptor {
    private slice = createSlice({
       name: "AuthService",
       initialState: initialState,
-      reducers: {
-         setINotification(state, action: PayloadAction<INotification>) {
-            state.notifications = [action.payload, ...state.notifications];
-         },
-      },
+      reducers: {},
       extraReducers: (builder) => {
-         this.getNotifications.reducer(builder);
          this.login.reducer(builder);
          this.getSession.reducer(builder);
          this.logout.reducer(builder);
          this.register.reducer(builder);
          this.updateProfile.reducer(builder);
          this.updateRingtone.reducer(builder);
-         this.getFcmToken.reducer(builder);
-         this.deleteNotification.reducer(builder);
       },
    });
    actions = this.slice.actions;

@@ -1,16 +1,23 @@
 import { Navbar } from "@/components";
-import { authService } from "@/store/services/auth.service";
+import { notificationService } from "@/store/services/notification.service";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { Alert, AlertDescription, AlertTitle } from "@/ui/alert";
 import { Button } from "@/ui/button";
+import { Skeleton } from "@/ui/skeleton";
 import { BellIcon, XIcon } from "lucide-react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function NotificationsPage() {
-   const { notifications, loadings } = useAppSelector((state) => state.auth);
+   const { notifications, loadings } = useAppSelector((state) => state.notification);
+   const [currentID, setCurrentID] = useState<string | null | undefined>(null);
    const dispatch = useAppDispatch();
+
    const deleteNotification = (payload: { notificationId?: string; all?: boolean }) => {
-      dispatch(authService.deleteNotification.api(payload));
+      setCurrentID(payload.notificationId);
+      dispatch(notificationService.deleteNotification.api(payload))
+         .unwrap()
+         .finally(() => setCurrentID(null));
    };
 
    if (loadings.getNotifications) {
@@ -39,8 +46,11 @@ export default function NotificationsPage() {
             />
             <div className="p-2">
                {notifications?.map((notification) => {
+                  if (currentID === notification.notificationId) {
+                     return <Skeleton className="h-16" />;
+                  }
                   return (
-                     <Alert key={notification?.notificationId} className="flex items-center gap-6 mb-3">
+                     <Alert key={notification?.notificationId} className="flex items-center gap-6 mb-3 relative">
                         <div>
                            <BellIcon className="h-6 w-6" />
                         </div>
@@ -58,7 +68,11 @@ export default function NotificationsPage() {
                               size={17}
                               className="text-red-500"
                               role="button"
-                              onClick={() => deleteNotification({ notificationId: notification?.notificationId })}
+                              onClick={() =>
+                                 deleteNotification({
+                                    notificationId: notification?.notificationId,
+                                 })
+                              }
                            />
                         </div>
                      </Alert>
