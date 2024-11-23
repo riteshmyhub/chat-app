@@ -16,7 +16,7 @@ type Req = Request<ReqParms, {}, ReqBody, ReqQuery>;
 export default async function GetMessagesController(req: Req, res: Response, next: NextFunction) {
    try {
       const { id } = req.params;
-      
+
       const messagesRef = await firebaseDB.collection("messages");
       const querySnapshot = await messagesRef.where("chat", "==", id).orderBy("createdAt").get();
       const messages = querySnapshot.docs.map((doc) => ({

@@ -18,6 +18,7 @@ export interface IMessage {
    createdAt: Date;
    creator: string;
    attachments: IAttachment[];
+   read: boolean;
 }
 
 export interface IChatDetails {

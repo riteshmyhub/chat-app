@@ -1,7 +1,7 @@
-import { dateFromNow } from "@/pipes";
 import { IAttachment, IMessage } from "@/types/chat.type";
 import { DownloadIcon } from "lucide-react";
 import { AudioPlayer } from "../audio-player/AudioPlayer";
+import moment from "moment";
 
 type Props = {
    message: IMessage;
@@ -18,7 +18,7 @@ export default function Message({ message, me, isGroupChat }: Props) {
                   <img src={message?.sender?.avatar} alt="avatar" className="rounded-full h-10 w-10 object-cover" />
                </div>
             )}
-            <div style={{ background: me ? "#6876AA" : "#ffffff" }}>
+            <div>
                {!me && isGroupChat && (
                   <small className="text-red-600 block text-start pb-2 text-xs font-semibold p-2">
                      {/*  */}
@@ -26,13 +26,15 @@ export default function Message({ message, me, isGroupChat }: Props) {
                      {/*  */}
                   </small>
                )}
-               <MediaViewer attachments={message?.attachments} />
-               <span className="block p-2">
-                  <span className="block text-sm text-start break-words whitespace-pre-wrap" style={{ maxWidth: "450px" }}>
-                     {message.content}
+               <div className="p-2 rounded-xl" style={{ background: me ? "#6876AA" : "#ffffff" }}>
+                  <MediaViewer attachments={message?.attachments} />
+                  <span className="block p-2">
+                     <span className="block text-sm text-start break-words whitespace-pre-wrap" style={{ maxWidth: "450px" }}>
+                        {message.content}
+                     </span>
                   </span>
-                  <small className="text-xs">&nbsp;&nbsp;&nbsp;&nbsp;{dateFromNow(message.createdAt)}</small>
-               </span>
+               </div>
+               <small className="text-xs text-black block my-2 text-end">&nbsp;&nbsp;&nbsp;&nbsp;{moment(message.createdAt).format("LT")}</small>
             </div>
          </span>
       </div>

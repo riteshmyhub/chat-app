@@ -50,7 +50,8 @@ export function SendMessage({ chatDetails }: Props) {
          content: message,
          members: chatDetails.members.map((member) => member._id),
          groupChat: chatDetails.groupChat,
-         attachments: upload?.files?.map((file) => ({
+         attachments:
+            upload?.files?.map((file) => ({
                src: file.base64,
                type: file.type,
                size: file.size,
