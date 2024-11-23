@@ -1,18 +1,18 @@
-import { IUser } from "./user.type";
+import { IProfile } from "./user.type";
+
 
 export interface IChannel {
    _id: string;
    name: string;
-   creator: string;
+   admin: string;
    about: string;
-   members: [
-      {
-         profile: IUser["profile"];
-         _id: string;
-         email: string;
-      }
-   ];
+   members: IMember[];
    createdAt: Date;
    updatedAt: Date;
    avatar: string;
+}
+export interface IMember {
+   profile: IProfile;
+   _id: string;
+   email: string;
 }

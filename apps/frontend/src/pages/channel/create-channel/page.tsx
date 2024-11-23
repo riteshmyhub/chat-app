@@ -2,7 +2,7 @@ import { DebounceSearch, Loading } from "@/components";
 import { channelService } from "@/store/services/channel.service";
 import { contactService } from "@/store/services/contect.service";
 import { useAppDispatch, useAppSelector } from "@/store/store";
-import { IChatContact, IMember } from "@/types/chat.type";
+import { IMember } from "@/types/channel.type";
 import { Badge } from "@/ui/badge";
 import { Button } from "@/ui/button";
 import { Input } from "@/ui/input";
@@ -11,7 +11,7 @@ import { Label } from "@radix-ui/react-label";
 import { CameraIcon, LoaderCircleIcon, XIcon } from "lucide-react";
 import React, { useState } from "react";
 
-type Props = { members: IChatContact[]; removeMembers: (id: string) => void };
+type Props = { members: IMember[]; removeMembers: (id: string) => void };
 
 const SeletedMembers = ({ members, removeMembers }: Props) => {
    return (
@@ -38,7 +38,7 @@ export default function CreateChannelPage({ onClose }: { onClose: Function }) {
       avatar: "",
       name: "",
       about: "",
-      members: [] as IChatContact[],
+      members: [] as IMember[],
    });
 
    const removeMembers = (id: string) => {
@@ -50,7 +50,7 @@ export default function CreateChannelPage({ onClose }: { onClose: Function }) {
       return list;
    };
 
-   const change = (event: React.ChangeEvent<HTMLInputElement & HTMLTextAreaElement>, user?: IChatContact) => {
+   const change = (event: React.ChangeEvent<HTMLInputElement & HTMLTextAreaElement>, user?: IMember) => {
       const { checked, name, value, type, files } = event.target;
       switch (type) {
          case "checkbox":

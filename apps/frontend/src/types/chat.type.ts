@@ -1,3 +1,5 @@
+import { IMember } from "./channel.type";
+
 export interface IAttachment {
    src: string | undefined;
    type: string;
@@ -26,17 +28,4 @@ export interface IChatDetails {
    members: IMember[];
    about: string;
    creator: string;
-}
-
-export interface IMember {
-   profile: IProfile;
-   _id: string;
-   email: string;
-}
-
-export interface IProfile {
-   avatar: string;
-   first_name: string;
-   last_name: string;
-   about?: string;
 }
