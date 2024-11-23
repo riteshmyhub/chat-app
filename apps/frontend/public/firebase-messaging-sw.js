@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-globals */
-importScripts("https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js");
-importScripts("https://www.gstatic.com/firebasejs/8.2.0/firebase-messaging.js");
+importScripts("https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js");
+importScripts("https://www.gstatic.com/firebasejs/10.13.2/firebase-messaging-compat.js");
 
 // Initialize Firebase in the Service Worker
 const firebaseConfig = {
@@ -16,19 +16,17 @@ firebase.initializeApp(firebaseConfig);
 
 const messaging = firebase.messaging();
 
-if (messaging) {
-   messaging.onBackgroundMessage((payload) => {
-      self.registration.showNotification(payload.notification.title, {
-         body: payload.notification.body,
-         icon: payload.notification.icon, // Path to your app's icon
-         data: {
-            date: payload.data?.date,
-            url: payload.data?.url,
-            notificationId: payload.data?.notificationId,
-         },
-      });
+messaging.onBackgroundMessage((payload) => {
+   self.registration.showNotification(payload.notification.title, {
+      body: payload.notification.body,
+      icon: "/favicon.svg", // Path to your app's icon
+      data: {
+         date: payload.data?.date,
+         url: payload.data?.url,
+         notificationId: payload.data?.notificationId,
+      },
    });
-}
+});
 // Handle notification click
 self.addEventListener("notificationclick", (event) => {
    const notification = event.notification;
