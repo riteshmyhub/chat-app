@@ -21,7 +21,7 @@ export function Navbar({ avatar, title, description, extra, event, back }: Props
                )}
                {avatar && ( //
                   <div>
-                     <img src={avatar} alt="avatar" className="block rounded-full h-[60px] w-[60px] object-cover mx-auto border" />
+                     <img src={avatar} alt="avatar" className="block rounded-full h-[60px] w-[60px] object-contain mx-auto border" />
                   </div>
                )}
                <div>

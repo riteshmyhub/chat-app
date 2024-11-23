@@ -64,14 +64,14 @@ io.on("connection", (socket) => {
             }
             await FirebaseNotification({
                userIds: [contact?.person],
-               title: `${message?.sender?.name} send new messages`,
+               title: `"${message?.sender?.name}" send new messages`,
                body: content || `${attachments?.length || 0} attachment(s) sent.`,
                url: "/contacts" + "/" + chat,
             });
          } else {
             await FirebaseNotification({
                userIds: members,
-               title: `${message?.sender?.name} send new messages from channel`,
+               title: `"${message?.sender?.name}" send new messages from channel`,
                body: content || `${attachments?.length || 0} attachment(s) sent.`,
                url: "/channels" + "/" + chat,
             });

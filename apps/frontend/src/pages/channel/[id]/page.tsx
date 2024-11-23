@@ -55,19 +55,28 @@ export default function SingleChannelPage() {
       return "no chat";
    }
 
+   const members = chatDetails?.members;
+   const limit = 3;
+   const showMembers = members?.length > limit ? members.slice(0, limit) : members;
+   const remaining = members?.length > limit ? ` + ${members?.length - limit} more` : "";
    return (
       <AsideMenu ref={asideRef} position="right" aside={<ChannelDetailsPage chatDetails={chatDetails} />}>
          <Navbar //
             avatar={chatDetails?.avatar || "/images/group-chat-placeholder.png"}
             title={<b onClick={toggleAside}>{chatDetails.name}</b>}
             description={
-               <>
+               typing ? ( //
+                  <p className="text-xs">{typing}</p>
+               ) : (
                   <p className="text-xs">
-                     {typing //
-                        ? typing
-                        : chatDetails?.members.map((member) => `${member.profile.first_name} ${member.profile.last_name}`).join(" , ")}
+                     {showMembers
+                        .map(({ profile }) => {
+                           return `${profile?.first_name} ${profile?.last_name}`;
+                        })
+                        .join(" ,")
+                        .concat(remaining)}
                   </p>
-               </>
+               )
             }
             back={"/channels"}
          />

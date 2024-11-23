@@ -2,9 +2,11 @@ import { Navbar } from "@/components";
 import { notificationService } from "@/store/services/notification.service";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { Alert, AlertDescription, AlertTitle } from "@/ui/alert";
+import { Badge } from "@/ui/badge";
 import { Button } from "@/ui/button";
 import { Skeleton } from "@/ui/skeleton";
 import { BellIcon, XIcon } from "lucide-react";
+import moment from "moment";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -32,6 +34,7 @@ export default function NotificationsPage() {
          </div>
       );
    }
+   let lastDate: null | string = null;
    return (
       <>
          <div className="overflow-y-auto h-full">
@@ -49,33 +52,49 @@ export default function NotificationsPage() {
                   if (currentID === notification.notificationId) {
                      return <Skeleton className="h-16" />;
                   }
+                  const notificationDate = moment(notification.date).format("YYYY-MM-DD");
+                  const showDate = notificationDate !== lastDate;
+                  lastDate = notificationDate;
+
+                  const isToday = moment(notification.date).isSame(new Date(), "day");
+                  const isYesterday = moment(notification.date).isSame(moment().subtract(1, "day"), "day");
                   return (
-                     <Alert key={notification?.notificationId} className="flex items-center gap-6 mb-3 relative">
-                        <div>
-                           <BellIcon className="h-6 w-6" />
-                        </div>
-                        <div className="w-full">
-                           <div className="flex justify-between">
-                              <AlertTitle className="hover:underline">
-                                 <Link to={`${notification?.url}`}>{notification?.title}</Link>
-                              </AlertTitle>
-                              <div className="text-xs text-gray-500">{new Date(notification.date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</div>
+                     <>
+                        {" "}
+                        {showDate && (
+                           <div className="text-center pb-3" key={`date-${notificationDate}`}>
+                              <Badge variant="outline" className="bg-white">
+                                 {isToday ? "Today" : isYesterday ? "Yesterday" : moment(notification.date).format("LL")}
+                              </Badge>
                            </div>
-                           <AlertDescription>{notification?.body}.</AlertDescription>
-                        </div>
-                        <div>
-                           <XIcon //
-                              size={17}
-                              className="text-red-500"
-                              role="button"
-                              onClick={() =>
-                                 deleteNotification({
-                                    notificationId: notification?.notificationId,
-                                 })
-                              }
-                           />
-                        </div>
-                     </Alert>
+                        )}
+                        <Alert key={notification?.notificationId} className="flex items-center gap-6 mb-3 relative">
+                           <div>
+                              <BellIcon className="h-6 w-6" />
+                           </div>
+                           <div className="w-full">
+                              <div className="flex justify-between">
+                                 <AlertTitle className="hover:underline">
+                                    <Link to={`${notification?.url}`}>{notification?.title}</Link>
+                                 </AlertTitle>
+                                 <div className="text-xs text-gray-500">{new Date(notification.date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</div>
+                              </div>
+                              <AlertDescription>{notification?.body}.</AlertDescription>
+                           </div>
+                           <div>
+                              <XIcon //
+                                 size={17}
+                                 className="text-red-500"
+                                 role="button"
+                                 onClick={() =>
+                                    deleteNotification({
+                                       notificationId: notification?.notificationId,
+                                    })
+                                 }
+                              />
+                           </div>
+                        </Alert>
+                     </>
                   );
                })}
             </div>

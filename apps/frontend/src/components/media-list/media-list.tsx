@@ -19,7 +19,13 @@ export function MediaList() {
                   {mediaList?.slice(0, 3).map((media) => {
                      switch (true) {
                         case media.type.includes("image"):
-                           return <img src={media.src} alt={media.name} className="w-full h-[70px] border block object-contain" />;
+                           return (
+                              <img
+                                 src={media.src} //
+                                 alt={media.name}
+                                 className="w-full h-[70px] border block object-contain"
+                              />
+                           );
                         case media.type.includes("audio"):
                            return (
                               <div className="w-full h-[70px] bg-[#D1D5DB] flex items-center justify-center">
