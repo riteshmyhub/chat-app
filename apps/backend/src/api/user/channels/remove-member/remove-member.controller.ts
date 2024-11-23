@@ -3,7 +3,7 @@ import createHttpError from "http-errors";
 
 import { isValidObjectId } from "mongoose";
 import { SocketEmitter } from "../../../../socket/socket";
-import Chat from "../../../../models/chat.model";
+import Channel from "../../../../models/channel.model";
 import FirebaseNotification from "../../../../firebase/notification/notification";
 
 type ReqBody = {};
@@ -26,25 +26,31 @@ export default async function RemoveMemberController(req: Req, res: Response, ne
       if (!isValidObjectId(channelID) || !isValidObjectId(memberID)) {
          return next(createHttpError.BadRequest("Invalid channelID or memberID id"));
       }
-      const channel = await Chat.findOne({
+      const channel = await Channel.findOne({
          _id: channelID,
          members: memberID,
-         groupChat: true,
       }).populate("members", "profile _id email");
       if (!channel) {
          return next(createHttpError.BadRequest("channel not found or invalid member id"));
       }
-      if (channel.creator?.toString() !== req.user?._id?.toString()) {
+      if (channel.admin?.toString() !== req.user?._id?.toString()) {
          return next(createHttpError.BadRequest("your not admin!"));
       }
-      if (channel.creator?.toString() === memberID?.toString()) {
+      if (channel.admin?.toString() === memberID?.toString()) {
          return next(createHttpError.BadRequest("you are admin!"));
       }
       const members = channel?.members?.filter((member) => member?._id?.toString() !== memberID?.toString());
       channel.members = members;
       await channel.save();
 
-      SocketEmitter({ req: req, eventName: "REFRESH_CHANNEL", to: [...members, memberID] });
+      SocketEmitter({
+         req: req,
+         eventName: "REFRESH_CHANNEL",
+         to: [
+            ...channel.members.map((member) => member._id.toString()), //
+            memberID,
+         ],
+      });
 
       await Promise.all([
          FirebaseNotification({

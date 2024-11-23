@@ -6,6 +6,7 @@ import http from "http";
 import { AuthSocket } from "../middlewares/auth.middleware";
 import FirebaseNotification from "../firebase/notification/notification";
 import { firebaseDB } from "../firebase/firebase-admin-app";
+import User from "../models/user.model";
 
 const app = express();
 const server = http.createServer(app);
@@ -47,17 +48,34 @@ io.on("connection", (socket) => {
             createdAt: new Date().toISOString(),
             attachments: attachments ?? [],
          };
-         const userIds = members?.map((member: any) => member?._id);
-         const ids = getSocketIds(userIds);
+
+         const ids = getSocketIds(members);
+
          io.to(ids).emit("RECEIVER_MESSAGE", message);
 
-         await FirebaseNotification({
-            userIds: userIds?.filter((id: string) => id?.toString() !== socket?.user?._id?.toString()),
-            title: `${message?.sender?.name} send new messages ${groupChat ? "from channel" : ""}`,
-            body: content || `${attachments?.length || 0} attachment(s) sent.`,
-            url: groupChat ? "/channels" : "/contacts" + "/" + chat,
-         });
          await firebaseDB.collection("messages").add(message);
+         if (!groupChat) {
+            const contact = socket?.user?.contacts?.find((contact: any) => contact?.chatID === chat);
+            if (!Boolean(await User.exists({ _id: contact?.person, "contacts.chatID": chat }))) {
+               const user = await User.findById(contact?.person);
+               user?.contacts.push({ chatID: contact?.chatID, person: userID });
+               await user?.save();
+               io.to(getSocketIds([contact?.person])).emit("refresh_contacts");
+            }
+            await FirebaseNotification({
+               userIds: [contact?.person],
+               title: `${message?.sender?.name} send new messages`,
+               body: content || `${attachments?.length || 0} attachment(s) sent.`,
+               url: "/contacts" + "/" + chat,
+            });
+         } else {
+            await FirebaseNotification({
+               userIds: members,
+               title: `${message?.sender?.name} send new messages from channel`,
+               body: content || `${attachments?.length || 0} attachment(s) sent.`,
+               url: "/channels" + "/" + chat,
+            });
+         }
       } catch (error) {
          console.log(error);
       }

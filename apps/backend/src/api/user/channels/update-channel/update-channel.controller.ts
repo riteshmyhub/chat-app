@@ -3,7 +3,7 @@ import createHttpError from "http-errors";
 import { isValidObjectId } from "mongoose";
 import { bucket } from "../../../../libs/cloudinary";
 import { SocketEmitter } from "../../../../socket/socket";
-import Chat from "../../../../models/chat.model";
+import Channel from "../../../../models/channel.model";
 
 type ReqBody = { channelID: string; name: string; "members[]": string[]; about: string };
 
@@ -21,11 +21,11 @@ export default async function UpdateChannelController(req: Req, res: Response, n
       if (!channelID || !isValidObjectId(channelID)) {
          return next(createHttpError.BadRequest("Channel id is required or invaild"));
       }
-      const channel = await Chat.findOne({ _id: channelID, groupChat: true });
+      const channel = await Channel.findOne({ _id: channelID, groupChat: true });
       if (!channel) {
          return next(createHttpError.NotFound("Channel not found"));
       }
-      if (channel?.creator?.toString() !== req.user?._id.toString()) {
+      if (channel?.admin?.toString() !== req.user?._id.toString()) {
          return next(createHttpError.BadRequest("You are not channel admin"));
       }
       if (name) channel.name = name;

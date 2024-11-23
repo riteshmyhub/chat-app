@@ -4,7 +4,7 @@ import User from "../../../../models/user.model";
 import { bucket } from "../../../../libs/cloudinary";
 import { isValidObjectId } from "mongoose";
 import { SocketEmitter } from "../../../../socket/socket";
-import Chat from "../../../../models/chat.model";
+import Channel from "../../../../models/channel.model";
 import FirebaseNotification from "../../../../firebase/notification/notification";
 
 type ReqBody = { name: string; "members[]": string[]; about: string };
@@ -37,10 +37,9 @@ export default async function CreateChannelController(req: Req, res: Response, n
       }
       const membersWithReqUser = [...members, req?.user?._id?.toString()];
 
-      const newChannel = await new Chat({
+      const newChannel = await new Channel({
          name: name,
-         groupChat: true,
-         creator: req?.user?._id,
+         admin: req?.user?._id,
          members: membersWithReqUser,
          about: about,
       }).save();

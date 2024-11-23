@@ -14,7 +14,7 @@ export default function ContactDetailsPage({ chatDetails }: { chatDetails: IChat
    const deleteContact = (id: string) => {
       dispatch(contactService.deleteContact.api(id))
          .unwrap()
-         .then(() => navigate("/channels", { replace: true }))
+         .then(() => navigate("/contacts", { replace: true }))
          .catch((e) => e);
    };
 

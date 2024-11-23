@@ -34,8 +34,6 @@ export interface IMember {
    email: string;
 }
 
-export type IChatContact = IMember;
-
 export interface IProfile {
    avatar: string;
    first_name: string;

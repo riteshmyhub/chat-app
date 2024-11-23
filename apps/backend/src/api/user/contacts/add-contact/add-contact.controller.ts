@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import createHttpError from "http-errors";
 import { isValidObjectId, ObjectId } from "mongoose";
 import User from "../../../../models/user.model";
-import Chat from "../../../../models/chat.model";
 import { SocketEmitter } from "../../../../socket/socket";
 import FirebaseNotification from "../../../../firebase/notification/notification";
 
@@ -21,30 +20,25 @@ export default async function AddContactController(req: Req, res: Response, next
       if (!userID || !isValidObjectId(userID) || req.user?._id.toString() === userID.toString()) {
          return next(createHttpError.BadRequest("invaild user"));
       }
-      const user = await User.findById(userID);
+      const [person, me] = await Promise.all([
+         User.findById(userID), //
+         User.findById(req.user?._id),
+      ]);
 
-      if (!user || req.user?._id.toString() === userID.toString()) {
+      if (!person || req.user?._id.toString() === userID.toString()) {
          return next(createHttpError.NotFound("user not found"));
       }
-      const personWithAuthUser = [userID, req?.user?._id];
+      if (me?.contacts.some((contact) => contact?.person?.toString() === userID?.toString())) {
+         return next(createHttpError.BadRequest("Contact alrady exiest"));
+      }
+      const isMeInPersonContacts = person?.contacts.find((contact) => contact.person?.toString() === req.user?._id.toString());
 
-      const oneToOneChat = await new Chat({
-         groupChat: false,
-         creator: req?.user?._id,
-         members: personWithAuthUser,
-      });
-      await oneToOneChat.save();
+      const chatID = isMeInPersonContacts //
+         ? isMeInPersonContacts.chatID
+         : [me?._id.toString(), person._id.toString()].sort().join("-");
 
-      SocketEmitter({
-         req: req,
-         eventName: "refresh_contacts",
-         to: personWithAuthUser,
-      });
-      await FirebaseNotification({
-         userIds: [userID],
-         title: "New Contact Added",
-         body: `${req.user?.profile?.firstName || "Someone"} has added you as a contact.`,
-      });
+      me?.contacts.push({ chatID, person: userID });
+      await me?.save();
 
       res.status(201).json({
          message: "contact successfully added",

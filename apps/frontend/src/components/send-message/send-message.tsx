@@ -48,10 +48,9 @@ export function SendMessage({ chatDetails }: Props) {
       const payload = Object.seal({
          chat: chatDetails._id,
          content: message,
-         members: chatDetails.members,
+         members: chatDetails.members.map((member) => member._id),
          groupChat: chatDetails.groupChat,
-         attachments:
-            upload?.files?.map((file) => ({
+         attachments: upload?.files?.map((file) => ({
                src: file.base64,
                type: file.type,
                size: file.size,

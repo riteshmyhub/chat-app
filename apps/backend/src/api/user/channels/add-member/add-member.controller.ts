@@ -4,7 +4,7 @@ import { isValidObjectId, Types } from "mongoose";
 import { duplicateFinder } from "../../../../pipes";
 import User from "../../../../models/user.model";
 import { SocketEmitter } from "../../../../socket/socket";
-import Chat from "../../../../models/chat.model";
+import Channel from "../../../../models/channel.model";
 import FirebaseNotification from "../../../../firebase/notification/notification";
 
 type ReqBody = { channelID: string; members: string[] };
@@ -32,7 +32,7 @@ export default async function AddMembersController(req: Req, res: Response, next
       if (isDuplicateMember) {
          return next(createHttpError.BadRequest("Duplicate member ID found."));
       }
-      const channel = await Chat.findOne({ _id: channelID, groupChat: true }).populate("members", "profile _id email");
+      const channel = await Channel.findOne({ _id: channelID }).populate("members", "profile _id email");
 
       if (!channel) {
          return next(createHttpError.NotFound("Channel not found"));
@@ -46,6 +46,7 @@ export default async function AddMembersController(req: Req, res: Response, next
       }
       channel.members = [...channel.members, ...members] as Types.ObjectId[];
       await channel.save();
+
       SocketEmitter({ req: req, eventName: "REFRESH_CHANNEL", to: channel.members });
       const updatedChannel = await channel.populate("members", "profile _id email");
 
