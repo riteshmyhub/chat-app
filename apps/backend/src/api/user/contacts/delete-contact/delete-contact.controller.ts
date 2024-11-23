@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import createHttpError from "http-errors";
 import { isValidObjectId } from "mongoose";
 import User from "../../../../models/user.model";
-import Chat from "../../../../models/chat.model";
 import { SocketEmitter } from "../../../../socket/socket";
 
 type ReqBody = {};
@@ -16,18 +15,19 @@ type Req = Request<ReqParms, {}, ReqBody, ReqQuery>;
 export default async function DeleteContactController(req: Req, res: Response, next: NextFunction) {
    try {
       const { id } = req.params;
-      if (!id || !isValidObjectId(id)) {
-         return next(createHttpError.BadRequest("chatID required or invalid chatID!"));
+
+      const user = await User.findById(req.user._id);
+      if (!user) {
+         return next(createHttpError.InternalServerError());
       }
-      const chat = await Chat.findOne({ _id: id, members: req.user });
-      await chat?.deleteOne();
-
+      const contacts: any = user?.contacts?.filter((contact) => contact?.chatID !== id);
+      user.contacts = contacts;
+      await user.save();
       SocketEmitter({
-         req: req,
+         req,
          eventName: "refresh_contacts",
-         to: chat?.members,
+         to: [req.user._id],
       });
-
       res.status(200).json({
          message: "Contact deleted successfully",
          data: {},

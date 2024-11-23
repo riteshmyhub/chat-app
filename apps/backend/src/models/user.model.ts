@@ -1,6 +1,38 @@
 import mongoose, { Document, Types } from "mongoose";
 import { genSalt, hash } from "bcrypt";
 
+export interface IUser {
+   email: string;
+   deviceToken?: string;
+   password?: string;
+   profile?: {
+      avatar?: string;
+      first_name?: string;
+      last_name?: string;
+      about?: string;
+   };
+   contacts?: {
+      chatID?: string;
+      person: Types.ObjectId;
+   }[];
+   notifications?: {
+      notificationId?: string;
+      title?: string;
+      body?: string;
+      date?: Date;
+      url?: string;
+   }[];
+   setting?: {
+      theme?: string;
+      pin?: string;
+      notification_sound?: Types.ObjectId;
+      received_message_sound?: Types.ObjectId;
+      send_message_sound?: Types.ObjectId;
+   };
+   isSetup: boolean;
+   last_seen?: string;
+}
+
 const useSchema = new mongoose.Schema({
    email: {
       type: String,
@@ -36,8 +68,13 @@ const useSchema = new mongoose.Schema({
    },
    contacts: [
       {
-         type: mongoose.Schema.Types.ObjectId,
-         ref: "User",
+         chatID: {
+            type: String,
+         },
+         person: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+         },
       },
    ],
    notifications: {

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import createHttpError from "http-errors";
-import Chat from "../../../../models/chat.model";
+import User from "../../../../models/user.model";
 
 type ReqBody = {};
 
@@ -12,20 +12,17 @@ type Req = Request<ReqParms, {}, ReqBody, ReqQuery>;
 
 export default async function GetContactsController(req: Req, res: Response, next: NextFunction) {
    try {
-      const chat = await Chat.find({ members: req.user._id, groupChat: false }).populate("members", "profile _id email");
+      const user = await User.findById(req.user._id).populate("contacts.person", "profile _id email");
 
-      const contacts = chat.map((chat) => {
-         const person: any = chat?.members?.find((member) => member?._id.toString() !== req.user?._id.toString());
-         return {
-            _id: chat._id,
-            about: person?.profile?.about,
-            avatar: person?.profile?.avatar,
-            name: `${person?.profile?.first_name} ${person?.profile?.last_name}`,
-            members: chat.members,
-            email: person?.email,
-            creator: req.user?._id,
-         };
-      });
+      const contacts = user?.contacts?.map((contact: any) => ({
+         _id: contact?.person?._id,
+         chatID: contact?.chatID,
+         about: contact?.person?.profile?.about,
+         avatar: contact?.person?.profile?.avatar,
+         name: `${contact?.person?.profile?.first_name} ${contact?.person?.profile?.last_name}`,
+         email: contact?.person?.email,
+      }));
+
       res.status(200).json({
          success: true,
          data: { contacts },

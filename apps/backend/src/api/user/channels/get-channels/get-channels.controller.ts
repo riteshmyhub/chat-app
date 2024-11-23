@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import createHttpError from "http-errors";
-import Chat from "../../../../models/chat.model";
+import Channel from "../../../../models/channel.model";
 
 type ReqBody = {};
 
@@ -12,7 +12,7 @@ type Req = Request<ReqParms, {}, ReqBody, ReqQuery>;
 
 export default async function GetChannelsController(req: Req, res: Response, next: NextFunction) {
    try {
-      const channels = await Chat.find({ members: req?.user?._id, groupChat: true }).populate("members", "profile _id email");
+      const channels = await Channel.find({ members: req?.user?._id }).populate("members", "profile _id email");
 
       res.status(201).json({
          success: true,
