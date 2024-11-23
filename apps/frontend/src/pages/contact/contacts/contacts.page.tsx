@@ -44,19 +44,19 @@ export default function ContactsPage() {
          {contacts.length ? (
             <React.Fragment>
                {contacts?.map((contact, idx) => {
-                  const unseenMessages = unreadMessages?.filter((message) => message?.chat === contact?._id);
+                  const unseenMessages = unreadMessages?.filter((message) => message?.chat === contact?.chatID);
                   const activeClass = id === contact._id ? "bg-[#F0F2F5]" : "bg-white";
                   return (
-                     <Link role="button" to={`/contacts/${contact._id}`} key={`contact-${idx}`} className={`flex items-center p-2 px-3 gap-3 hover:bg-[#F0F2F5] border-b-[1px] ${activeClass}`}>
+                     <Link role="button" to={`/contacts/${contact.chatID}`} key={`contact-${idx}`} className={`flex items-center p-2 px-3 gap-3 hover:bg-[#F0F2F5] border-b-[1px] ${activeClass}`}>
                         <div className="basis-1/4 flex justify-center">
                            <span className="relative inline-block">
                               <Image //
                                  src={contact?.avatar}
                                  alt="avatar"
-                                 className="block rounded-full h-[60px] w-[60px] object-cover mx-auto border" 
+                                 className="block rounded-full h-[60px] w-[60px] object-cover mx-auto border"
                                  asAvatar
                               />
-                              {contact.members.every((user) => onlineUsers.includes(user._id)) && ( //
+                              {onlineUsers.includes(contact._id) && ( //
                                  <span //
                                     className="absolute bottom-0 right-0 block h-3 w-3 rounded-full bg-green-500 border-2 border-white"
                                  />

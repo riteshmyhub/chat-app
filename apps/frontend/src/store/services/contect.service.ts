@@ -1,7 +1,7 @@
 import { ActionReducerMapBuilder, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import HttpInterceptor from "../interceptors/http.interceptor";
 import ENDPOINTS from "../endpoints/endpoints";
-import { IChatDetails } from "@/types/chat.type";
+import { IContact } from "@/types/contact.type";
 
 const initialState = {
    loadings: {
@@ -9,7 +9,7 @@ const initialState = {
       addContact: false,
       deleteContact: false,
    },
-   contacts: [] as IChatDetails[],
+   contacts: [] as IContact[],
 };
 
 class ContactService extends HttpInterceptor {
