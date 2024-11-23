@@ -1,3 +1,5 @@
+import { IProfile } from "./user.type";
+
 export interface IContact {
    _id: string;
    chatID: string;
@@ -6,4 +8,9 @@ export interface IContact {
    name: string;
    email: string;
    creator: string;
+}
+export interface ISearchContact {
+   profile: IProfile;
+   _id: string;
+   email: string;
 }

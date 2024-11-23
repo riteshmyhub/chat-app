@@ -26,7 +26,8 @@ export default async function SearchUserController(req: Req, res: Response, next
                ],
             },
          ],
-      });
+      }).select("profile email _id");
+      
       res.status(200).json({
          message: "contact successfully fatched",
          data: { contacts },

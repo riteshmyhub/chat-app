@@ -1,7 +1,7 @@
 import { DebounceSearch, Image } from "@/components";
 import { contactService } from "@/store/services/contect.service";
 import { useAppDispatch, useAppSelector } from "@/store/store";
-import { IChatContact } from "@/types/chat.type";
+import { ISearchContact } from "@/types/contact.type";
 import { Button } from "@/ui/button";
 import { Skeleton } from "@/ui/skeleton";
 import { LoaderCircleIcon, PlusIcon } from "lucide-react";
@@ -55,7 +55,9 @@ export default function SearchPage({ onClose }: Props) {
                      ))
                   ) : (
                      <>
-                        {items?.map((user: IChatContact) => (
+                        {console.log(items)}
+
+                        {items?.map((user: ISearchContact) => (
                            <div key={user._id} className="flex items-center p-2 bg-white hover:bg-[#F0F2F5] border-b-2 px-3 mt-2 gap-3">
                               <div className="basis-1/6">
                                  <span className="relative">
