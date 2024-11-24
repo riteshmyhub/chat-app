@@ -1,7 +1,6 @@
-import { IAttachment, IMessage } from "@/types/chat.type";
-import { DownloadIcon } from "lucide-react";
-import { AudioPlayer } from "../audio-player/AudioPlayer";
+import { IMessage } from "@/types/chat.type";
 import moment from "moment";
+import { MediaViewer } from "../media-viewer/media-viewer";
 
 type Props = {
    message: IMessage;
@@ -27,7 +26,9 @@ export default function Message({ message, me, isGroupChat }: Props) {
                   </small>
                )}
                <div className="p-2 rounded-xl" style={{ background: me ? "#6876AA" : "#ffffff" }}>
-                  <MediaViewer attachments={message?.attachments} />
+                  {Boolean(message?.attachments?.length) && ( //
+                     <MediaViewer mediaList={message?.attachments} />
+                  )}
                   <span className="block p-2">
                      <span className="block text-sm text-start break-words whitespace-pre-wrap" style={{ maxWidth: "450px" }}>
                         {message.content}
@@ -40,40 +41,40 @@ export default function Message({ message, me, isGroupChat }: Props) {
       </div>
    );
 }
-const MediaViewer = ({ attachments }: { attachments: IAttachment[] }) => {
-   if (!attachments?.length) return null;
+// const MediaViewer = ({ attachments }: { attachments: IAttachment[] }) => {
+//    if (!attachments?.length) return null;
 
-   const renderAttachment = (attachment: IAttachment) => {
-      switch (true) {
-         case attachment.type.includes("image"):
-            return <img src={attachment.src} alt={attachment.name} className="mx-auto block w-full h-[200px] object-contain" />;
-         case attachment.type.includes("audio"):
-            return <AudioPlayer attachment={attachment} />;
-         case attachment.type.includes("video"):
-            return <video src={attachment.src} controls className="w-full h-full" />;
-         default:
-            return (
-               <div>
-                  <img src="/images/file.png" height={70} width={70} className="mx-auto" alt="file" />
-                  <span className="text-center block my-3 text-xs">{attachment.name}</span>
-               </div>
-            );
-      }
-   };
+//    const renderAttachment = (attachment: IAttachment) => {
+//       switch (true) {
+//          case attachment.type.includes("image"):
+//             return <img src={attachment.src} alt={attachment.name} className="mx-auto block w-full h-[200px] object-contain" />;
+//          case attachment.type.includes("audio"):
+//             return <AudioPlayer attachment={attachment} />;
+//          case attachment.type.includes("video"):
+//             return <video src={attachment.src} controls className="w-full h-full" />;
+//          default:
+//             return (
+//                <div>
+//                   <img src="/images/file.png" height={70} width={70} className="mx-auto" alt="file" />
+//                   <span className="text-center block my-3 text-xs">{attachment.name}</span>
+//                </div>
+//             );
+//       }
+//    };
 
-   return (
-      <div className={`grid ${attachments.length > 1 ? "grid-cols-1 md:grid-cols-2 p-3" : "grid-cols-1"} gap-3`}>
-         {attachments.map((attachment, idx) => (
-            <div key={`attachment-${idx}`} className="bg-gray-300 md:w-[300px] h-[200px] text-black flex items-center justify-center relative">
-               {renderAttachment(attachment)}
-               {/* Download link for non-video attachments */}
-               {!attachment.type.includes("video") && (
-                  <a href={attachment?.src} className="absolute top-3 right-3 bg-yellow-500 p-2 rounded-full" download>
-                     <DownloadIcon size={20} />
-                  </a>
-               )}
-            </div>
-         ))}
-      </div>
-   );
-};
+//    return (
+//       <div className={`grid ${attachments.length > 1 ? "grid-cols-1 md:grid-cols-2 p-3" : "grid-cols-1"} gap-3`}>
+//          {attachments.map((attachment, idx) => (
+//             <div key={`attachment-${idx}`} className="bg-gray-300 md:w-[300px] h-[200px] text-black flex items-center justify-center relative">
+//                {renderAttachment(attachment)}
+//                {/* Download link for non-video attachments */}
+//                {!attachment.type.includes("video") && (
+//                   <a href={attachment?.src} className="absolute top-3 right-3 bg-yellow-500 p-2 rounded-full" download>
+//                      <DownloadIcon size={20} />
+//                   </a>
+//                )}
+//             </div>
+//          ))}
+//       </div>
+//    );
+// };
