@@ -4,45 +4,45 @@ import ImageGallery from "react-image-gallery";
 import { AudioPlayer } from "../audio-player/AudioPlayer";
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent } from "@/ui/alert-dialog";
 import { XIcon } from "lucide-react";
+import { IAttachment } from "@/types/chat.type";
+import { useState } from "react";
 
-const list = [
-   {
-      dataSrc: "https://images.unsplash.com/photo-1581894158358-5ecd2c518883?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1406&q=80",
-      imgSrc: "https://images.unsplash.com/photo-1581894158358-5ecd2c518883?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=240&q=80",
-      fileType: "image",
-   },
-   {
-      dataSrc: "https://images.unsplash.com/photo-1544550285-f813152fb2fd?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80",
-      imgSrc: "https://images.unsplash.com/photo-1544550285-f813152fb2fd?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=240&q=80",
-      fileType: "image",
-   },
-   {
-      dataSrc: "https://images.unsplash.com/photo-1584592740039-cddf0671f3d4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80",
-      imgSrc: "https://images.unsplash.com/photo-1584592740039-cddf0671f3d4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=240&q=80",
-      fileType: "image",
-   },
-   {
-      dataSrc: "https://www.lightgalleryjs.com/pdf/sample.pdf",
-      imgSrc: "/images/pdf.png",
-      fileType: "pdf",
-   },
-   {
-      dataSrc: "https://www.example.com/audio/sample.mp3",
-      imgSrc: "/images/audio.png",
-      fileType: "audio",
-   },
-   {
-      dataSrc: "https://www.w3schools.com/html/mov_bbb.mp4",
-      imgSrc: "/images/video.png",
-      fileType: "video",
-   },
-];
-export function MediaViewer() {
+export function MediaViewer({ mediaList }: { mediaList: IAttachment[] }) {
+   const [activeSlide, setActiveSlide] = useState(0);
    return (
       <AlertDialog>
-         <AlertDialogTrigger>Open</AlertDialogTrigger>
+         <div className="grid grid-cols-2 gap-2">
+            {mediaList.map((media, idx) => {
+               let src = null;
+               switch (true) {
+                  case media.type.includes("image"):
+                     src = media?.src;
+                     break;
+                  case media.type.includes("audio"):
+                     src = "/images/audio.png";
+                     break;
+                  case media.type.includes("video"):
+                     src = "/images/video.png";
+                     break;
+                  case media.type.includes("pdf"):
+                  default:
+                     src = "/images/file.png";
+                     break;
+               }
+               return (
+                  <AlertDialogTrigger className="bg-white rounded-md" onClick={() => setActiveSlide(idx)}>
+                     <img //
+                        src={src}
+                        alt={media.name}
+                        className="w-48 h-28 object-contain p-3"
+                     />
+                     <span className="text-xs text-black">{media.name}</span>
+                  </AlertDialogTrigger>
+               );
+            })}
+         </div>
          <AlertDialogContent className="p-0 block w-full max-w-screen-xl border-none rounded-none">
-            <AlertDialogTrigger className=" absolute top-8 right-8 z-30">
+            <AlertDialogTrigger className=" absolute top-8 right-8 z-30" onClick={() => setActiveSlide(0)}>
                <XIcon size={30} className="text-red-600" />
             </AlertDialogTrigger>
             <ImageGallery
@@ -50,34 +50,92 @@ export function MediaViewer() {
                showPlayButton={false}
                autoPlay={false}
                lazyLoad
-               items={list.map((data) => ({
-                  thumbnail: data.imgSrc,
-                  original: data.imgSrc,
-                  renderItem: () => {
-                     switch (data.fileType) {
-                        case "image":
-                           return <img src={data.dataSrc} className="w-full h-[80vh] object-cover mx-auto" />;
-                        case "video":
-                           return <video src={data.dataSrc} controls className="w-full h-[80vh]" />;
-                        case "audio":
-                           return (
+               startIndex={activeSlide}
+               items={(mediaList as any)?.map((attachment: IAttachment) => {
+                  switch (true) {
+                     case attachment.type.includes("image"):
+                        return {
+                           thumbnail: attachment?.src,
+                           original: attachment?.src,
+                           renderItem: () => (
+                              <img //
+                                 src={attachment.src}
+                                 className="w-full h-[80vh] object-contain mx-auto"
+                              />
+                           ),
+                        };
+                     case attachment.type.includes("audio"):
+                        return {
+                           thumbnail: "/images/audio.png",
+                           original: "/images/audio.png",
+                           renderItem: () => (
                               <div className="h-[80vh] flex items-center justify-center">
                                  <div className="h-[300px]">
                                     <AudioPlayer //
-                                       attachment={{ name: "test", src: data?.dataSrc, size: 12234, type: "cxv" }}
+                                       attachment={attachment}
                                     />
                                  </div>
                               </div>
-                           );
-                        case "pdf":
-                           return <iframe src={data?.dataSrc} className="w-full  h-[80vh]" />;
-                        default:
-                           return "";
-                     }
-                  },
-               }))}
+                           ),
+                        };
+                     case attachment.type.includes("video"):
+                        return {
+                           thumbnail: "/images/video.png",
+                           original: "/images/video.png",
+                           renderItem: () => (
+                              <video //
+                                 src={attachment?.src}
+                                 controls
+                                 className="w-full h-[80vh]"
+                              />
+                           ),
+                        };
+                     case attachment.type.includes("pdf"):
+                        return {
+                           thumbnail: "/images/pdf.png",
+                           original: "/images/pdf.png",
+                           renderItem: () => (
+                              <iframe //
+                                 src={attachment.src}
+                                 className="w-full  h-[80vh]"
+                              />
+                           ),
+                        };
+                     default:
+                        return {};
+                  }
+               })}
             />
          </AlertDialogContent>
       </AlertDialog>
    );
 }
+/*
+({
+                  thumbnail: attachment?.src,
+                  original: attachment?.src,
+                  renderItem: () => {
+                     switch (true) {
+                        case attachment.type.includes("image"):
+                           return <img src={attachment.src} className="w-full h-[80vh] object-cover mx-auto" />;
+                        case attachment.type.includes("video"):
+                           return <video src={attachment.src} controls className="w-full h-[80vh]" />;
+                        case attachment.type.includes("audio"):
+                           return (
+                              <div className="h-[80vh] flex items-center justify-center">
+                                 <div className="h-[300px]">
+                                    <AudioPlayer //
+                                       attachment={attachment}
+                                    />
+                                 </div>
+                              </div>
+                           );
+                        case attachment.type.includes("pdf"):
+                           return <iframe src={attachment.src} className="w-full  h-[80vh]" />;
+                        default:
+                           return "";
+                     }
+                  },
+               })
+
+*/
