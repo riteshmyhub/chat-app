@@ -52,30 +52,31 @@ io.on("connection", (socket) => {
          const ids = getSocketIds(members);
 
          io.to(ids).emit("RECEIVER_MESSAGE", message);
+         console.log(message);
 
-         await firebaseDB.collection("messages").add(message);
-         if (!groupChat) {
-            const contact = socket?.user?.contacts?.find((contact: any) => contact?.chatID === chat);
-            if (!Boolean(await User.exists({ _id: contact?.person, "contacts.chatID": chat }))) {
-               const user = await User.findById(contact?.person);
-               user?.contacts.push({ chatID: contact?.chatID, person: userID });
-               await user?.save();
-               io.to(getSocketIds([contact?.person])).emit("refresh_contacts");
-            }
-            await FirebaseNotification({
-               userIds: [contact?.person],
-               title: `"${message?.sender?.name}" send new messages`,
-               body: content || `${attachments?.length || 0} attachment(s) sent.`,
-               url: "/contacts" + "/" + chat,
-            });
-         } else {
-            await FirebaseNotification({
-               userIds: members,
-               title: `"${message?.sender?.name}" send new messages from channel`,
-               body: content || `${attachments?.length || 0} attachment(s) sent.`,
-               url: "/channels" + "/" + chat,
-            });
-         }
+         // await firebaseDB.collection("messages").add(message);
+         // if (!groupChat) {
+         //    const contact = socket?.user?.contacts?.find((contact: any) => contact?.chatID === chat);
+         //    if (!Boolean(await User.exists({ _id: contact?.person, "contacts.chatID": chat }))) {
+         //       const user = await User.findById(contact?.person);
+         //       user?.contacts.push({ chatID: contact?.chatID, person: userID });
+         //       await user?.save();
+         //       io.to(getSocketIds([contact?.person])).emit("refresh_contacts");
+         //    }
+         //    await FirebaseNotification({
+         //       userIds: [contact?.person],
+         //       title: `"${message?.sender?.name}" send new messages`,
+         //       body: content || `${attachments?.length || 0} attachment(s) sent.`,
+         //       url: "/contacts" + "/" + chat,
+         //    });
+         // } else {
+         //    await FirebaseNotification({
+         //       userIds: members,
+         //       title: `"${message?.sender?.name}" send new messages from channel`,
+         //       body: content || `${attachments?.length || 0} attachment(s) sent.`,
+         //       url: "/channels" + "/" + chat,
+         //    });
+         // }
       } catch (error) {
          console.log(error);
       }
