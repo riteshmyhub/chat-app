@@ -1,4 +1,4 @@
-import { DebounceSearch, Image, Loading, MediaList } from "@/components";
+import { DebounceSearch, Image, Loading, MediaViewer } from "@/components";
 import { channelService } from "@/store/services/channel.service";
 import { contactService } from "@/store/services/contect.service";
 import { useAppDispatch, useAppSelector } from "@/store/store";
@@ -11,7 +11,7 @@ import { LoaderCircleIcon, PlusIcon, XIcon } from "lucide-react";
 export default function ChannelDetailsPage({ chatDetails }: { chatDetails: IChatDetails }) {
    const { loadings } = useAppSelector((state) => state.channel);
    const { authUser } = useAppSelector((state) => state.auth);
-   const { onlineUsers } = useAppSelector((state) => state.chat);
+   const { onlineUsers, mediaList } = useAppSelector((state) => state.chat);
    const dispatch = useAppDispatch();
    const isAdmin = authUser?._id === chatDetails?.creator;
 
@@ -38,15 +38,15 @@ export default function ChannelDetailsPage({ chatDetails }: { chatDetails: IChat
             <Image //
                src={chatDetails.avatar}
                alt="avatar"
-               className="h-36 w-36 mx-auto rounded-full border"
+               className="h-24 w-24 mx-auto rounded-full border"
                noImg="/images/group-chat-placeholder.png"
             />
-            <h3 className="text-2xl text-center mb-2 font-medium">{chatDetails?.name}</h3>
+            <h3 className="text-2xl text-center font-medium">{chatDetails?.name}</h3>
             <h3 className="text-md text-center font-normal">{chatDetails?.about}</h3>
          </div>
 
          {/* ------------------MediaList--------------------- */}
-         <MediaList />
+         <MediaViewer mediaList={mediaList} />
 
          <div className="py-2">
             <span className="text-md text-gray-500">Members {chatDetails?.members?.length}</span>

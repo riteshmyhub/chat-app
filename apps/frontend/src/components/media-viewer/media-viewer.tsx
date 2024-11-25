@@ -36,7 +36,7 @@ export function MediaViewer({ mediaList }: { mediaList: IAttachment[] }) {
                      src = "/images/file.png";
                }
                return (
-                  <AlertDialogTrigger onClick={() => setActiveSlide(idx)} className="min-w-[150px] h-[90px] bg-white p-2 border">
+                  <AlertDialogTrigger onClick={() => setActiveSlide(idx)} className="min-w-[150px] h-[100px] bg-white p-2 border">
                      <img
                         src={src} //
                         className="w-full h-full block object-contain"
