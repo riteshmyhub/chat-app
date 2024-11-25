@@ -1,6 +1,5 @@
 export { MediaViewer } from "./media-viewer/media-viewer";
 export { Image } from "./image/Image";
-export { MediaList } from "./media-list/media-list";
 export { EmptyChat } from "./empty-chat/empty-chat";
 export { SendMessage } from "./send-message/send-message";
 export { ChatMessages } from "./chat-messages/chat-messages";
