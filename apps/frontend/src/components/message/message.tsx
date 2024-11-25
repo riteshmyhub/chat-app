@@ -1,6 +1,7 @@
 import { IMessage } from "@/types/chat.type";
 import moment from "moment";
 import { MediaViewer } from "../media-viewer/media-viewer";
+import { CheckCheckIcon } from "lucide-react";
 
 type Props = {
    message: IMessage;
@@ -11,7 +12,7 @@ type Props = {
 export default function Message({ message, me, isGroupChat }: Props) {
    return (
       <div className={me ? "text-end text-white" : "text-start"}>
-         <span className="inline-flex p-2 mb-2 gap-3">
+         <span className="inline-flex gap-3 mb-4">
             {!me && isGroupChat && (
                <div>
                   <img src={message?.sender?.avatar} alt="avatar" className="rounded-full h-10 w-10 object-cover" />
@@ -19,62 +20,28 @@ export default function Message({ message, me, isGroupChat }: Props) {
             )}
             <div>
                {!me && isGroupChat && (
-                  <small className="text-red-600 block text-start pb-2 text-xs font-semibold p-2">
+                  <small className="text-red-600 block text-start pb-2 text-xs font-semibold ">
                      {/*  */}
                      {message?.sender?.name}
                      {/*  */}
                   </small>
                )}
-               <div className="p-2 rounded-xl" style={{ background: me ? "#6876AA" : "#ffffff" }}>
+               <div className="p-2" style={{ background: me ? "#4F46E5" : "white" }}>
                   {Boolean(message?.attachments?.length) && ( //
                      <MediaViewer mediaList={message?.attachments} />
                   )}
-                  <span className="block p-2">
-                     <span className="block text-sm text-start break-words whitespace-pre-wrap" style={{ maxWidth: "450px" }}>
+                  {message.content && (
+                     <span className="block text-sm text-start break-words whitespace-pre-wrap p-1" style={{ maxWidth: "450px" }}>
                         {message.content}
                      </span>
-                  </span>
+                  )}
                </div>
-               <small className="text-xs text-black block my-2 text-end">&nbsp;&nbsp;&nbsp;&nbsp;{moment(message.createdAt).format("LT")}</small>
+               <div className="flex items-center mt-1 justify-end gap-2">
+                  <small className="text-[10px] text-black block">&nbsp;&nbsp;&nbsp;&nbsp;{moment(message.createdAt).format("LT")}</small>
+                  {me && Object.keys(message).includes("seen") && <CheckCheckIcon size={20} className={message.seen ? "text-[#4F46E5]" : "text-gray-400"} />}
+               </div>
             </div>
          </span>
       </div>
    );
 }
-// const MediaViewer = ({ attachments }: { attachments: IAttachment[] }) => {
-//    if (!attachments?.length) return null;
-
-//    const renderAttachment = (attachment: IAttachment) => {
-//       switch (true) {
-//          case attachment.type.includes("image"):
-//             return <img src={attachment.src} alt={attachment.name} className="mx-auto block w-full h-[200px] object-contain" />;
-//          case attachment.type.includes("audio"):
-//             return <AudioPlayer attachment={attachment} />;
-//          case attachment.type.includes("video"):
-//             return <video src={attachment.src} controls className="w-full h-full" />;
-//          default:
-//             return (
-//                <div>
-//                   <img src="/images/file.png" height={70} width={70} className="mx-auto" alt="file" />
-//                   <span className="text-center block my-3 text-xs">{attachment.name}</span>
-//                </div>
-//             );
-//       }
-//    };
-
-//    return (
-//       <div className={`grid ${attachments.length > 1 ? "grid-cols-1 md:grid-cols-2 p-3" : "grid-cols-1"} gap-3`}>
-//          {attachments.map((attachment, idx) => (
-//             <div key={`attachment-${idx}`} className="bg-gray-300 md:w-[300px] h-[200px] text-black flex items-center justify-center relative">
-//                {renderAttachment(attachment)}
-//                {/* Download link for non-video attachments */}
-//                {!attachment.type.includes("video") && (
-//                   <a href={attachment?.src} className="absolute top-3 right-3 bg-yellow-500 p-2 rounded-full" download>
-//                      <DownloadIcon size={20} />
-//                   </a>
-//                )}
-//             </div>
-//          ))}
-//       </div>
-//    );
-// };

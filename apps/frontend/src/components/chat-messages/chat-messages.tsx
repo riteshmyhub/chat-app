@@ -23,7 +23,7 @@ export function ChatMessages({ messages }: MessageContainerProps) {
    let lastDate: null | string = null;
 
    return (
-      <ScrollArea className="overflow-y-auto flex-1 bg-gray-100 p-3">
+      <ScrollArea className="overflow-y-auto flex-1 bg-[#F3F4F6] px-3">
          {messages.map((message, idx) => {
             const messageDate = moment(message.createdAt).format("YYYY-MM-DD");
             const showDate = messageDate !== lastDate;

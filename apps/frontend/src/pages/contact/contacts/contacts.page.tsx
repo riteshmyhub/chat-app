@@ -45,7 +45,7 @@ export default function ContactsPage() {
             <React.Fragment>
                {contacts?.map((contact, idx) => {
                   const unseenMessages = unreadMessages?.filter((message) => message?.chat === contact?.chatID);
-                  const activeClass = id === contact._id ? "bg-[#F0F2F5]" : "bg-white";
+                  const activeClass = id === contact.chatID ? "bg-[#F0F2F5]" : "bg-white";
                   return (
                      <Link role="button" to={`/contacts/${contact.chatID}`} key={`contact-${idx}`} className={`flex items-center p-2 px-3 gap-3 hover:bg-[#F0F2F5] border-b-[1px] ${activeClass}`}>
                         <div className="basis-1/4 flex justify-center">
