@@ -16,13 +16,7 @@ function SocketProvider({ children }: { children: Readonly<React.ReactNode> }) {
 
    useEffect(() => {
       if (authUser) {
-         const socket = io(ENVIRONMENT.BASE_URL, {
-            withCredentials: true,
-            auth: {
-               accessToken,
-            },
-         });
-
+         const socket = io(ENVIRONMENT.BASE_URL, { withCredentials: true, auth: { accessToken } });
          setSocket(socket);
          socket.on("ONLINE_USERS", ws.onlineUser);
          socket.on("TYPING", ws.typing);

@@ -54,7 +54,6 @@ export default function SingleContactPage() {
    if (!chatDetails) {
       return "no chat";
    }
-   console.log(chatDetails);
 
    const isOnline = chatDetails?.members.every((member) => onlineUsers.includes(member?._id));
    return (
