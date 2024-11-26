@@ -51,7 +51,6 @@ export default function useHandlerWS() {
 
    useEffect(() => {
       onMessage(messaging, (args) => {
-         console.log(args);
          dispatch(
             notificationAction.setINotification({
                notificationId: args?.data?.notificationId as string,

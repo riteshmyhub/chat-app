@@ -52,7 +52,6 @@ class ChannelService extends HttpInterceptor {
             state.loadings.getChannels = true;
          });
          builder.addCase(this.api.fulfilled, (state, action) => {
-            console.log(action.payload?.data?.channels);
             state.loadings.getChannels = false;
             state.channels = action.payload?.data?.channels;
          });

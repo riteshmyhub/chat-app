@@ -46,7 +46,6 @@ export default async function UpdateChannelController(req: Req, res: Response, n
          message: "Channel details successfully updated!",
       });
    } catch (error) {
-      console.log(error);
       next(createHttpError.InternalServerError());
    }
 }

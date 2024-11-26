@@ -34,29 +34,28 @@ io.on("connection", (socket) => {
    io.emit("ONLINE_USERS", Array.from(userSocketMap.keys()));
 
    //SEND_MESSAGE
-   socket.on("SEND_MESSAGE", async ({ chat, content, members, groupChat, attachments }) => {
+   socket.on("SEND_MESSAGE", async (message) => {
       try {
-         const message = {
-            groupChat,
+         const payload = Object.freeze({
+            chat: message?.chat,
             sender: {
                _id: socket?.user?._id?.toString() || null, // Convert ObjectId to string
                name: `${socket?.user?.profile?.first_name ?? ""} ${socket?.user?.profile?.last_name ?? ""}`.trim(),
                avatar: socket?.user?.profile?.avatar || null,
             },
-            chat,
-            content,
+            groupChat: message?.groupChat,
+            content: message?.content,
             createdAt: new Date().toISOString(),
-            attachments: attachments ?? [],
-         };
+            attachments: message?.attachments ?? [],
+            ...(message?.groupChat ? {} : { seen: false }),
+         });
 
-         const ids = getSocketIds(members);
-
-         io.to(ids).emit("RECEIVER_MESSAGE", message);
-
-         await firebaseDB.collection("messages").add(message);
-         if (!groupChat) {
-            const contact = socket?.user?.contacts?.find((contact: any) => contact?.chatID === chat);
-            if (!Boolean(await User.exists({ _id: contact?.person, "contacts.chatID": chat }))) {
+         const ids = getSocketIds(message?.members);
+         io.to(ids).emit("RECEIVER_MESSAGE", payload);
+         await firebaseDB.collection("messages").add(payload);
+         if (!message?.groupChat) {
+            const contact = socket?.user?.contacts?.find((contact: any) => contact?.chatID === message?.chat);
+            if (!Boolean(await User.exists({ _id: contact?.person, "contacts.chatID": message?.chat }))) {
                const user = await User.findById(contact?.person);
                user?.contacts.push({ chatID: contact?.chatID, person: userID });
                await user?.save();
@@ -65,15 +64,15 @@ io.on("connection", (socket) => {
             await FirebaseNotification({
                userIds: [contact?.person],
                title: `"${message?.sender?.name}" send new messages`,
-               body: content || `${attachments?.length || 0} attachment(s) sent.`,
-               url: "/contacts" + "/" + chat,
+               body: message?.content || `${message?.attachments?.length || 0} attachment(s) sent.`,
+               url: "/contacts" + "/" + message?.chat,
             });
          } else {
             await FirebaseNotification({
-               userIds: members,
-               title: `"${message?.sender?.name}" send new messages from channel`,
-               body: content || `${attachments?.length || 0} attachment(s) sent.`,
-               url: "/channels" + "/" + chat,
+               userIds: message?.members?.filter((id: string) => id.toString() !== userID.toString()),
+               title: `"${payload?.sender?.name}" send new messages from channel`,
+               body: message?.content || `${message?.attachments?.length || 0} attachment(s) sent.`,
+               url: "/channels" + "/" + message?.chat,
             });
          }
       } catch (error) {

@@ -72,7 +72,6 @@ export default async function CreateChannelController(req: Req, res: Response, n
          message: "channel successfully created",
       });
    } catch (error) {
-      console.log(error);
       next(createHttpError.InternalServerError());
    }
 }

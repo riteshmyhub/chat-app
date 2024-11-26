@@ -78,7 +78,6 @@ export default function CreateChannelPage({ onClose }: { onClose: Function }) {
       try {
          e.preventDefault();
          const formData = new FormData();
-         console.log(typeof fields.avatar);
 
          formData.append("isGroupChat", "true");
          formData.append("name", fields.name);
@@ -89,7 +88,6 @@ export default function CreateChannelPage({ onClose }: { onClose: Function }) {
          fields?.members?.forEach((member) => {
             formData.append("members[]", member._id);
          });
-         console.log(Object.fromEntries(formData));
          await dispatch(channelService.createChannel.api(formData)).unwrap();
          close();
       } catch (error) {
@@ -99,7 +97,6 @@ export default function CreateChannelPage({ onClose }: { onClose: Function }) {
 
    const searchHandler = async (str: string) => {
       const { data } = await dispatch(contactService.searchUsers.api(str)).unwrap();
-      console.log(data);
       return data?.contacts as any;
    };
 

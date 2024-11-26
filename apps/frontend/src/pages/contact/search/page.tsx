@@ -55,8 +55,6 @@ export default function SearchPage({ onClose }: Props) {
                      ))
                   ) : (
                      <>
-                        {console.log(items)}
-
                         {items?.map((user: ISearchContact) => (
                            <div key={user._id} className="flex items-center p-2 bg-white hover:bg-[#F0F2F5] border-b-2 px-3 mt-2 gap-3">
                               <div className="basis-1/6">
