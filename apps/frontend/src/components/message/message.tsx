@@ -2,30 +2,32 @@ import { IMessage } from "@/types/chat.type";
 import moment from "moment";
 import { MediaViewer } from "../media-viewer/media-viewer";
 import { CheckCheckIcon } from "lucide-react";
+import { IMember } from "@/types/channel.type";
 
 type Props = {
    message: IMessage;
    me: boolean;
-   isGroupChat: boolean;
+   isChannel: boolean;
+   members?: IMember[];
 };
 
-export default function Message({ message, me, isGroupChat }: Props) {
+export default function Message({ message, me, isChannel, members }: Props) {
+   const person = members?.find((member) => member?._id === message?.from);
    return (
       <div className={me ? "text-end text-white" : "text-start"}>
          <span className="inline-flex gap-3 mb-4">
-            {!me && isGroupChat && (
+            {!me && isChannel && (
                <div>
-                  <img src={message?.sender?.avatar} alt="avatar" className="rounded-full h-10 w-10 object-cover" />
+                  <img src={person?.profile.avatar} alt="avatar" className="rounded-full h-10 w-10 object-cover" />
                </div>
             )}
             <div>
-               {!me && isGroupChat && (
-                  <small className="text-red-600 block text-start pb-2 text-xs font-semibold ">
-                     {/*  */}
-                     {message?.sender?.name}
-                     {/*  */}
-                  </small>
-               )}
+               {!me &&
+                  isChannel && ( //
+                     <small className="text-red-600 block text-start pb-2 text-xs font-semibold ">
+                        {person?.profile?.first_name} {person?.profile?.last_name}
+                     </small>
+                  )}
                <div className="p-2" style={{ background: me ? "#4F46E5" : "white" }}>
                   {Boolean(message?.attachments?.length) && ( //
                      <MediaViewer mediaList={message?.attachments} />
@@ -38,7 +40,7 @@ export default function Message({ message, me, isGroupChat }: Props) {
                </div>
                <div className="flex items-center mt-1 justify-end gap-2">
                   <small className="text-[10px] text-black block">&nbsp;&nbsp;&nbsp;&nbsp;{moment(message.createdAt).format("LT")}</small>
-                  {me && Object.keys(message).includes("seen") && <CheckCheckIcon size={20} className={message.seen ? "text-[#4F46E5]" : "text-gray-400"} />}
+                  {me && Object.keys(message).includes("isRead") && <CheckCheckIcon size={20} className={message.isRead ? "text-[#4F46E5]" : "text-gray-300"} />}
                </div>
             </div>
          </span>

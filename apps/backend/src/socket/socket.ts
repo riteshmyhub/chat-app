@@ -5,8 +5,8 @@ import { Server as SocketServer } from "socket.io";
 import http from "http";
 import { AuthSocket } from "../middlewares/auth.middleware";
 import FirebaseNotification from "../firebase/notification/notification";
-import { firebaseDB } from "../firebase/firebase-admin-app";
 import User from "../models/user.model";
+import FIREBASE from "../firebase/firebase-admin-app";
 
 const app = express();
 const server = http.createServer(app);
@@ -34,28 +34,24 @@ io.on("connection", (socket) => {
    io.emit("ONLINE_USERS", Array.from(userSocketMap.keys()));
 
    //SEND_MESSAGE
-   socket.on("SEND_MESSAGE", async (message) => {
+   socket.on("SEND_MESSAGE", async ({ chat, content, members, isChannel, attachments }) => {
       try {
          const payload = Object.freeze({
-            chat: message?.chat,
-            sender: {
-               _id: socket?.user?._id?.toString() || null, // Convert ObjectId to string
-               name: `${socket?.user?.profile?.first_name ?? ""} ${socket?.user?.profile?.last_name ?? ""}`.trim(),
-               avatar: socket?.user?.profile?.avatar || null,
-            },
-            groupChat: message?.groupChat,
-            content: message?.content,
+            chat: chat,
+            from: userID,
+            to: chat?.split("-").find((id: string) => id.toString() !== userID?.toString()),
+            isChannel: isChannel,
+            content: content,
             createdAt: new Date().toISOString(),
-            attachments: message?.attachments ?? [],
-            ...(message?.groupChat ? {} : { seen: false }),
+            attachments: attachments ?? [],
+            ...(isChannel ? {} : { isRead: false }),
          });
 
-         const ids = getSocketIds(message?.members);
-         io.to(ids).emit("RECEIVER_MESSAGE", payload);
-         await firebaseDB.collection("messages").add(payload);
-         if (!message?.groupChat) {
-            const contact = socket?.user?.contacts?.find((contact: any) => contact?.chatID === message?.chat);
-            if (!Boolean(await User.exists({ _id: contact?.person, "contacts.chatID": message?.chat }))) {
+         io.to(getSocketIds(members)).emit("RECEIVER_MESSAGE", payload);
+         await FIREBASE.COLLECTION.MESSAGES.add(payload);
+         if (!isChannel) {
+            const contact = socket?.user?.contacts?.find((contact: any) => contact?.chatID === chat);
+            if (!Boolean(await User.exists({ _id: contact?.person, "contacts.chatID": chat }))) {
                const user = await User.findById(contact?.person);
                user?.contacts.push({ chatID: contact?.chatID, person: userID });
                await user?.save();
@@ -63,20 +59,38 @@ io.on("connection", (socket) => {
             }
             await FirebaseNotification({
                userIds: [contact?.person],
-               title: `"${message?.sender?.name}" send new messages`,
-               body: message?.content || `${message?.attachments?.length || 0} attachment(s) sent.`,
-               url: "/contacts" + "/" + message?.chat,
+               title: `"PLACEHOLDER" send new messages`,
+               body: content || `${attachments?.length || 0} attachment(s) sent.`,
+               url: "/contacts" + "/" + chat,
             });
          } else {
             await FirebaseNotification({
-               userIds: message?.members?.filter((id: string) => id.toString() !== userID.toString()),
-               title: `"${payload?.sender?.name}" send new messages from channel`,
-               body: message?.content || `${message?.attachments?.length || 0} attachment(s) sent.`,
-               url: "/channels" + "/" + message?.chat,
+               userIds: members?.filter((id: string) => id.toString() !== userID.toString()),
+               title: `"PLACEHOLDER" send new messages from channel`,
+               body: content || `attachments?.length || 0} attachment(s) sent.`,
+               url: "/channels" + "/" + chat,
             });
          }
       } catch (error) {
-         console.log(error);
+         return;
+      }
+   });
+
+   socket.on("MARK_AS_READ", async (chat) => {
+      try {
+         const messagesQuery = await FIREBASE.COLLECTION.MESSAGES.where("chat", "==", chat) //
+            .where("to", "==", userID)
+            .where("isRead", "==", false)
+            .get(); //
+         if (messagesQuery.empty) return;
+         const batch = FIREBASE.DB.batch();
+         messagesQuery.forEach((doc) => {
+            batch.update(doc.ref, { isRead: true });
+         });
+         await batch.commit();
+         io.to(getSocketIds(String(chat).split("-"))).emit("READ_RECEIPT", chat);
+      } catch (error) {
+         console.log("error");
       }
    });
 

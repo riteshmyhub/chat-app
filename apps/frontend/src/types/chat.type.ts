@@ -6,19 +6,17 @@ export interface IAttachment {
    size: number;
    name: string;
 }
+
 export interface IMessage {
-   groupChat: boolean;
-   sender: {
-      _id: string;
-      name: string;
-      avatar: string;
-   };
-   chat: string;
-   content: string;
-   createdAt: Date;
-   creator: string;
    attachments: IAttachment[];
-   seen: boolean;
+   chat: string;
+   from: string;
+   to: string;
+   isChannel: boolean;
+   content: string;
+   createdAt: string;
+   _id: string;
+   isRead: boolean;
 }
 
 export interface IChatDetails {
