@@ -19,16 +19,16 @@ export default function useHandlerWS() {
    };
 
    const receiveMessage = async (message: IMessage) => {
-      if (chatDetails?._id === message?.chat || chatDetails?._id === message?.sender?._id) {
+      if (chatDetails?._id === message?.chat || chatDetails?._id === message?.from) {
          dispatch(chatActions.setMessages(message));
-         if (authUser?._id !== message?.sender?._id) {
+         if (authUser?._id !== message?.from) {
             new Audio(authUser?.setting.received_message_sound?.src).play();
          }
          return;
       }
       new Audio(authUser?.setting.notification_sound?.src).play();
       dispatch(chatActions.setUnreadMessages(message));
-      toast(`${message.sender.name} send new message`, {
+      toast(`send new message`, {
          style: {
             borderRadius: "30px",
             background: "#333",
@@ -48,6 +48,9 @@ export default function useHandlerWS() {
    const typing = (data: string) => {
       dispatch(chatActions.setTyping(data));
    };
+   const readReceipts = (chat: string) => {
+      dispatch(chatActions.setReadReceipts(chat));
+   };
 
    useEffect(() => {
       onMessage(messaging, (args) => {
@@ -64,5 +67,5 @@ export default function useHandlerWS() {
       return () => {};
    }, []);
 
-   return { onlineUser, receiveMessage, refreshContacts, typing, refreshChannels };
+   return { onlineUser, receiveMessage, refreshContacts, typing, refreshChannels, readReceipts };
 }

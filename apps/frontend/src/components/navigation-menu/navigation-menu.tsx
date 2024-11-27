@@ -9,13 +9,12 @@ export function NavigationMenu() {
    const { unreadMessages } = useAppSelector((state) => state.chat);
    const { authUser } = useAppSelector((state) => state.auth);
    const { notifications } = useAppSelector((state) => state.notification);
-   const groupsMessages = unreadMessages?.filter((message) => message.groupChat);
-   const messages = unreadMessages?.filter((message) => !message.groupChat);
+   const groupsMessages = unreadMessages?.filter((message) => message.chat);
+   const messages = unreadMessages?.filter((message) => !message.chat);
    const location = useLocation();
    const screen = useMediaQuery();
 
-   const activeStyle = useCallback(
-      (pathname: string) => {
+   const activeStyle = useCallback((pathname: string) => {
          return `px-5 py-2 rounded-2xl ${location.pathname.includes(pathname) ? "bg-green-600 text-white" : "bg-white"}`;
       },
       [location.pathname]

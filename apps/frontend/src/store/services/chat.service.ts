@@ -81,6 +81,13 @@ class ChatService extends HttpInterceptor {
          setMessages(state, { payload }: PayloadAction<IMessage | IMessage[]>) {
             Array.isArray(payload) ? (state.messages = payload) : state.messages.push(payload);
          },
+         setReadReceipts(state, action) {
+            state.messages.forEach((message) => {
+               if (Object.keys(message).includes("isRead") && !message.isRead && message.chat === action.payload) {
+                  message.isRead = true;
+               }
+            });
+         },
          setUnreadMessages(state, { payload }: PayloadAction<IMessage>) {
             state.unreadMessages.push(payload);
          },

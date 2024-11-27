@@ -23,6 +23,7 @@ function SocketProvider({ children }: { children: Readonly<React.ReactNode> }) {
          socket.on("RECEIVER_MESSAGE", ws.receiveMessage);
          socket.on("refresh_contacts", ws.refreshContacts);
          socket.on("REFRESH_CHANNEL", ws.refreshChannels);
+         socket.on("READ_RECEIPT", ws.readReceipts);
          return () => {
             socket.close();
          };

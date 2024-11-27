@@ -5,6 +5,7 @@ import React, { useEffect, useRef } from "react";
 import { useAppSelector } from "@/store/store";
 import moment from "moment";
 import { Badge } from "@/ui/badge";
+import { useSocket } from "@/hooks/socket/useSocket.hook";
 
 type MessageContainerProps = {
    messages: IMessage[];
@@ -12,13 +13,21 @@ type MessageContainerProps = {
 
 export function ChatMessages({ messages }: MessageContainerProps) {
    const { authUser } = useAppSelector((state) => state.auth);
+   const { chatDetails } = useAppSelector((state) => state.chat);
    const scrollRef = useRef<HTMLDivElement | null>(null);
+   const { socket } = useSocket();
 
    useEffect(() => {
       if (scrollRef.current) {
          scrollRef.current.scrollIntoView({ behavior: "smooth" });
       }
-   }, [messages]);
+
+      if (!chatDetails?.groupChat) {
+         socket.emit("MARK_AS_READ", chatDetails?._id);
+      }
+
+      return () => {};
+   }, [messages, chatDetails]);
 
    let lastDate: null | string = null;
 
@@ -43,9 +52,9 @@ export function ChatMessages({ messages }: MessageContainerProps) {
                   )}
                   <Message //
                      key={`message-${message.chat}`}
-                     me={authUser?._id === message?.sender._id}
+                     me={authUser?._id === message?.from}
                      message={message}
-                     isGroupChat={message.groupChat}
+                     isChannel={message.isChannel}
                   />
                </React.Fragment>
             );

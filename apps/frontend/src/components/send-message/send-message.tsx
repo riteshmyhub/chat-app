@@ -45,7 +45,7 @@ export function SendMessage({ chatDetails }: Props) {
          chat: chatDetails._id,
          content: message,
          members: chatDetails.members.map((member) => member._id),
-         groupChat: chatDetails.groupChat,
+         isChannel: chatDetails.groupChat,
          attachments: files || [],
       });
       new Audio(authUser?.setting.send_message_sound?.src).play();

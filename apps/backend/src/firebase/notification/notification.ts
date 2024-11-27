@@ -2,6 +2,7 @@ import { Message } from "firebase-admin/lib/messaging/messaging-api";
 import admin from "../firebase-admin-app";
 import User from "../../models/user.model";
 import { v4 as uuidv4 } from "uuid";
+import FIREBASE from "../firebase-admin-app";
 
 type Param = {
    userIds: any[]; // Now accepting an array of user IDs
@@ -41,7 +42,7 @@ export default async function FirebaseNotification({ userIds, title, body, url, 
          },
       }));
 
-      const responses = await Promise.all(messages.map((message) => admin.messaging().send(message)));
+      const responses = await Promise.all(messages.map((message) => FIREBASE.ADMIN.messaging().send(message)));
       await Promise.all(users.map((user) => user.save()));
       return responses;
    } catch (error) {
