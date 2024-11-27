@@ -55,6 +55,7 @@ export function ChatMessages({ messages }: MessageContainerProps) {
                      me={authUser?._id === message?.from}
                      message={message}
                      isChannel={message.isChannel}
+                     members={chatDetails?.members}
                   />
                </React.Fragment>
             );

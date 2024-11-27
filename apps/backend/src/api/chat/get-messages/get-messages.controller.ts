@@ -38,8 +38,6 @@ export default async function GetMessagesController(req: Req, res: Response, nex
          message: "successfully",
       });
    } catch (error) {
-      console.log(error);
-
       next(createHttpError.InternalServerError());
    }
 }

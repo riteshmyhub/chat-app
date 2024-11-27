@@ -51,8 +51,6 @@ io.on("connection", (socket) => {
          await FIREBASE.COLLECTION.MESSAGES.add(payload);
          if (!isChannel) {
             const contact = socket?.user?.contacts?.find((contact: any) => contact?.chatID === chat);
-            console.log({ contact });
-
             if (!Boolean(await User.exists({ _id: contact?.person, "contacts.chatID": chat }))) {
                const user = await User.findById(contact?.person);
                user?.contacts.push({ chatID: contact?.chatID, person: userID });
@@ -74,7 +72,7 @@ io.on("connection", (socket) => {
             });
          }
       } catch (error) {
-         console.log(error);
+         return;
       }
    });
 
