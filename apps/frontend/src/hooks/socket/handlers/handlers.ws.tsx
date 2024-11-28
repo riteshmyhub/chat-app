@@ -48,6 +48,7 @@ export default function useHandlerWS() {
    const typing = (data: string) => {
       dispatch(chatActions.setTyping(data));
    };
+   
    const readReceipts = (chat: string) => {
       dispatch(chatActions.setReadReceipts(chat));
    };

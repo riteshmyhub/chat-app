@@ -25,7 +25,6 @@ export function ChatMessages({ messages }: MessageContainerProps) {
       if (!chatDetails?.groupChat) {
          socket.emit("MARK_AS_READ", chatDetails?._id);
       }
-
       return () => {};
    }, [messages, chatDetails]);
 
