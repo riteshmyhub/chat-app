@@ -27,7 +27,7 @@ export default class HttpInterceptor {
    }
 
    private removeToken = async () => {
-      localStorage.removeItem("accessToken");
+      localStorage.clear();
       setTimeout(() => {
          window.location.replace("/auth/login");
       }, 500);

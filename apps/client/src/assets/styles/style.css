@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+   :root {
+      --radius: 0.5rem;
+   }
+}
+
+.spin {
+   animation: spin 800ms linear infinite; /* Adjust duration, timing-function, and iteration count as needed */
+}
+@keyframes spin {
+   0% {
+      transform: rotate(0deg);
+   }
+   100% {
+      transform: rotate(360deg);
+   }
+}
+
+[data-badge] {
+   position: relative;
+}
+[data-badge]::before {
+   content: attr(data-badge);
+   position: absolute;
+   top: -5px;
+   right: -5px;
+   background: green;
+   height: 21px;
+   width: 21px;
+   display: flex;
+   color: white;
+   justify-content: center;
+   align-items: center;
+   border-radius: 50%;
+   font-size: 13px;
+}
+[data-online] {
+   position: relative;
+}
+[data-online]::before {
+   content: "";
+   position: absolute;
+   bottom: 0;
+   right: 0;
+   background: green;
+   height: 10px;
+   width: 10px;
+   border-radius: 50%;
+   z-index: 999;
+}

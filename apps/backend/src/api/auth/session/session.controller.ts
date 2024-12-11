@@ -22,6 +22,7 @@ export default async function GetSessionController(req: Req, res: Response, next
          success: true,
       });
    } catch (error) {
+      console.log(error);
       next(createHttpError.InternalServerError());
    }
 }

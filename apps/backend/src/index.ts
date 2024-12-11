@@ -10,6 +10,8 @@ import "./database/database";
 import path from "path";
 import { app, server } from "./socket/socket";
 import { bucket } from "./libs/cloudinary";
+import { corsOptions } from "./config/cors.config";
+import cors from "cors";
 
 const PORT = process.env.PORT || 8000;
 
@@ -18,6 +20,7 @@ interface CustomError extends Error {
 }
 // middlewares
 bucket.init();
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));

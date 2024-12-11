@@ -151,7 +151,7 @@ class AuthService extends HttpInterceptor {
       api: createAsyncThunk("logout", async (_, thunkAPI) => {
          try {
             const { data } = await this.http.get(ENDPOINTS.AUTH.LOGOUT);
-            localStorage.removeItem("accessToken");
+            localStorage.clear();
             return data;
          } catch (error) {
             return thunkAPI.rejectWithValue(this.errorMessage(error));
