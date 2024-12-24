@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
+import { Avatar } from "@/shared/components";
 import { SearchIcon } from "lucide-react";
 import { Link } from "react-router";
 
@@ -15,13 +15,17 @@ export default function ContactsPage() {
          {/* contacts */}
          <Link role="button" to="/chat/contacts/12" className="flex items-center p-2 px-3 gap-3 hover:bg-[#F0F2F5] border-b-[1px]">
             <div className="basis-1/4 flex justify-center">
-               <Avatar className="h-[60px] w-[60px] relative inline-block overflow-visible" data-online>
-                  <AvatarImage src="https://github.com/shadcn.png" className="rounded-full" />
-                  <AvatarFallback>CN</AvatarFallback>
-               </Avatar>
+               <Avatar //
+                  src="https://mui.com/static/images/avatar/2.jpg"
+                  className="rounded-full"
+                  alt="test user"
+                  size="60px"
+                  isOnline
+               />
             </div>
             <div className="basis-1/2">
                <span className="block text-lg font-normal">Test User</span>
+               <span className="block text-xs font-medium text-gray-600">hlw</span>
             </div>
             <div className="basis-1/4 flex justify-center items-center">
                <span data-badge={4} />

@@ -10,7 +10,12 @@ export default function SingleContactPage() {
    };
    return (
       <AsideMenu ref={asideRef} position="right" aside={<ContactDetails />}>
-         <Header title={<b onClick={toggleAside}>Test User</b>} back="/chat/contacts" />
+         <Header //
+            avatar="https://mui.com/static/images/avatar/2.jpg"
+            title={<b onClick={toggleAside}>Test User</b>}
+            description={<p className="text-xs font-bold">online</p>}
+            back="/chat/contacts"
+         />
          <MessagesPage />
       </AsideMenu>
    );

@@ -43,8 +43,8 @@
 [data-online]::before {
    content: "";
    position: absolute;
-   bottom: 0;
-   right: 0;
+   bottom: 4px;
+   right: 4px;
    background: green;
    height: 10px;
    width: 10px;

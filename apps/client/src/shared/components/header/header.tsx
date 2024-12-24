@@ -1,5 +1,6 @@
 import { ArrowLeftIcon } from "lucide-react";
 import { useNavigate } from "react-router";
+import { Avatar } from "../avatar/avatar";
 
 type Props = {
    title: JSX.Element;
@@ -20,9 +21,7 @@ export function Header({ avatar, title, description, extra, event, back }: Props
                   <ArrowLeftIcon role="button" className="size-6" onClick={() => navigate(back, { replace: true })} />
                )}
                {avatar && ( //
-                  <div>
-                     <img src={avatar} alt="avatar" className="block rounded-full h-[60px] w-[60px] object-contain mx-auto border" />
-                  </div>
+                  <Avatar src={avatar} className="rounded-full" alt="test user" size="60px" />
                )}
                <div>
                   <button onClick={() => event && event()}>{title}</button>
