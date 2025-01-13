@@ -1,0 +1,20 @@
+.image-gallery-slide .image-gallery-image {
+   width: 100%;
+   object-fit: contain;
+   height: 503px !important;
+}
+.image-gallery-thumbnail .image-gallery-thumbnail-image {
+   /* vertical-align: middle; */
+   /* width: 100%; */
+   /* line-height: 0; */
+   width: 750px !important;
+   height: 50px !important;
+   object-fit: contain !important;
+   cursor: pointer !important;
+   margin: auto;
+   padding: 10px;
+   border: 1px solid #337ab7;
+}
+.image-gallery-content.fullscreen {
+   background-color: white;
+}

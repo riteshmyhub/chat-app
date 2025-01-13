@@ -1,5 +1,5 @@
 import { useMediaQuery } from "@/shared/hooks";
-import { BellIcon, MessagesSquareIcon, SettingsIcon, UsersRoundIcon } from "lucide-react";
+import { BellIcon, BriefcaseBusinessIcon, MessagesSquareIcon, SettingsIcon, UsersRoundIcon } from "lucide-react";
 import { useCallback } from "react";
 import { Link, useLocation } from "react-router";
 
@@ -15,17 +15,17 @@ export default function NavigationMenu() {
    );
    return (
       <ul className={screen.md ? "flex flex-col justify-start gap-5 border-r w-[90px] py-4" : "flex flex-row justify-evenly gap-3 h-[75px] border-t items-center"}>
-         <Link to="/chat/contacts" className="flex flex-col items-center">
-            <span className={activeStyle("/chat/contacts")}>
+         <Link to="/workspaces" className="flex flex-col items-center">
+            <span className={activeStyle("/workspaces")}>
+               <BriefcaseBusinessIcon size={20} className="mx-auto" />
+            </span>
+            <small className="text-xs">workspaces</small>
+         </Link>
+         <Link to="/chat" className="flex flex-col items-center">
+            <span className={activeStyle("/chat")} data-badge={8}>
                <MessagesSquareIcon size={20} className="mx-auto" />
             </span>
-            <small className="text-xs">contacts</small>
-         </Link>
-         <Link to="/chat/channels" className="flex flex-col items-center">
-            <span className={activeStyle("/chat/channels")}>
-               <UsersRoundIcon size={20} className="mx-auto" />
-            </span>
-            <small className="text-xs">channels</small>
+            <small className="text-xs">chat</small>
          </Link>
          <Link to="/notifications" className="flex flex-col items-center">
             <span className={activeStyle("/notifications")}>

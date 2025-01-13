@@ -49,7 +49,7 @@ export default function ChannelDetailsPage({ chatDetails }: { chatDetails: IChat
          <MediaViewer mediaList={mediaList} />
 
          <div className="py-2">
-            <span className="text-md text-gray-500">Members {chatDetails?.members?.length}</span>
+            <span className="text-md text-gray-500">Members {chatDetails?.members?.length}</span>  
             {isAdmin && (
                <div className="relative">
                   <DebounceSearch handler={searchHandler}>

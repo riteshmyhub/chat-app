@@ -21,8 +21,11 @@ export const AsideMenu = forwardRef(({ children, position, aside }: Props, ref) 
                transition: "transform 150ms ease-in-out, opacity 150ms ease-in-out", // Speed increased to 150ms
                opacity: toggle ? 1 : 0,
                minWidth: screen.md ? "400px" : "100%",
+               position: "fixed",
+               [position]: 0,
+               top: 0,
             }}
-            className={`border overflow-x-hidden fixed top-0 ${position}-0 bg-white h-full z-40`}>
+            className={`border overflow-x-hidden bg-white h-full z-40`}>
             {/* Close Button */}
             <button onClick={() => setToggle(!toggle)} className="absolute top-3 right-3">
                <XIcon size={20} className="text-red-600" />
@@ -31,7 +34,7 @@ export const AsideMenu = forwardRef(({ children, position, aside }: Props, ref) 
          </aside>
 
          <main
-            className="flex flex-col h-full"
+            className="flex flex-col h-full" 
             style={{
                transition: `margin-${position} 120ms ease-in-out`, // Speed increased to 150ms
                [position === "left" ? "marginLeft" : "marginRight"]: toggle ? (screen.md ? "400px" : "100%") : "0px",
