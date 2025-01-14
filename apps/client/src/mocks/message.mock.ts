@@ -1,0 +1,71 @@
+export const messages = [
+   {
+      attachments: [
+         {
+            src: "https://sample-videos.com/img/Sample-png-image-1mb.png",
+            type: "image/png",
+            size: 204800,
+            name: "sample1.png",
+         },
+         {
+            src: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+            type: "video/mp4",
+            size: 5242880,
+            name: "sample-video.mp4",
+         },
+         {
+            src: "https://www.princexml.com/howcome/2016/samples/invoice/index.pdf",
+            type: "application/pdf",
+            size: 1048576, // 1 MB
+            name: "sample-document.pdf",
+         },
+         {
+            src: "https://www2.cs.uic.edu/~i101/SoundFiles/BabyElephantWalk60.wav",
+            type: "audio/mpeg",
+            size: 3145728, // 3 MB
+            name: "sample-audio.mp3",
+         },
+      ],
+      chat: "64a9f13a35e1a2c012345678",
+      from: "64a9f13a35e1a2c012345679",
+      to: "64a9f13a35e1a2c012345680",
+      isChannel: true,
+      content: "Hey! Here are the files you requested.",
+      createdAt: "2025-01-09T10:00:00.000Z",
+      _id: "64a9f13a35e1a2c012345681",
+      isRead: false,
+   },
+   {
+      attachments: [],
+      chat: "64a9f13a35e1a2c012345682",
+      from: "673b2215a25734e8e39c8413",
+      to: "64a9f13a35e1a2c012345684",
+      isChannel: true,
+      content: "Please review the attached report.",
+      createdAt: "2025-01-09T11:30:00.000Z",
+      _id: "64a9f13a35e1a2c012345685",
+      isRead: false,
+   },
+   {
+      attachments: [],
+      chat: "64a9f13a35e1a2c012345686",
+      from: "64a9f13a35e1a2c012345687",
+      to: "64a9f13a35e1a2c012345688",
+      isChannel: true,
+      content: "No attachments here, just a plain message.",
+      createdAt: "2025-01-09T12:45:00.000Z",
+      _id: "64a9f13a35e1a2c012345689",
+      isRead: false,
+   },
+   {
+      attachments: [],
+      chat: "64a9f13a35e1a2c012345690",
+      from: "670e6503aed748a69f773a57",
+      to: "64a9f13a35e1a2c012345692",
+      isChannel: true,
+      content: "Check out this audio clip and image!",
+      createdAt: "2025-01-09T14:15:00.000Z",
+      _id: "64a9f13a35e1a2c012345693",
+      isRead: false,
+   },
+];

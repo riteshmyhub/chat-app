@@ -18,5 +18,5 @@ export default function ContactLayout() {
          </div>
       );
    }
-   return id ? <Outlet /> : <ContactsPage />;
+   return id ? <Outlet /> : <ContactsPage />;   
 }
