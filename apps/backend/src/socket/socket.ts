@@ -94,10 +94,12 @@ io.on("connection", (socket) => {
 
    //TYPING
    socket.on("TYPING", (data: { members: any[]; chat: string; isTyping: boolean }) => {
-      const person = `${socket.user.profile?.first_name} ${socket.user.profile?.last_name}`;
       if (typeof data?.isTyping !== "boolean") return;
       const ids = getSocketIds(data.members);
-      socket.to(ids).emit("TYPING", data?.isTyping ? `${person} is typing...` : "");
+      socket.to(ids).emit("TYPING", data?.isTyping ? {
+          name:`${socket?.user?.profile?.first_name} ${socket?.user?.profile?.last_name}`,
+          avatar:socket?.user?.profile?.avatar
+      } : "");
    });
 
    // disconnect

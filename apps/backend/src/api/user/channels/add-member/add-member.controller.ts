@@ -46,8 +46,13 @@ export default async function AddMembersController(req: Req, res: Response, next
       }
       channel.members = [...channel.members, ...members] as Types.ObjectId[];
       await channel.save();
+      console.log(channel.members);
 
-      SocketEmitter({ req: req, eventName: "REFRESH_CHANNEL", to: channel.members });
+      SocketEmitter({
+         req: req,
+         eventName: "REFRESH_CHANNEL",
+         to: channel.members?.filter((data) => data?.toString() !== req.user?._id?.toString()),
+      });
       const updatedChannel = await channel.populate("members", "profile _id email");
 
       await FirebaseNotification({

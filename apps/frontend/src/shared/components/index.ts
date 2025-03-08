@@ -1,0 +1,12 @@
+export { Avatar as AvatarProfile } from "./avatar/Avatar";
+export { ComingSoon } from "./coming-soon/ComingSoon";
+export { Loading } from "./loading/Loading";
+export { DebounceSearch } from "./debounce-search/DebounceSearch";
+export { MediaViewer } from "./media-viewer/media-viewer";
+export { Header } from "./header/header";
+export { AsideMenu } from "./aside-menu/AsideMenu";
+export { SplashScreen } from "./splash-screen/splash-screen";
+export { Image } from "./image/Image";
+export { BottomSheet } from "./bottom-sheet/bottom-sheet";
+export { TabNavigation } from "./tab-navigation/TabNavigation";
+export { DigitalTimer } from "./digital-timer/DigitalTimer";

@@ -5,7 +5,7 @@ import { bucket } from "../../../../libs/cloudinary";
 import { SocketEmitter } from "../../../../socket/socket";
 import Channel from "../../../../models/channel.model";
 
-type ReqBody = { channelID: string; name: string; "members[]": string[]; about: string };
+type ReqBody = { channelID: string; name: string; about: string };
 
 type ReqQuery = {};
 
@@ -21,7 +21,8 @@ export default async function UpdateChannelController(req: Req, res: Response, n
       if (!channelID || !isValidObjectId(channelID)) {
          return next(createHttpError.BadRequest("Channel id is required or invaild"));
       }
-      const channel = await Channel.findOne({ _id: channelID, groupChat: true });
+      const channel = await Channel.findOne({ _id: channelID.toString() });
+
       if (!channel) {
          return next(createHttpError.NotFound("Channel not found"));
       }
@@ -39,7 +40,11 @@ export default async function UpdateChannelController(req: Req, res: Response, n
          channel.avatar = src.secure_url;
       }
       await channel.save();
-      SocketEmitter({ req: req, eventName: "REFRESH_CHANNEL", to: channel.members });
+      SocketEmitter({
+         req: req,
+         eventName: "REFRESH_CHANNEL",
+         to: channel.members?.filter((data) => data?.toString() !== req.user?._id?.toString()),
+      });
       res.status(201).json({
          success: true,
          data: {},

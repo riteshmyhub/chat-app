@@ -33,8 +33,7 @@ export default async function GetChatDetailsController(req: Req, res: Response, 
               members: req.user?._id,
            }).populate("members", "profile _id email")
          : null;
-
-      const chat = !channel || !contact;
+      const chat = channel || contact;
       if (!chat) {
          return next(createHttpError.NotFound("chat not found!"));
       }
@@ -45,7 +44,9 @@ export default async function GetChatDetailsController(req: Req, res: Response, 
          avatar: isChannel ? channel?.avatar : contact?.person?.profile?.avatar,
          name: isChannel ? channel?.name : `${contact?.person?.profile?.first_name} ${contact?.person?.profile?.last_name}`,
          about: isChannel ? channel?.about : contact?.person?.profile?.about,
-         members: isChannel? channel?.members : [
+         members: isChannel
+            ? channel?.members
+            : [
                  { _id: contact?.person?._id }, //
                  { _id: req.user?._id },
               ],

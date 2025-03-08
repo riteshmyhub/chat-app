@@ -1,19 +1,18 @@
-import ProfilePage from "@/pages/settings/profile/page";
-import { useAppSelector } from "@/store/store";
-import { Card } from "@/ui/card";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { useAppSelector } from "@/api/store";
+import ProfilePage from "@/app/settings/profile/profile.page";
+import { Card } from "@/shared/ui/card";
+import { Navigate, Outlet } from "react-router";
 
 export default function AuthGuard() {
-   const location = useLocation();
-   const { authUser } = useAppSelector((state) => state.auth);
-   if (!authUser) {
-      return <Navigate to="/auth" state={{ form: location }} replace />;
+   const { accessToken, session } = useAppSelector((state) => state.authReducer);
+   if (!accessToken || !session.data) {
+      return <Navigate to="/auth" replace />;
    }
-   if (!authUser?.profile) {
+   if (!session.data?.profile?.first_name) {
       return (
          <div className="h-screen absolute top-0 left-0 bg-white z-20 flex items-end md:items-center justify-center w-full">
-            <Card className="max-w-[600px]">
-               <ProfilePage />
+            <Card className="md:w-[600px]">
+               <ProfilePage createProfile />
             </Card>
          </div>
       );

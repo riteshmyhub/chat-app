@@ -47,7 +47,7 @@ export default async function RemoveMemberController(req: Req, res: Response, ne
          req: req,
          eventName: "REFRESH_CHANNEL",
          to: [
-            ...channel.members.map((member) => member._id.toString()), //
+            ...channel.members?.map((member) => member._id.toString()), //
             memberID,
          ],
       });

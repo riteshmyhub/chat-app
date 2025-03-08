@@ -11,7 +11,7 @@ type TokenData = {
 export function createJwtLoginToken(tokenData: TokenData, res: Response) {
    const [value, unit] = String(process.env.TOKEN_EXPIRES_IN)?.split("-");
    const token = jwt.sign(tokenData, process.env.JWT_SECRET_KEY as string, {
-      expiresIn: `${value}${unit}`,
+      expiresIn: `${value}${unit}` as any,
    });
    if (process.env.AUTH_MODE === "HTTP_COOKIE") {
       res.cookie("accessToken", token, {

@@ -17,9 +17,10 @@ firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
+   console.log(payload);
    self.registration.showNotification(payload.notification.title, {
       body: payload.notification.body,
-      icon: "/favicon.svg", // Path to your app's icon
+      icon: "/vite.svg", // Path to your app's icon
       data: {
          date: payload.data?.date,
          url: payload.data?.url,
