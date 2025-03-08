@@ -51,7 +51,7 @@ export default function ProfilePage({ createProfile }: { createProfile?: boolean
 
    return (
       <>
-         {!createProfile && <Header title="Profile" back="/settings" />}
+         {!createProfile && <Header title="Profile" back="/account" />}
          <form onSubmit={submit} className="grid grid-cols-12 gap-3 p-3">
             <div className="col-span-12">
                <div className="relative inline-block">

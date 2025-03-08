@@ -53,7 +53,7 @@ export function MediaViewer({ mediaList }: { mediaList: IAttachment[] }) {
                </AlertDialogTrigger>
             )}
          </div>
-         <AlertDialogContent className="p-2 block w-full max-w-screen-lg border-none rounded-none h-auto md:h-full">
+         <AlertDialogContent className="p-2 block w-full max-w-screen-lg border-none rounded-none bg-white">
             <ImageGallery
                showNav={false}
                showPlayButton={false}

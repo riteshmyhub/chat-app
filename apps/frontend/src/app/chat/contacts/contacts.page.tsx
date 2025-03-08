@@ -52,7 +52,7 @@ export default function ContactsPage() {
                            />
                         </div>
                         <div className="basis-1/2">
-                           <span className="block text-md font-semibold">{contact?.name}</span>
+                           <span className="block text-[18px] font-semibold">{contact?.name}</span>
                            <span className="block text-xs font-medium">{unseenMessages[unseenMessages?.length - 1]?.content}</span>
                         </div>
                         <div className="basis-1/4 flex justify-center items-center">{Boolean(unseenMessages?.length) && <span data-badge={unseenMessages?.length} />} </div>

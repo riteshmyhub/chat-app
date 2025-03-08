@@ -62,8 +62,9 @@ class AuthService extends HttpInterceptor {
    register = {
       api: createAsyncThunk("register", async (payload: { email: string; password: string; confirmPassword: string }, thunkAPI) => {
          try {
+            const deviceToken = (thunkAPI?.getState() as any)?.authReducer?.deviceToken?.data;
             const { data } = await this.http.post(ENDPOINTS.AUTH.REGISTER, payload);
-            thunkAPI.dispatch(this.login.api({ email: payload.email, password: payload.password }));
+            await thunkAPI.dispatch(this.login.api({ ...payload, deviceToken })).unwrap();
             return data;
          } catch (error) {
             return thunkAPI.rejectWithValue(this.errorMessage(error));

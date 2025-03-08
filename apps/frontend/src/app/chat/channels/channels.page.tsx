@@ -18,8 +18,10 @@ export default function ChannelsPage() {
             <span className="text-xl font-medium capitalize block my-2">Channels</span>
             <PlusIcon role="button" onClick={() => setToggle(true)} />
             <AlertDialog open={toggle}>
-               <AlertDialogContent>
-                  <CreateChannelPage onClose={() => setToggle(false)} />
+               <AlertDialogContent className="p-3">
+                  <div className="bg-white p-3">
+                     <CreateChannelPage onClose={() => setToggle(false)} />
+                  </div>
                </AlertDialogContent>
             </AlertDialog>
          </div>
@@ -44,14 +46,14 @@ export default function ChannelsPage() {
                   const unseenMessages = unreadMessages?.filter((message) => message?.chat === channel?._id);
                   return (
                      <Link key={channel?._id} role="button" to={`/channels/${channel?._id}`} className={`flex items-center p-2 px-3 gap-3 hover:bg-[#F0F2F5] border-b-[1px] ${activeClass}`}>
-                        <div className="basis-1/4 flex justify-center">
+                        <div className="basis-[20%] flex justify-center">
                            <AvatarProfile src={channel?.avatar} fallBackTxt={channel?.name} height="60px" width="60px" />
                         </div>
-                        <div className="basis-1/2">
-                           <span className="block text-md font-semibold">{channel?.name}</span>
+                        <div className="basis-[70%]">
+                           <span className="block text-[18px] font-semibold">{channel?.name}</span>
                            <span className="block text-xs font-medium">{unseenMessages[unseenMessages?.length - 1]?.content}</span>
                         </div>
-                        <div className="basis-1/4 flex justify-center items-center">{Boolean(unseenMessages?.length) && <span data-badge={unseenMessages?.length} />} </div>
+                        <div className="basis-[10%] flex justify-center items-center">{Boolean(unseenMessages?.length) && <span data-badge={unseenMessages?.length} />} </div>
                      </Link>
                   );
                })}

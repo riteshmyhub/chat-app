@@ -65,7 +65,7 @@ io.on("connection", (socket) => {
             await FirebaseNotification({
                userIds: members?.filter((id: string) => id.toString() !== userID.toString()),
                title: `"PLACEHOLDER" send new messages from channel`,
-               body: content || `attachments?.length || 0} attachment(s) sent.`,
+               body: content || `[${attachments?.length || 0} files] sent.`,
                url: "/channels" + "/" + chat,
             });
          }

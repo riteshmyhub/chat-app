@@ -12,12 +12,10 @@ type Req = Request<ReqParms, {}, ReqBody, ReqQuery>;
 
 export default async function GetSessionController(req: Req, res: Response, next: NextFunction) {
    try {
-      const ringtones = await Sound.find();
       res.status(200).json({
          message: "user successfully fatched!",
          data: {
             user: (req as any)?.user,
-            appSettings: { ringtones },
          },
          success: true,
       });

@@ -21,7 +21,7 @@ export function TabNavigation() {
    );
    return (
       <ul className={screen.md ? "flex flex-col justify-start gap-5 border-r w-[90px] py-4" : "flex flex-row justify-evenly gap-3 h-[75px] border-t items-center"}>
-         <Link to="/settings/profile" className="hidden flex-col items-center md:flex">
+         <Link to="/account/profile" className="hidden flex-col items-center md:flex">
             <AvatarProfile //
                src={session.data?.profile?.avatar}
                fallBackTxt={`${session.data?.profile?.first_name} ${session.data?.profile?.last_name}`}

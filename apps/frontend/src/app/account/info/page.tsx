@@ -3,7 +3,7 @@ import { Header } from "@/shared/components";
 export default function AppInfoPage() {
    return (
       <>
-         <Header title="App Info" back="/settings" />
+         <Header title="App Info" back="/account" />
          <div className="flex items-center justify-center" style={{ height: "calc(80vh - 65px)" }}>
             <div className="text-center">
                <h2 className="text-3xl block capitalize">we conjoin</h2>
