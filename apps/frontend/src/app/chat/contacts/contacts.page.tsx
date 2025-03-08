@@ -1,28 +1,24 @@
-import { Link, useParams } from "react-router";
-import SearchPage from "./search/search.page";
+import { Link, useNavigate, useParams } from "react-router";
 import { SearchIcon } from "lucide-react";
-import { AvatarProfile, BottomSheet } from "@/shared/components";
-import React, { useRef } from "react";
+import { AvatarProfile } from "@/shared/components";
+import React from "react";
 import { Skeleton } from "@/shared/ui/skeleton";
 import { useAppSelector } from "@/api/store";
 
 export default function ContactsPage() {
-   const sheetRef = useRef<any>(null);
    const { contact } = useAppSelector((state) => state.contactReducer);
    const { onlineUsers } = useAppSelector((state) => state.chatReducer);
    const { unreadMessages } = useAppSelector((state) => state.messageReducer);
    const { id } = useParams();
+   const navigate = useNavigate();
 
    return (
       <div>
          <span className="text-2xl font-medium capitalize block p-2">chats</span>
          <div className="p-2">
-            <button className="border w-full text-start p-3 text-gray-400 text-sm flex justify-between items-center" onClick={() => sheetRef.current.setToggle(true)}>
+            <button className="border w-full text-start p-3 text-gray-400 text-sm flex justify-between items-center" onClick={() => navigate("/contacts/search")}>
                Search New Contacts <SearchIcon size={18} />
             </button>
-            <BottomSheet ref={sheetRef} heading="Search New Contacts">
-               <SearchPage onClose={() => sheetRef.current.setToggle(false)} />
-            </BottomSheet>
          </div>
          {contact?.isLoading ? (
             <React.Fragment>
@@ -51,13 +47,13 @@ export default function ContactsPage() {
                               src={contact?.avatar}
                               fallBackTxt={contact?.name}
                               isOnline={isOnline}
+                              height="65px"
+                              width="65px"
                            />
                         </div>
                         <div className="basis-1/2">
-                           <span className="block text-md font-normal">{contact?.name}</span>
-                           <span className="block text-xs font-medium">
-                              {unseenMessages[unseenMessages?.length - 1]?.content}
-                           </span>
+                           <span className="block text-md font-semibold">{contact?.name}</span>
+                           <span className="block text-xs font-medium">{unseenMessages[unseenMessages?.length - 1]?.content}</span>
                         </div>
                         <div className="basis-1/4 flex justify-center items-center">{Boolean(unseenMessages?.length) && <span data-badge={unseenMessages?.length} />} </div>
                      </Link>

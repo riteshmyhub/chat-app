@@ -54,7 +54,7 @@ export function DebounceSearch({ handler, children, label,...props }: Props) {
          <Input //   
             label={label}
             {...props}
-            className="h-9"
+            className="h-12"
             onChange={handleInputChange}
             value={searchTerm}
          />

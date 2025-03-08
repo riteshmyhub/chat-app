@@ -37,6 +37,7 @@ export default function App() {
    const condtions = [
       pathname.includes("auth"), //
       pathname.split("/")[2] && !screen.md, //
+      pathname.includes("/search") && !screen.md, //
    ];
    if (condtions.some((condtion) => condtion)) {
       return <AppRoutes />;

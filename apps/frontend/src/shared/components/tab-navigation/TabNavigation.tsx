@@ -1,5 +1,5 @@
 import { useMediaQuery } from "@/shared/hooks";
-import {  BriefcaseBusinessIcon, MessagesSquareIcon, SettingsIcon, UsersRoundIcon } from "lucide-react";
+import { BriefcaseBusinessIcon, TvMinimalIcon, CircleUserRoundIcon, MessagesSquareIcon } from "lucide-react";
 import { useCallback } from "react";
 import { Link, useLocation } from "react-router";
 import { useAppSelector } from "@/api/store";
@@ -31,32 +31,32 @@ export function TabNavigation() {
          </Link>
          <Link to="/workspaces" className="flex flex-col items-center">
             <span className={activeStyle("/workspaces")}>
-               <BriefcaseBusinessIcon size={20} className="mx-auto" />
+               <BriefcaseBusinessIcon size={25} className="mx-auto" />
             </span>
-            <small className="text-xs">workspaces</small>
+            <small className="text-xs capitalize">workspaces</small>
          </Link>
          <Link to="/contacts" className="flex flex-col items-center">
             <span
                className={activeStyle("/contacts")} //
                {...(Boolean(userMessages?.length) ? { "data-badge": userMessages?.length } : {})}>
-               <MessagesSquareIcon size={20} className="mx-auto" />
+               <MessagesSquareIcon size={25} className="mx-auto" />
             </span>
-            <small className="text-xs">chat</small>
+            <small className="text-xs capitalize">chats</small>
          </Link>
          <Link to="/channels" className="flex flex-col items-center">
             <span //
                className={activeStyle("/channels")}
                {...(Boolean(groupsMessages?.length) ? { "data-badge": groupsMessages?.length } : {})}>
-               <UsersRoundIcon size={20} className="mx-auto" />
+               <TvMinimalIcon size={25} className="mx-auto" />
             </span>
-            <small className="text-xs">channels</small>
+            <small className="text-xs capitalize">channels</small>
          </Link>
-         <Link to="/settings" className="flex flex-col items-center">
+         <Link to="/account" className="flex flex-col items-center">
             <span //
-               className={activeStyle("/settings")}>
-               <SettingsIcon size={20} className="mx-auto" />
+               className={activeStyle("/account")}>
+               <CircleUserRoundIcon size={25} className="mx-auto" />
             </span>
-            <small className="text-xs">settings</small>
+            <small className="text-xs capitalize">Account</small>
          </Link>
       </ul>
    );

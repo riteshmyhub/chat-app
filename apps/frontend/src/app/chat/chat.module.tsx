@@ -6,6 +6,7 @@ import EmptyChat from "./messages/partials/EmptyChat";
 import ChannelsPage from "./channels/channels.page";
 import SingleContactPage from "./contacts/[id]/single-contact.page";
 import SingleChannelPage from "./channels/[id]/single-channel.page";
+import SearchPage from "./contacts/search/search.page";
 
 const ChatModule = () => (
    <Routes>
@@ -13,6 +14,7 @@ const ChatModule = () => (
          <Route index element={<Navigate to="contacts" replace />} />
          <Route path="contacts" element={<EmptyChat />} />
          <Route path="channels" element={<EmptyChat />} />
+         <Route path="contacts/search" element={<EmptyChat />} />
          <Route path="contacts/:id" element={<SingleContactPage />} />
          <Route path="channels/:id" element={<SingleChannelPage />} />
       </Route>
@@ -21,9 +23,13 @@ const ChatModule = () => (
 );
 
 const Pages = ({ pathname }: { pathname: string }) => {
+   if (pathname === "/contacts/search") {
+      return <SearchPage />;
+   }
    if (pathname.includes("/contacts")) {
       return <ContactsPage />;
    }
+
    return <ChannelsPage />;
 };
 

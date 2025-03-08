@@ -5,11 +5,11 @@ import ProfilePage from "./profile/profile.page";
 import NotFoundPage from "../404/not-found.page";
 import AppInfoPage from "./info/page";
 
-export default function SettingsModule() {
+export default function AccountModule() {
    const screen = useMediaQuery();
    return (
       <Routes>
-         <Route path="/" element={<SettingsLayout />}>
+         <Route path="/" element={<AccountLayout />}>
             {screen.md && <Route index element={<Navigate to="profile" replace />} />}
             <Route path="profile" element={<ProfilePage />} />
             <Route path="app-info" element={<AppInfoPage />} />
@@ -19,7 +19,7 @@ export default function SettingsModule() {
    );
 }
 
-function SettingsLayout() {
+function AccountLayout() {
    const screen = useMediaQuery();
    const { pathname } = useLocation();
 

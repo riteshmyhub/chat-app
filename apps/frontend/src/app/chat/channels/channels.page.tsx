@@ -45,13 +45,11 @@ export default function ChannelsPage() {
                   return (
                      <Link key={channel?._id} role="button" to={`/channels/${channel?._id}`} className={`flex items-center p-2 px-3 gap-3 hover:bg-[#F0F2F5] border-b-[1px] ${activeClass}`}>
                         <div className="basis-1/4 flex justify-center">
-                           <AvatarProfile src={channel?.avatar} fallBackTxt={channel?.name} />
+                           <AvatarProfile src={channel?.avatar} fallBackTxt={channel?.name} height="60px" width="60px" />
                         </div>
                         <div className="basis-1/2">
-                           <span className="block text-md font-normal">{channel?.name}</span>
-                           <span className="block text-xs font-medium">
-                              {unseenMessages[unseenMessages?.length - 1]?.content}
-                           </span>
+                           <span className="block text-md font-semibold">{channel?.name}</span>
+                           <span className="block text-xs font-medium">{unseenMessages[unseenMessages?.length - 1]?.content}</span>
                         </div>
                         <div className="basis-1/4 flex justify-center items-center">{Boolean(unseenMessages?.length) && <span data-badge={unseenMessages?.length} />} </div>
                      </Link>

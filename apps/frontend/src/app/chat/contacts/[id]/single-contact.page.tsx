@@ -7,6 +7,7 @@ import { useParams } from "react-router";
 import { useAppDispatch, useAppSelector } from "@/api/store";
 import { chatActions, chatService } from "@/api/services/chat.service";
 import { messageService } from "@/api/services/message.service";
+import NotFoundPage from "@/app/404/not-found.page";
 
 export default function SingleContactPage() {
    const asideRef = useRef<any>(null);
@@ -54,7 +55,7 @@ export default function SingleContactPage() {
       );
    }
    if (!chatDetails.data) {
-      return <div>no data</div>;
+      return <NotFoundPage />;
    }
    //ui
    const isOnline = chatDetails?.data?.members?.every((member) => onlineUsers.includes(member?._id));

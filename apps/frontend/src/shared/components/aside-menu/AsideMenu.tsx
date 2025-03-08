@@ -34,7 +34,7 @@ export const AsideMenu = forwardRef(({ children, position, aside }: Props, ref) 
          </aside>
 
          <main
-            className="flex flex-col h-full" 
+            className="flex flex-col h-screen md:h-full" 
             style={{
                transition: `margin-${position} 120ms ease-in-out`, // Speed increased to 150ms
                [position === "left" ? "marginLeft" : "marginRight"]: toggle ? (screen.md ? "400px" : "100%") : "0px",

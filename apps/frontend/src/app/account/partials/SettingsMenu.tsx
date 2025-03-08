@@ -24,7 +24,7 @@ const SettingsMenu = () => {
    const navigate = useNavigate();
    return (
       <div className="p-3 md:p-8">
-         <h1 className="text-4xl mb-4">Settings</h1>
+         <h1 className="text-4xl mb-4">Account</h1>
          <ul className="md:w-[450px]">
             {menu?.map((link, idx) => (
                <li //

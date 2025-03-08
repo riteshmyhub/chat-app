@@ -1,5 +1,5 @@
 import { useAppSelector } from "@/api/store";
-import ProfilePage from "@/app/settings/profile/profile.page";
+import ProfilePage from "@/app/account/profile/profile.page";
 import { Card } from "@/shared/ui/card";
 import { Navigate, Outlet } from "react-router";
 

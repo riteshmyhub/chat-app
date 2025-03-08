@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/api/store";
 import { useParams } from "react-router";
 import { chatActions, chatService } from "@/api/services/chat.service";
 import { messageService } from "@/api/services/message.service";
+import NotFoundPage from "@/app/404/not-found.page";
 
 export default function SingleChannelPage() {
    const { id } = useParams();
@@ -63,7 +64,7 @@ export default function SingleChannelPage() {
       );
    }
    if (!chatDetails.data) {
-      return <div>no data</div>;
+      return <NotFoundPage />;
    }
    //ui
    const members = chatDetails?.data?.members;

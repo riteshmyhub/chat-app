@@ -1,7 +1,7 @@
 import NotFoundPage from "@/app/404/not-found.page";
 import AuthModule from "@/app/auth/auth.module";
 import ChatModule from "@/app/chat/chat.module";
-import SettingsModule from "@/app/settings/settings.module";
+import AccountModule from "@/app/account/account.module";
 import AuthGuard from "@/guards/auth.guard";
 import { Navigate, Route, Routes } from "react-router";
 
@@ -10,9 +10,9 @@ export default function AppRoutes() {
       <Routes>
          <Route path="auth/*" element={<AuthModule />} />
          <Route element={<AuthGuard />}>
-            <Route index element={<Navigate to="/" replace />} />
+            <Route index element={<Navigate to="/contacts" replace />} />
             <Route path="/*" element={<ChatModule />} />
-            <Route path="settings/*" element={<SettingsModule />} />
+            <Route path="account/*" element={<AccountModule />} />
          </Route>
          <Route path="*" element={<NotFoundPage />} />
       </Routes>

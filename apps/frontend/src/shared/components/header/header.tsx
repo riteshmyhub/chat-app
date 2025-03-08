@@ -19,7 +19,7 @@ export function Header({ avatar, title, description, extra, event, back, showAva
          <div className="flex justify-between items-center border-b min-h-[65px] p-2">
             <div className="flex items-center gap-3">
                {back && ( //
-                  <ArrowLeftIcon role="button" className="size-6" onClick={() => navigate(back, { replace: true })} />
+                  <ArrowLeftIcon role="button" className="size-7" onClick={() => navigate(back, { replace: true })} />
                )}
                {showAvatar && (
                   <AvatarProfile //
@@ -31,7 +31,7 @@ export function Header({ avatar, title, description, extra, event, back, showAva
                )}
                <div>
                   <button onClick={() => event && event()}>
-                     <b>{title}</b>
+                     <b className="text-lg">{title}</b>
                   </button>
                   {description && description}
                </div>

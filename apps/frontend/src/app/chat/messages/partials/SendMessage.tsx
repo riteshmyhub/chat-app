@@ -4,6 +4,7 @@ import { Button } from "@/shared/ui/button";
 import { IChatDetails } from "@/api/types/chat.type";
 import sounds from "@/assets/audios/sounds";
 import { useSocket } from "@/api/socket/socket";
+import toast from "react-hot-toast";
 
 type Props = { chatDetails?: IChatDetails };
 export default function SendMessage({ chatDetails }: Props) {
@@ -35,7 +36,7 @@ export default function SendMessage({ chatDetails }: Props) {
       event?.preventDefault();
       const message = messageRef.current?.innerText || ""; // Access inner text of contentEditable div
       if (!message && !files?.length) {
-         alert("Cannot send an empty message or attachment.");
+         toast.error("Cannot send an empty message or attachment.");
          return;
       }
       socket?.emit("SEND_MESSAGE", {

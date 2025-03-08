@@ -8,6 +8,7 @@ import { IMessage } from "@/api/types/chat.type";
 import sounds from "@/assets/audios/sounds";
 import { onMessage } from "firebase/messaging";
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 export default function useHandlerWS() {
    const { session } = useAppSelector((state) => state.authReducer);
@@ -28,7 +29,13 @@ export default function useHandlerWS() {
       }
       new Audio(sounds.alert).play();
       dispatch(messageActions.setUnreadMessages(message));
-      alert(`send new message`);
+      toast(`send new message`, {
+         style: {
+            borderRadius: "30px",
+            background: "#333",
+            color: "#fff",
+         },
+      });
    };
 
    const refreshContacts = () => {
