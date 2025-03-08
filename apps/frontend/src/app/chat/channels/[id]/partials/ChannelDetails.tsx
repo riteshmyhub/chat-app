@@ -6,7 +6,7 @@ import { AvatarProfile, DebounceSearch, Image, Loading } from "@/shared/componen
 import { AlertDialog, AlertDialogContent } from "@/shared/ui/alert-dialog";
 import { Button } from "@/shared/ui/button";
 import { ScrollArea } from "@/shared/ui/scroll-area";
-import { LoaderCircleIcon, PlusIcon, XIcon } from "lucide-react";
+import { LoaderCircleIcon, PencilLineIcon, PlusIcon, XIcon } from "lucide-react";
 import CreateChannelPage from "../../create-channel/create-channel.page";
 import { useState } from "react";
 
@@ -37,7 +37,7 @@ export default function ChannelDetails({ chatDetails }: { chatDetails?: IChatDet
    return (
       <div className="p-3">
          <span className="text-lg block font-semibold">Channel Details</span>
-         <div>
+         <div className="relative">
             <Image //
                src={chatDetails?.avatar}
                alt="avatar"
@@ -49,7 +49,7 @@ export default function ChannelDetails({ chatDetails }: { chatDetails?: IChatDet
             {isAdmin && (
                <>
                   <Button size="sm" className="uppercase" onClick={() => setToggle(true)}>
-                     upadate
+                     <PencilLineIcon />
                   </Button>
                   <AlertDialog open={toggle}>
                      <AlertDialogContent>
@@ -83,7 +83,7 @@ export default function ChannelDetails({ chatDetails }: { chatDetails?: IChatDet
                            return "";
                         }
                         return (
-                           <div className="bg-white border shadow-md" style={{ position: "absolute", top: "44px", left: "0", width: "100%", zIndex: 2 }}>
+                           <div className="bg-white border shadow-md" style={{ position: "absolute", top: "68px", left: "0", width: "100%", zIndex: 2 }}>
                               <div className="flex items-center justify-between p-2">
                                  <span className="text-md">users : {items?.length}</span>
                                  <XIcon size={18} role="button" onClick={reset} />

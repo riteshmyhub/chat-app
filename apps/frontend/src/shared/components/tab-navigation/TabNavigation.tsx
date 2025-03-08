@@ -1,5 +1,5 @@
 import { useMediaQuery } from "@/shared/hooks";
-import { BellIcon, BriefcaseBusinessIcon, MessagesSquareIcon, SettingsIcon } from "lucide-react";
+import {  BriefcaseBusinessIcon, MessagesSquareIcon, SettingsIcon, UsersRoundIcon } from "lucide-react";
 import { useCallback } from "react";
 import { Link, useLocation } from "react-router";
 import { useAppSelector } from "@/api/store";
@@ -10,6 +10,8 @@ export function TabNavigation() {
    const screen = useMediaQuery();
    const { session } = useAppSelector((state) => state.authReducer);
    const { unreadMessages } = useAppSelector((state) => state.messageReducer);
+   const groupsMessages = unreadMessages?.filter((message) => message.isChannel);
+   const userMessages = unreadMessages?.filter((message) => !message.isChannel);
 
    const activeStyle = useCallback(
       (pathname: string) => {
@@ -33,17 +35,21 @@ export function TabNavigation() {
             </span>
             <small className="text-xs">workspaces</small>
          </Link>
-         <Link to="/chat" className="flex flex-col items-center">
-            <span className={activeStyle("/chat")} {...(Boolean(unreadMessages?.length) ? { "data-badge": unreadMessages?.length } : {})}>
+         <Link to="/contacts" className="flex flex-col items-center">
+            <span
+               className={activeStyle("/contacts")} //
+               {...(Boolean(userMessages?.length) ? { "data-badge": userMessages?.length } : {})}>
                <MessagesSquareIcon size={20} className="mx-auto" />
             </span>
             <small className="text-xs">chat</small>
          </Link>
-         <Link to="/notifications" className="flex flex-col items-center">
-            <span className={activeStyle("/notifications")}>
-               <BellIcon size={20} className="mx-auto" />
+         <Link to="/channels" className="flex flex-col items-center">
+            <span //
+               className={activeStyle("/channels")}
+               {...(Boolean(groupsMessages?.length) ? { "data-badge": groupsMessages?.length } : {})}>
+               <UsersRoundIcon size={20} className="mx-auto" />
             </span>
-            <small className="text-xs">notifications</small>
+            <small className="text-xs">channels</small>
          </Link>
          <Link to="/settings" className="flex flex-col items-center">
             <span //

@@ -43,7 +43,7 @@ export default function ChannelsPage() {
                   const activeClass = id === channel?._id ? "bg-[#F0F2F5]" : "bg-white";
                   const unseenMessages = unreadMessages?.filter((message) => message?.chat === channel?._id);
                   return (
-                     <Link key={channel?._id} role="button" to={`/chat/channels/${channel?._id}`} className={`flex items-center p-2 px-3 gap-3 hover:bg-[#F0F2F5] border-b-[1px] ${activeClass}`}>
+                     <Link key={channel?._id} role="button" to={`/channels/${channel?._id}`} className={`flex items-center p-2 px-3 gap-3 hover:bg-[#F0F2F5] border-b-[1px] ${activeClass}`}>
                         <div className="basis-1/4 flex justify-center">
                            <AvatarProfile src={channel?.avatar} fallBackTxt={channel?.name} />
                         </div>

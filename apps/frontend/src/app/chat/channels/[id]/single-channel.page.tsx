@@ -78,7 +78,7 @@ export default function SingleChannelPage() {
          <Header //
             title={chatDetails?.data?.name}
             event={toggleAside}
-            back="/chat"
+            back="/channels"
             avatar={chatDetails?.data?.avatar}
             description={
                <p className="text-xs">

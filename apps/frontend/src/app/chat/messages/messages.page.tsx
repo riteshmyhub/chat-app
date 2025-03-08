@@ -23,9 +23,7 @@ export default function MessagesPage({ chatDetails }: { chatDetails: IChatDetail
    return (
       <>
          {message.list?.length ? (
-            <ScrollArea className="overflow-y-auto  bg-[#F3F4F6] px-3" style={{
-               height:"calc(100vh - (75.2px + 76.8px))"
-            }}>
+            <ScrollArea className="overflow-y-auto flex-1 bg-[#F3F4F6] px-3">
                {message?.list?.map((message) => {
                   const messageDate = moment(message.createdAt).format("YYYY-MM-DD");
                   const showDate = messageDate !== lastDate;

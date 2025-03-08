@@ -10,8 +10,8 @@ export default function AppRoutes() {
       <Routes>
          <Route path="auth/*" element={<AuthModule />} />
          <Route element={<AuthGuard />}>
-            <Route index element={<Navigate to="chat" replace />} />
-            <Route path="chat/*" element={<ChatModule />} />
+            <Route index element={<Navigate to="/" replace />} />
+            <Route path="/*" element={<ChatModule />} />
             <Route path="settings/*" element={<SettingsModule />} />
          </Route>
          <Route path="*" element={<NotFoundPage />} />

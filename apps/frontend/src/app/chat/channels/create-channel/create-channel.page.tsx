@@ -4,7 +4,7 @@ import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
 import { Textarea } from "@/shared/ui/textarea";
 import { CameraIcon, LoaderCircleIcon } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 type Props = {
    onClose: Function;
@@ -60,23 +60,12 @@ export default function CreateChannelPage({ onClose, upadateData }: Props) {
       }
    };
 
-   useEffect(() => {
-      if (upadateData) {
-         setFields({
-            name: upadateData?.name || "",
-            about: upadateData?.about || "",
-            avatar: upadateData?.avatar,
-         });
-      }
-      return () => {};
-   }, [upadateData]);
-
    return (
       <form onSubmit={submit} className="grid grid-cols-1 gap-3">
          <div className="">
             <div className="relative inline-block">
                <img //
-                  src={(typeof fields?.avatar === "object" ? URL.createObjectURL(fields?.avatar) : fields?.avatar) || "/images/group-chat-placeholder.png"}
+                  src={(typeof fields?.avatar === "object" ? URL.createObjectURL(fields?.avatar) : fields?.avatar) || upadateData?.avatar || "/images/group-chat-placeholder.png"}
                   alt="avatar"
                   width={100}
                   height={100}
@@ -89,10 +78,10 @@ export default function CreateChannelPage({ onClose, upadateData }: Props) {
             </div>
          </div>
          <div>
-            <Input className="h-10" name="name" label="Channe Name" placeholder="Enter your Channel Name" value={fields.name} onChange={change} required />
+            <Input className="h-10" name="name" label="Channe Name" placeholder="Enter your Channel Name" value={fields.name || upadateData?.name} onChange={change} required />
          </div>
          <div>
-            <Textarea label="About" name="about" rows={3} placeholder="Enter your Channel About in 100 letters" value={fields.about} onChange={change} maxLength={100} />
+            <Textarea label="About" name="about" rows={3} placeholder="Enter your Channel About in 100 letters" value={fields.about || upadateData?.about} onChange={change} maxLength={100} />
          </div>
          <div className="flex justify-end gap-1">
             {upadateData ? (

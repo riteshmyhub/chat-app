@@ -45,7 +45,7 @@ export default function ContactsPage() {
                   const isOnline = onlineUsers.includes(contact._id);
                   const unseenMessages = unreadMessages?.filter((message) => message?.chat === contact?.chatID);
                   return (
-                     <Link key={contact?._id} role="button" to={`/chat/contacts/${contact?.chatID}`} className={`flex items-center p-2 px-3 gap-3 hover:bg-[#F0F2F5] border-b-[1px] ${activeClass}`}>
+                     <Link key={contact?._id} role="button" to={`/contacts/${contact?.chatID}`} className={`flex items-center p-2 px-3 gap-3 hover:bg-[#F0F2F5] border-b-[1px] ${activeClass}`}>
                         <div className="basis-1/4 flex justify-center">
                            <AvatarProfile //
                               src={contact?.avatar}
