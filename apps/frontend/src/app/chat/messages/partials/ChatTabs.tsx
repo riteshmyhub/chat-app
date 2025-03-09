@@ -10,19 +10,21 @@ export default function ChatTabs() {
    const userMessages = unreadMessages?.filter((message) => message?.isChannel)?.length;
 
    return (
-      <div className="flex gap-1 my-3">
+      <div className="flex gap-2 my-3 px-2">
          <Button //
+            size="sm"
             {...(Boolean(userMessages) ? { "data-badge": userMessages } : {})}
             onClick={() => navigate("/chat/contacts")}
-            variant={pathname.includes("contacts") ? "theme" : "outline"}
-            className={`w-[50%] rounded-none`}>
+            variant={pathname.includes("contacts") ? "theme" : "ghost"}
+            className={`rounded-2xl text-xs font-semibold`}>
             Contacts
          </Button>
          <Button //
+            size="sm"
             {...(Boolean(channelMessages) ? { "data-badge": channelMessages } : {})}
             onClick={() => navigate("/chat/channels")}
-            variant={pathname.includes("channels") ? "theme" : "outline"}
-            className={`w-[50%] rounded-none`}>
+            variant={pathname.includes("channels") ? "theme" : "ghost"}
+            className={`rounded-2xl text-xs font-semibold`}>
             Channels
          </Button>
       </div>
