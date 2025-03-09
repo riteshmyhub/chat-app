@@ -52,16 +52,18 @@ export default function ChannelDetails({ chatDetails }: { chatDetails?: IChatDet
                      <PencilLineIcon />
                   </Button>
                   <AlertDialog open={toggle}>
-                     <AlertDialogContent className="bg-white">
-                        <CreateChannelPage
-                           onClose={() => setToggle(false)}
-                           upadateData={{
-                              name: chatDetails?.name,
-                              about: chatDetails?.about,
-                              avatar: chatDetails?.avatar,
-                              channelID: chatDetails?._id,
-                           }}
-                        />
+                     <AlertDialogContent className="bg-transparent shadow-none">
+                        <div className="bg-white p-3 rounded-lg">
+                           <CreateChannelPage
+                              onClose={() => setToggle(false)}
+                              upadateData={{
+                                 name: chatDetails?.name,
+                                 about: chatDetails?.about,
+                                 avatar: chatDetails?.avatar,
+                                 channelID: chatDetails?._id,
+                              }}
+                           />
+                        </div>
                      </AlertDialogContent>
                   </AlertDialog>
                </>

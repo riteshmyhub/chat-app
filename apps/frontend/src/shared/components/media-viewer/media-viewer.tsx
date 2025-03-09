@@ -3,7 +3,7 @@ import "./media-viewer.css";
 import ImageGallery from "react-image-gallery";
 import { AudioPlayer } from "../audio-player/AudioPlayer";
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent } from "@/shared/ui/alert-dialog";
-import { ArrowDownToLineIcon,  XIcon } from "lucide-react";
+import { ArrowDownToLineIcon, XIcon } from "lucide-react";
 import { useState } from "react";
 import { IAttachment } from "@/api/types/chat.type";
 
@@ -53,102 +53,104 @@ export function MediaViewer({ mediaList }: { mediaList: IAttachment[] }) {
                </AlertDialogTrigger>
             )}
          </div>
-         <AlertDialogContent className="p-2 block w-full max-w-screen-lg border-none rounded-none bg-white">
-            <ImageGallery
-               showNav={false}
-               showPlayButton={false}
-               autoPlay={false}
-               lazyLoad
-               showFullscreenButton={false}
-               startIndex={activeSlide}
-               items={(mediaList as any)?.map((attachment: IAttachment) => {
-                  const mediaMeta = { thumbnail: "" as any, original: "" as any, component: null as any };
+         <AlertDialogContent className="p-2 block w-full max-w-screen-lg border-none rounded-none bg-transparent shadow-none">
+            <div className="bg-white p-3 rounded-lg">
+               <ImageGallery
+                  showNav={false}
+                  showPlayButton={false}
+                  autoPlay={false}
+                  lazyLoad
+                  showFullscreenButton={false}
+                  startIndex={activeSlide}
+                  items={(mediaList as any)?.map((attachment: IAttachment) => {
+                     const mediaMeta = { thumbnail: "" as any, original: "" as any, component: null as any };
 
-                  switch (true) {
-                     case attachment.type.includes("image"):
-                        mediaMeta.thumbnail = attachment?.src;
-                        mediaMeta.original = attachment?.src;
-                        mediaMeta.component = (
-                           <img //
-                              src={attachment.src}
-                              className="block md:h-full mx-auto border w-full object-contain"
-                           />
-                        );
-                        break;
-                     case attachment.type.includes("audio"):
-                        mediaMeta.thumbnail = "/images/audio.png";
-                        mediaMeta.original = "/images/audio.png";
-                        mediaMeta.component = (
-                           <AudioPlayer //
-                              attachment={attachment}
-                           />
-                        );
-                        break;
-                     case attachment.type.includes("video"):
-                        mediaMeta.thumbnail = "/images/video.png";
-                        mediaMeta.original = "/images/video.png";
-                        mediaMeta.component = (
-                           <video //
-                              src={attachment?.src}
-                              controls
-                              className="w-full h-full"
-                           />
-                        );
-                        break;
-                     case attachment.type.includes("pdf"):
-                        mediaMeta.thumbnail = "/images/pdf.png";
-                        mediaMeta.original = "/images/pdf.png";
-                        mediaMeta.component = (
-                           <embed //
-                              src={attachment.src}
-                              type="application/pdf"
-                              className="w-full h-full"
-                           />
-                        );
-                        break;
-                     default:
-                        mediaMeta.thumbnail = "/images/file.png";
-                        mediaMeta.original = "/images/file.png";
-                        mediaMeta.component = (
-                           <div>
+                     switch (true) {
+                        case attachment.type.includes("image"):
+                           mediaMeta.thumbnail = attachment?.src;
+                           mediaMeta.original = attachment?.src;
+                           mediaMeta.component = (
                               <img //
-                                 src="/images/file.png"
-                                 className="block mb-6"
-                                 height={160}
-                                 width={150}
+                                 src={attachment.src}
+                                 className="block md:h-full mx-auto w-full object-contain"
                               />
-                              <span className="block">{attachment.name}</span>
-                           </div>
-                        );
-                        break;
-                  }
-                  return {
-                     thumbnail: mediaMeta?.thumbnail,
-                     original: mediaMeta?.original,
-                     renderItem: () => (
-                        <>
-                           <div className="flex items-center justify-between">
-                              <p className="font-semibold text-lg">{attachment.name}</p>
-                              <div className="flex gap-2">
-                                 <a //
-                                    href={mediaMeta?.original}
-                                    download={attachment.name}>
-                                    <ArrowDownToLineIcon //
-                                       size={40}
-                                       className="text-green-600 rounded-full p-2"
-                                    />
-                                 </a>
-                                 <AlertDialogTrigger onClick={() => setActiveSlide(0)}>
-                                    <XIcon size={40} className="text-red-600 bg-white rounded-full p-2" />
-                                 </AlertDialogTrigger>
+                           );
+                           break;
+                        case attachment.type.includes("audio"):
+                           mediaMeta.thumbnail = "/images/audio.png";
+                           mediaMeta.original = "/images/audio.png";
+                           mediaMeta.component = (
+                              <AudioPlayer //
+                                 attachment={attachment}
+                              />
+                           );
+                           break;
+                        case attachment.type.includes("video"):
+                           mediaMeta.thumbnail = "/images/video.png";
+                           mediaMeta.original = "/images/video.png";
+                           mediaMeta.component = (
+                              <video //
+                                 src={attachment?.src}
+                                 controls
+                                 className="w-full h-full"
+                              />
+                           );
+                           break;
+                        case attachment.type.includes("pdf"):
+                           mediaMeta.thumbnail = "/images/pdf.png";
+                           mediaMeta.original = "/images/pdf.png";
+                           mediaMeta.component = (
+                              <embed //
+                                 src={attachment.src}
+                                 type="application/pdf"
+                                 className="w-full h-full"
+                              />
+                           );
+                           break;
+                        default:
+                           mediaMeta.thumbnail = "/images/file.png";
+                           mediaMeta.original = "/images/file.png";
+                           mediaMeta.component = (
+                              <div>
+                                 <img //
+                                    src="/images/file.png"
+                                    className="block mb-6"
+                                    height={160}
+                                    width={150}
+                                 />
+                                 <span className="block">{attachment.name}</span>
                               </div>
-                           </div>
-                           <div className="h-[83vh] md:h-[80vh] flex items-center justify-center relative">{mediaMeta?.component}</div>
-                        </>
-                     ),
-                  };
-               })}
-            />
+                           );
+                           break;
+                     }
+                     return {
+                        thumbnail: mediaMeta?.thumbnail,
+                        original: mediaMeta?.original,
+                        renderItem: () => (
+                           <>
+                              <div className="flex items-center justify-between">
+                                 <p className="font-semibold text-lg">{attachment.name}</p>
+                                 <div className="flex gap-2">
+                                    <a //
+                                       href={mediaMeta?.original}
+                                       download={attachment.name}>
+                                       <ArrowDownToLineIcon //
+                                          size={40}
+                                          className="text-green-600 rounded-full p-2"
+                                       />
+                                    </a>
+                                    <AlertDialogTrigger onClick={() => setActiveSlide(0)}>
+                                       <XIcon size={40} className="text-red-600 bg-white rounded-full p-2" />
+                                    </AlertDialogTrigger>
+                                 </div>
+                              </div>
+                              <div className="h-[83vh] md:h-[80vh] flex items-center justify-center relative">{mediaMeta?.component}</div>
+                           </>
+                        ),
+                     };
+                  })}
+               />
+            </div>
          </AlertDialogContent>
       </AlertDialog>
    );

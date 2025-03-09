@@ -19,8 +19,10 @@ export default function ChannelsPage() {
             <span className="text-3xl font-medium capitalize block">Channels</span>
             <PlusIcon size={22} onClick={() => setToggle(true)} />
             <AlertDialog open={toggle}>
-               <AlertDialogContent className="bg-white">
-                  <CreateChannelPage onClose={() => setToggle(false)} />
+               <AlertDialogContent className="bg-transparent shadow-none">
+                  <div className="bg-white p-3 rounded-lg">
+                     <CreateChannelPage onClose={() => setToggle(false)} />
+                  </div>
                </AlertDialogContent>
             </AlertDialog>
          </div>

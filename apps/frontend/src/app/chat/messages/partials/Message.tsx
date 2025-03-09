@@ -36,13 +36,13 @@ export default function Message({ message, me, members }: Props) {
                      <MediaViewer mediaList={message?.attachments} />
                   )}
                   {message.content && (
-                     <span className={`block text-sm text-start ${me ? "text-secondary" : "text-primary"}  break-words whitespace-pre-wrap p-1`} style={{ maxWidth: "450px" }}>
+                     <span className={`block text-sm text-start ${me ? "text-secondary" : "text-black"}  break-words whitespace-pre-wrap p-1`} style={{ maxWidth: "450px" }}>
                         {message.content}
                      </span>
                   )}
                </div>
                <div className="flex items-center mt-1 justify-end gap-2">
-                  <small className="text-[10px] text-primary block">&nbsp;&nbsp;&nbsp;&nbsp;{moment(message.createdAt).format("LT")}</small>
+                  <small className={`text-[10px] block ${me ? "text-primary" : "text-black"}`}>&nbsp;&nbsp;&nbsp;&nbsp;{moment(message.createdAt).format("LT")}</small>
                </div>
             </div>
          </span>

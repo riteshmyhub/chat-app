@@ -6,8 +6,8 @@ export default function ChatTabs() {
    const { pathname } = useLocation();
    const navigate = useNavigate();
    const { unreadMessages } = useAppSelector((state) => state.messageReducer);
-   const channelMessages = unreadMessages?.filter((message) => !message?.isChannel)?.length;
-   const userMessages = unreadMessages?.filter((message) => message?.isChannel)?.length;
+   const channelMessages = unreadMessages?.filter((message) => message?.isChannel)?.length;
+   const userMessages = unreadMessages?.filter((message) => !message?.isChannel)?.length;
 
    return (
       <div className="flex gap-2 my-3 px-2">
@@ -16,7 +16,7 @@ export default function ChatTabs() {
             {...(Boolean(userMessages) ? { "data-badge": userMessages } : {})}
             onClick={() => navigate("/chat/contacts")}
             variant={pathname.includes("contacts") ? "theme" : "ghost"}
-            className={`rounded-2xl text-xs font-semibold`}>
+            className={`rounded-2xl text-xs font-semibold px-5`}>
             Contacts
          </Button>
          <Button //
@@ -24,7 +24,7 @@ export default function ChatTabs() {
             {...(Boolean(channelMessages) ? { "data-badge": channelMessages } : {})}
             onClick={() => navigate("/chat/channels")}
             variant={pathname.includes("channels") ? "theme" : "ghost"}
-            className={`rounded-2xl text-xs font-semibold`}>
+            className={`rounded-2xl text-xs font-semibold px-5`}>
             Channels
          </Button>
       </div>
