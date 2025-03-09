@@ -31,7 +31,6 @@ export default function HomePage() {
             </h1>
          </div> */}
          <Card className="p-3">
-            <h2 className="text-[20px] font-bold mb-4">Profile</h2>
             <div>
                <div className="mb-3 flex items-center gap-4">
                   <Image //
@@ -40,9 +39,7 @@ export default function HomePage() {
                      className="rounded-full  h-[75px] md:h-[100px] w-[75px] md:w-[100px]"
                   />
                   <div>
-                     <div className="text-lg md:text-4xl font-semibold capitalize flex items-center gap-3">
-                        <span>ritesh goswami</span>
-                     </div>
+                     <span className="text-[20px] md:text-4xl font-bold capitalize flex items-center gap-3">ritesh goswami</span>
                      <div className="text-md md:text-xl mb-2 text-gray-600">react develpoer</div>
                   </div>
                </div>
@@ -70,20 +67,22 @@ export default function HomePage() {
                      </span>
                   </div>
                </div>
-               <div className="mt-4">
-                  <span className="text-[12px] md:text-[15px] text-gray-600">
-                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident enim repellendus quam, suscipit eligendi, ipsum perspiciatis nihil vel adipisci cum corrupti quod recusandae et
-                     voluptates error cumque porro! Nostrum, atque!
-                  </span>
-               </div>
             </div>
+         </Card>
+         {/* Summary */}
+         <Card className="mt-[20px] p-3">
+            <h2 className="text-[17px] font-semibold mb-2">Summary</h2>
+            <span className="text-[12px] md:text-[15px] text-gray-600">
+               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident enim repellendus quam, suscipit eligendi, ipsum perspiciatis nihil vel adipisci cum corrupti quod recusandae et
+               voluptates error cumque porro! Nostrum, atque!
+            </span>
          </Card>
          {/* Skill */}
          <Card className="mt-[20px] p-3">
-            <h2 className="text-[20px] font-bold mb-4">Skills</h2>
+            <h2 className="text-[17px] font-semibold mb-2">Skills</h2>
             <div className="flex items-center mt-2 gap-3 flex-wrap">
                {["react", "java", "python"]?.map((skill, idx) => (
-                  <Badge variant="outline" key={`employee-profile-skill-${idx}`} className="text-gray-800 bg-gray-200">
+                  <Badge variant="outline" key={`employee-profile-skill-${idx}`} className="text-secondary bg-primary">
                      <span className="py-1 px-3">{skill}</span>
                   </Badge>
                ))}
@@ -91,7 +90,7 @@ export default function HomePage() {
          </Card>
          {/* workspaces */}
          <Card className="mt-[20px] p-3">
-            <h2 className="text-[20px] font-bold mb-4">Workspaces</h2>
+            <h2 className="text-[17px] font-semibold mb-2">Workspaces</h2>
             <div className="grid grid-cols-12 gap-4">
                {workspaces?.map((workspace) => {
                   return (
