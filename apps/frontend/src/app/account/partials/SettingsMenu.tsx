@@ -33,7 +33,7 @@ const SettingsMenu = () => {
                   onClick={() => navigate(link.navigate)}
                   role="button">
                   {link.icon}
-                  <span className="block text-lg md:text-sm font-medium uppercase">{link.title}</span>
+                  <span className="block text-lg md:text-sm font-medium capitalize">{link.title}</span>
                </li>
             ))}
 
@@ -46,7 +46,7 @@ const SettingsMenu = () => {
                ) : (
                   <LogOutIcon size={20} />
                )}
-               <span className="block text-lg md:text-sm font-medium uppercase">Logout</span>
+               <span className="block text-lg md:text-sm font-medium capitalize">Logout</span>
             </li>
          </ul>
       </div>

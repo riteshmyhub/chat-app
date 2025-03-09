@@ -23,13 +23,12 @@ const ChatModule = () => (
 );
 
 const Pages = ({ pathname }: { pathname: string }) => {
-   if (pathname === "/contacts/search") {
+   if (pathname.includes("/search")) {
       return <SearchPage />;
    }
    if (pathname.includes("/contacts")) {
       return <ContactsPage />;
    }
-
    return <ChannelsPage />;
 };
 

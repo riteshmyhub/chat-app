@@ -64,7 +64,7 @@ export default function SingleContactPage() {
          <Header //
             title={chatDetails.data?.name}
             event={toggleAside}
-            back="/contacts"
+            back="/chat/contacts"
             avatar={chatDetails.data?.avatar}
             description={
                isOnline ? ( //

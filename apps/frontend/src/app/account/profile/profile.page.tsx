@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "@/api/store";
 import useLogoutPage from "@/app/auth/logout/logout.page";
 import { AvatarProfile, Header } from "@/shared/components";
 import { Button } from "@/shared/ui/button";
+import { Card } from "@/shared/ui/card";
 import { Input } from "@/shared/ui/input";
 import { Textarea } from "@/shared/ui/textarea";
 import { CameraIcon, LoaderCircle, LoaderCircleIcon, LogOutIcon } from "lucide-react";
@@ -123,7 +124,7 @@ export default function ProfilePage({ createProfile }: { createProfile?: boolean
                      </Button>
                   </div>
                ) : (
-                  <Button type="submit" disabled={session?.isUpdating}>
+                  <Button type="submit" variant="theme" disabled={session?.isUpdating}>
                      Update Profile {session?.isUpdating ? <LoaderCircleIcon className="spin" /> : ""}
                   </Button>
                )}

@@ -48,11 +48,11 @@ export default function ChannelDetails({ chatDetails }: { chatDetails?: IChatDet
             <h3 className="text-md text-center font-normal">{chatDetails?.about}</h3>
             {isAdmin && (
                <>
-                  <Button size="sm" className="uppercase" onClick={() => setToggle(true)}>
+                  <Button size="sm" className="uppercase absolute top-0 right-0" variant="theme" onClick={() => setToggle(true)}>
                      <PencilLineIcon />
                   </Button>
                   <AlertDialog open={toggle}>
-                     <AlertDialogContent>
+                     <AlertDialogContent className="bg-white">
                         <CreateChannelPage
                            onClose={() => setToggle(false)}
                            upadateData={{

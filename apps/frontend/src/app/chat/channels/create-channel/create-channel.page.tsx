@@ -84,19 +84,18 @@ export default function CreateChannelPage({ onClose, upadateData }: Props) {
             <Textarea label="About" name="about" rows={3} placeholder="Enter your Channel About in 100 letters" value={fields.about || upadateData?.about} onChange={change} maxLength={100} />
          </div>
          <div className="flex justify-end gap-1">
+            <Button type="button" variant="outline" size="sm" className="text-xs flex gap-2 uppercase" onClick={() => onClose()}>
+               cancel
+            </Button>
             {upadateData ? (
-               <Button type="submit" size="sm" className="text-xs flex gap-2 uppercase" disabled={channel.isUpdating}>
+               <Button type="submit" variant="theme" size="sm" className="text-xs flex gap-2 uppercase" disabled={channel.isUpdating}>
                   Update Channel {channel.isUpdating && <LoaderCircleIcon size={16} className="spin" />}
                </Button>
             ) : (
-               <Button type="submit" size="sm" className="text-xs flex gap-2 uppercase" disabled={channel.isCreating}>
+               <Button type="submit" variant="theme" size="sm" className="text-xs flex gap-2 uppercase" disabled={channel.isCreating}>
                   Create Channel {channel.isCreating && <LoaderCircleIcon size={16} className="spin" />}
                </Button>
             )}
-
-            <Button type="button" variant="destructive" size="sm" className="text-xs flex gap-2 uppercase" onClick={() => onClose()}>
-               cancel
-            </Button>
          </div>
       </form>
    );

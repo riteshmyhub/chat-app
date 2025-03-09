@@ -27,22 +27,22 @@ export default function Message({ message, me, members }: Props) {
             <div>
                {!me &&
                   message.isChannel && ( //
-                     <small className="text-red-600 block text-start pb-2 text-xs font-semibold ">
+                     <small className="text-primary block text-start pb-2 text-xs font-semibold ">
                         {person?.profile?.first_name} {person?.profile?.last_name}
                      </small>
                   )}
-               <div className="p-2" style={{ background: me ? "#4F46E5" : "white" }}>
+               <div className="p-2" style={{ background: me ? "var(--primary)" : "white" }}>
                   {Boolean(message?.attachments?.length) && ( //
                      <MediaViewer mediaList={message?.attachments} />
                   )}
                   {message.content && (
-                     <span className="block text-sm text-start break-words whitespace-pre-wrap p-1" style={{ maxWidth: "450px" }}>
+                     <span className={`block text-sm text-start ${me ? "text-secondary" : "text-primary"}  break-words whitespace-pre-wrap p-1`} style={{ maxWidth: "450px" }}>
                         {message.content}
                      </span>
                   )}
                </div>
                <div className="flex items-center mt-1 justify-end gap-2">
-                  <small className="text-[10px] text-black block">&nbsp;&nbsp;&nbsp;&nbsp;{moment(message.createdAt).format("LT")}</small>
+                  <small className="text-[10px] text-primary block">&nbsp;&nbsp;&nbsp;&nbsp;{moment(message.createdAt).format("LT")}</small>
                </div>
             </div>
          </span>

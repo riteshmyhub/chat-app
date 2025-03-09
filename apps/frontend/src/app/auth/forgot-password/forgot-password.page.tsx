@@ -6,8 +6,8 @@ import React from "react";
 import { Link } from "react-router";
 
 export default function ForgotPasswordPage() {
-  return (
-    <form className="w-full h-[100vh] grid grid-cols-12 justify-center" autoComplete="off">
+   return (
+      <form className="w-full h-[100vh] grid grid-cols-12 justify-center" autoComplete="off">
          <div className="col-span-12 md:col-span-6 p-5 md:p-20 bg-gray-300">
             <Image src="/images/forgot-password.svg" alt="Image" className="h-full w-full" width={100} height={100} />
          </div>
@@ -28,7 +28,7 @@ export default function ForgotPasswordPage() {
                         </Link>
                      </div>
                      <div className="col-span-12">
-                        <Button className="h-12 w-full md:w-auto bg-theme text-!theme uppercase  bg-blue-600 text-white hover:bg-blue-600" size="lg" type="submit">
+                        <Button className="h-12 w-full md:w-auto uppercase" variant="theme" size="lg" type="submit">
                            Send Otp
                            {true ? ( //
                               <LoaderIcon size={16} className="spin" />
@@ -52,13 +52,13 @@ export default function ForgotPasswordPage() {
                      <div className="col-span-12">
                         <Input type="text" label="Otp" name="otp" className="h-12" maxLength={4} required />
                         <span className="mt-3 block text-xs">
-                           OTP will expire in <DigitalTimer sec={50000} callback={() => null} />
+                           OTP will expire in <DigitalTimer sec={200} callback={() => null} />
                         </span>
                      </div>
                      <div className="col-span-12">
-                        <Button size="lg" type="submit" className="h-12 w-full md:w-auto bg-theme text-!theme uppercase  bg-blue-600 text-white hover:bg-blue-600">
+                        <Button size="lg" type="submit" variant="theme" className="h-12 w-full uppercase md:w-auto">
                            Reset password
-                           {true? ( //
+                           {true ? ( //
                               <LoaderIcon size={16} className="spin" />
                            ) : (
                               <ChevronRightIcon size={16} />
@@ -70,5 +70,5 @@ export default function ForgotPasswordPage() {
             </div>
          </div>
       </form>
-  )
+   );
 }

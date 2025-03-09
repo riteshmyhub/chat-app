@@ -13,7 +13,7 @@ export default function useLoginController() {
       try {
          await dispatch(authService.login.api({ ...values, deviceToken: deviceToken.data })).unwrap();
          formikHelpers.resetForm();
-         navigate("/contacts", { replace: true });
+         navigate("/", { replace: true });
       } catch (error) {
          return;
       }

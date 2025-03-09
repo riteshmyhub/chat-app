@@ -2,7 +2,7 @@ import { authService } from "@/api/services/auth.service";
 import { channelService } from "@/api/services/channel.service";
 import { contactService } from "@/api/services/contect.service";
 import { useAppDispatch, useAppSelector } from "@/api/store";
-import AppRoutes from "@/routes/routes";
+import AppRoutes from "@/app/routes";
 import { SplashScreen, TabNavigation } from "@/shared/components";
 import { useMediaQuery } from "@/shared/hooks";
 import { useEffect } from "react";
@@ -34,12 +34,15 @@ export default function App() {
    if (session.isLoading && accessToken) {
       return <SplashScreen />;
    }
-   const condtions = [
-      pathname.includes("auth"), //
-      pathname.split("/")[2] && !screen.md, //
-      pathname.includes("/search") && !screen.md, //
+   const paths = [
+      "/auth", //
+      "/chat/contacts/",
+      "/chat/channels/",
+      "/account/profile",
+      "/account/app-info",
    ];
-   if (condtions.some((condtion) => condtion)) {
+
+   if (paths.find((path) => pathname.includes(path) && (pathname.includes("auth") || !screen.md))) {
       return <AppRoutes />;
    }
 

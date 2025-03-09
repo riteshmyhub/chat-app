@@ -16,7 +16,7 @@ export default function ContactsPage() {
       <div>
          <span className="text-2xl font-medium capitalize block p-2">chats</span>
          <div className="p-2">
-            <button className="border w-full text-start p-3 text-gray-400 text-sm flex justify-between items-center" onClick={() => navigate("/contacts/search")}>
+            <button className="border w-full text-start p-3 text-gray-400 text-sm flex justify-between items-center" onClick={() => navigate("/chat/contacts/search")}>
                Search New Contacts <SearchIcon size={18} />
             </button>
          </div>
@@ -41,7 +41,7 @@ export default function ContactsPage() {
                   const isOnline = onlineUsers.includes(contact._id);
                   const unseenMessages = unreadMessages?.filter((message) => message?.chat === contact?.chatID);
                   return (
-                     <Link key={contact?._id} role="button" to={`/contacts/${contact?.chatID}`} className={`flex items-center p-2 px-3 gap-3 hover:bg-[#F0F2F5] border-b-[1px] ${activeClass}`}>
+                     <Link key={contact?._id} role="button" to={`/chat/contacts/${contact?.chatID}`} className={`flex items-center p-2 px-3 gap-3 hover:bg-[#F0F2F5] border-b-[1px] ${activeClass}`}>
                         <div className="basis-1/4 flex justify-center">
                            <AvatarProfile //
                               src={contact?.avatar}
