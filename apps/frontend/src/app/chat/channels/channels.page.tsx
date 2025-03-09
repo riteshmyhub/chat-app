@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { Link, useParams } from "react-router";
 import CreateChannelPage from "./create-channel/create-channel.page";
 import { AlertDialog, AlertDialogContent } from "@/shared/ui/alert-dialog";
+import ChatTabs from "../messages/partials/ChatTabs";
 
 export default function ChannelsPage() {
    const { channel } = useAppSelector((state) => state.channelReducer);
@@ -13,16 +14,17 @@ export default function ChannelsPage() {
    const { unreadMessages } = useAppSelector((state) => state.messageReducer);
    const [toggle, setToggle] = useState(false);
    return (
-      <div>
-         <div className="flex items-center justify-between p-2">
-            <span className="text-xl font-medium capitalize block my-2">Channels</span>
-            <PlusIcon role="button" onClick={() => setToggle(true)} />
+      <>
+         <div className="flex items-center justify-between p-2 mt-4">
+            <span className="text-3xl font-medium capitalize block">Channels</span>
+            <PlusIcon size={22} onClick={() => setToggle(true)} />
             <AlertDialog open={toggle}>
                <AlertDialogContent className="bg-white">
                   <CreateChannelPage onClose={() => setToggle(false)} />
                </AlertDialogContent>
             </AlertDialog>
          </div>
+         <ChatTabs />
          {channel?.isLoading ? (
             <React.Fragment>
                {[1, 2].map((_, idx) => (
@@ -57,6 +59,6 @@ export default function ChannelsPage() {
                })}
             </React.Fragment>
          )}
-      </div>
+      </>
    );
 }

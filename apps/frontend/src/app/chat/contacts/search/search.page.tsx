@@ -13,7 +13,7 @@ export default function SearchPage() {
    const addContact = async (id: string) => {
       try {
          await dispatch(contactService.addContact.api(id)).unwrap();
-         navigate("/contacts", { replace: true });
+         navigate("/chat", { replace: true });
       } catch (error) {
          return;
       }
@@ -21,7 +21,7 @@ export default function SearchPage() {
 
    return (
       <>
-         <Header title="Search Contacts" back="/contacts" />
+         <Header title="Search Contacts" back="/chat/contacts" />
          <div className="p-3">
             <DebounceSearch //
                handler={async (str) => {

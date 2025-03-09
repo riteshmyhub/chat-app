@@ -10,14 +10,16 @@ type Props = {
    extra?: JSX.Element;
    event?: Function;
    showAvatar?: boolean;
+   prefixItem?: JSX.Element;
 };
 
-export function Header({ avatar, title, description, extra, event, back, showAvatar }: Props) {
+export function Header({ avatar, title, description, extra, event, back, showAvatar, prefixItem }: Props) {
    const navigate = useNavigate();
    return (
       <>
          <div className="flex justify-between items-center border-b min-h-[65px] p-2">
             <div className="flex items-center gap-3">
+               {prefixItem && prefixItem}
                {back && ( //
                   <ArrowLeftIcon role="button" className="size-7" onClick={() => navigate(back, { replace: true })} />
                )}

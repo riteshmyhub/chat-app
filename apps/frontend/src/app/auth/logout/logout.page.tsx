@@ -11,3 +11,4 @@ export default function useLogoutPage() {
 
    return { function: logout, loading: method.isLoading };
 }
+

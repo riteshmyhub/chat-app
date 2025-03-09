@@ -23,14 +23,15 @@ const workspaces = [
 
 export default function HomePage() {
    return (
-      <div className="h-full overflow-y-auto bg-white p-[15px]">
+      <div className="h-full overflow-y-auto bg-gray-100 p-[15px]">
          {/* <div className="text-center">
             <img src="https://www.witmates.com/static/media/logo.6ff17bef1e5cf3a6e888.webp" alt="logo" height={100} width={200} className="mx-auto d-block my-4" />
             <h1 className="text-2xl font-normal mb-2">
                Welcome to <br /> <span className="text-primary font-bold">Witmates Technologies</span>
             </h1>
          </div> */}
-         <Card className="p-3">
+         <Card className="p-4">
+            <h2 className="text-[17px] font-semibold mb-2">Profile</h2>
             <div>
                <div className="mb-3 flex items-center gap-4">
                   <Image //
@@ -67,29 +68,29 @@ export default function HomePage() {
                      </span>
                   </div>
                </div>
+               <span className="text-[12px] md:text-[15px] text-gray-600 block mt-3">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident enim repellendus quam, suscipit eligendi, ipsum perspiciatis nihil vel adipisci cum corrupti quod recusandae et
+                  voluptates error cumque porro! Nostrum, atque!
+               </span>
             </div>
          </Card>
-         {/* Summary */}
-         <Card className="mt-[20px] p-3">
-            <h2 className="text-[17px] font-semibold mb-2">Summary</h2>
-            <span className="text-[12px] md:text-[15px] text-gray-600">
-               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident enim repellendus quam, suscipit eligendi, ipsum perspiciatis nihil vel adipisci cum corrupti quod recusandae et
-               voluptates error cumque porro! Nostrum, atque!
-            </span>
-         </Card>
+
          {/* Skill */}
-         <Card className="mt-[20px] p-3">
+         <Card className="mt-2 p-4">
             <h2 className="text-[17px] font-semibold mb-2">Skills</h2>
             <div className="flex items-center mt-2 gap-3 flex-wrap">
                {["react", "java", "python"]?.map((skill, idx) => (
-                  <Badge variant="outline" key={`employee-profile-skill-${idx}`} className="text-secondary bg-primary">
+                  <Badge //
+                     variant="outline"
+                     key={`employee-profile-skill-${idx}`}
+                     className="border-[1px] border-primary text-primary">
                      <span className="py-1 px-3">{skill}</span>
                   </Badge>
                ))}
             </div>
          </Card>
          {/* workspaces */}
-         <Card className="mt-[20px] p-3">
+         <Card className="mt-2 p-4">
             <h2 className="text-[17px] font-semibold mb-2">Workspaces</h2>
             <div className="grid grid-cols-12 gap-4">
                {workspaces?.map((workspace) => {

@@ -1,5 +1,6 @@
 import useLogoutPage from "@/app/auth/logout/logout.page";
-import { CircleUserRoundIcon, InfoIcon, LoaderCircle, LogOutIcon } from "lucide-react";
+import { DialogButton } from "@/shared/components/dialog-button/DialogButton";
+import { CircleUserRoundIcon, InfoIcon, LogOutIcon } from "lucide-react";
 import { useNavigate } from "react-router";
 
 const menu = [
@@ -37,17 +38,14 @@ const SettingsMenu = () => {
                </li>
             ))}
 
-            <li //
+            <DialogButton //
+               title="Confirm Logout"
+               description="Are You Sure You Want to Log Out?"
                className="flex items-center gap-3 py-3 md:py-3 text-red-600"
-               role="button"
                onClick={logout.function}>
-               {logout.loading ? ( //
-                  <LoaderCircle size={20} className="spin" />
-               ) : (
-                  <LogOutIcon size={20} />
-               )}
+               <LogOutIcon size={20} />
                <span className="block text-lg md:text-sm font-medium capitalize">Logout</span>
-            </li>
+            </DialogButton>
          </ul>
       </div>
    );

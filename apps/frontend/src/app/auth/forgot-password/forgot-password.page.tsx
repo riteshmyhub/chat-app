@@ -1,4 +1,4 @@
-import { DigitalTimer, Image } from "@/shared/components";
+import { DigitalTimer } from "@/shared/components";
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
 import { ChevronRightIcon, LoaderIcon } from "lucide-react";
@@ -9,7 +9,13 @@ export default function ForgotPasswordPage() {
    return (
       <form className="w-full h-[100vh] grid grid-cols-12 justify-center" autoComplete="off">
          <div className="col-span-12 md:col-span-6 p-5 md:p-20 bg-gray-300">
-            <Image src="/images/forgot-password.svg" alt="Image" className="h-full w-full" width={100} height={100} />
+            <img //
+               src="/images/forgot-password.svg"
+               alt="Image"
+               className="h-full w-full"
+               width={100}
+               height={100}
+            />
          </div>
          <div className="col-span-12 md:col-span-6 p-3 flex items-center justify-center">
             <div className="grid grid-cols-12 gap-3 w-full md:w-[60%]">

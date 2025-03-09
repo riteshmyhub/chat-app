@@ -1,5 +1,5 @@
 import { useMediaQuery } from "@/shared/hooks";
-import { TvMinimalIcon, CircleUserRoundIcon, MessagesSquareIcon, HomeIcon } from "lucide-react";
+import { CircleUserRoundIcon, MessagesSquareIcon, HomeIcon, BellDotIcon } from "lucide-react";
 import { Link, useLocation } from "react-router";
 import { useAppSelector } from "@/api/store";
 import { AvatarProfile } from "..";
@@ -16,7 +16,7 @@ const Tab = ({ Icon, pathname, badge, title }: { Icon: any; pathname: string; ti
          to={pathname} //
          className="flex flex-col items-center"
          {...(badge ? { "data-badge": badge } : {})}>
-         <span className={`px-5 py-1 rounded-2xl ${isActive ? " text-primary" : "bg-white text-gray-400"}`}>
+         <span className={`px-5 py-2 rounded-2xl ${isActive ? "bg-primary text-secondary" : "bg-white text-gray-400"}`}>
             <Icon size={25} className="mx-auto" strokeWidth={1} />
          </span>
          <small className={`text-xs capitalize ${isActive ? "text-primary font-semibold" : "text-gray-400"}`}>{title}</small>
@@ -28,8 +28,6 @@ export function TabNavigation() {
    const screen = useMediaQuery();
    const { session } = useAppSelector((state) => state.authReducer);
    const { unreadMessages } = useAppSelector((state) => state.messageReducer);
-   const groupsMessages = unreadMessages?.filter((message) => message.isChannel);
-   const userMessages = unreadMessages?.filter((message) => !message.isChannel);
 
    return (
       <ul className={screen.md ? "flex flex-col justify-start gap-5 border-r w-[90px] py-4" : "flex flex-row justify-evenly gap-3 h-[75px] border-t items-center"}>
@@ -42,16 +40,15 @@ export function TabNavigation() {
             title="home"
          />
          <Tab //
-            pathname="/chat/contacts"
+            pathname="/chat"
             Icon={MessagesSquareIcon}
             title="chats"
-            badge={userMessages?.length}
+            badge={unreadMessages?.length}
          />
          <Tab //
-            pathname="/chat/channels"
-            Icon={TvMinimalIcon}
-            title="channels"
-            badge={groupsMessages?.length}
+            pathname="/notification"
+            Icon={BellDotIcon}
+            title="notification"
          />
          <Tab //
             pathname="/account"

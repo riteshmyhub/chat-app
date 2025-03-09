@@ -4,6 +4,7 @@ import { AvatarProfile } from "@/shared/components";
 import React from "react";
 import { Skeleton } from "@/shared/ui/skeleton";
 import { useAppSelector } from "@/api/store";
+import ChatTabs from "../messages/partials/ChatTabs";
 
 export default function ContactsPage() {
    const { contact } = useAppSelector((state) => state.contactReducer);
@@ -14,12 +15,11 @@ export default function ContactsPage() {
 
    return (
       <div>
-         <span className="text-2xl font-medium capitalize block p-2">chats</span>
-         <div className="p-2">
-            <button className="border w-full text-start p-3 text-gray-400 text-sm flex justify-between items-center" onClick={() => navigate("/chat/contacts/search")}>
-               Search New Contacts <SearchIcon size={18} />
-            </button>
+         <div className="p-2 flex items-center justify-between mt-4">
+            <span className="text-3xl font-medium capitalize block">Contacts</span>
+            <SearchIcon size={22} onClick={() => navigate("/chat/search-contact")} />
          </div>
+         <ChatTabs />
          {contact?.isLoading ? (
             <React.Fragment>
                {[1, 2].map((_, idx) => (

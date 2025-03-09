@@ -3,7 +3,6 @@ import useLoginController from "./login.controller";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { LoaderIcon, LogInIcon } from "lucide-react";
 import * as Yup from "yup";
-import { Image } from "@/shared/components";
 import { Input } from "@/shared/ui/input";
 import { Button } from "@/shared/ui/button";
 
@@ -19,7 +18,13 @@ export default function LoginPage() {
          onSubmit={ctrl.submit}>
          <Form className="w-full h-[100vh] grid grid-cols-12 justify-center">
             <div className="col-span-12 md:col-span-6 p-5 md:p-20 bg-gray-300">
-               <Image src="/images/login.svg" alt="Image" className="h-full w-full" width={90} height={90} />
+               <img //
+                  src="/images/login.svg"
+                  alt="Image"
+                  className="h-full w-full"
+                  width={90}
+                  height={90}
+               />
             </div>
             <div className="col-span-12 md:col-span-6 p-3 flex items-center justify-center">
                <div className="grid grid-cols-12 gap-3 w-full md:w-[60%]">

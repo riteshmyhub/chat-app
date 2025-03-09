@@ -1,7 +1,6 @@
 import { Link } from "react-router";
 import useRegisterController from "./register.controller";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { Image } from "@/shared/components";
 import * as Yup from "yup";
 import { Input } from "@/shared/ui/input";
 import { Button } from "@/shared/ui/button";
@@ -23,7 +22,7 @@ export default function RegisterPage() {
          <Form className="w-full h-[100vh] grid grid-cols-12 justify-center">
             {/* Left Section */}
             <div className="col-span-12 md:col-span-6 p-5 md:p-20 bg-gray-300">
-               <Image src="/images/login.svg" alt="Image" className="h-full w-full" width={100} height={100} />
+               <img src="/images/login.svg" alt="Image" className="h-full w-full" width={100} height={100} />
             </div>
 
             {/* Right Section */}

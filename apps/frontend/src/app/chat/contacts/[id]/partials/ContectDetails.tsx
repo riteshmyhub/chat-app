@@ -14,7 +14,7 @@ export default function ContectDetails({ chatDetails }: { chatDetails?: IChatDet
       try {
          await dispatch(contactService.deleteContact.api(id)).unwrap();
          await dispatch(contactService.getContacts.api()).unwrap();
-         navigate("/contacts", { replace: true });
+         navigate("/chat", { replace: true });
       } catch (error) {
          return;
       }

@@ -1,3 +1,6 @@
+export { AsideSheet } from "./aside-sheet/AsideSheet";
+export { DialogButton } from "./dialog-button/DialogButton";
+export { RouterLink } from "./router-link/RouterLink";
 export { Avatar as AvatarProfile } from "./avatar/Avatar";
 export { ComingSoon } from "./coming-soon/ComingSoon";
 export { Loading } from "./loading/Loading";
