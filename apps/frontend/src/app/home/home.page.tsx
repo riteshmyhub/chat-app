@@ -1,6 +1,5 @@
 import { Image } from "@/shared/components";
 import { Badge } from "@/shared/ui/badge";
-import { Button } from "@/shared/ui/button";
 import { Card } from "@/shared/ui/card";
 
 const workspaces = [

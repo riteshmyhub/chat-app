@@ -1,6 +1,5 @@
 import { useMediaQuery } from "@/shared/hooks";
 import { TvMinimalIcon, CircleUserRoundIcon, MessagesSquareIcon, HomeIcon } from "lucide-react";
-import { useCallback } from "react";
 import { Link, useLocation } from "react-router";
 import { useAppSelector } from "@/api/store";
 import { AvatarProfile } from "..";
