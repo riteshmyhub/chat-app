@@ -106,11 +106,12 @@ export default function ProfilePage({ createProfile }: { createProfile?: boolean
                   placeholder="Enter about"
                   value={fields.about}
                   minLength={2}
-                  maxLength={60}
+                  maxLength={160}
                   onChange={handleChange}
                   required
                />
             </div>
+            
             <div className="col-span-12">
                {createProfile ? (
                   <div className="flex justify-end gap-1">

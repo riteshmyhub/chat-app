@@ -1,4 +1,5 @@
-import { Image } from "@/shared/components";
+import { useAppSelector } from "@/api/store";
+import { AvatarProfile } from "@/shared/components";
 import { Badge } from "@/shared/ui/badge";
 import { Card } from "@/shared/ui/card";
 
@@ -22,6 +23,8 @@ const workspaces = [
 ];
 
 export default function HomePage() {
+   const { session } = useAppSelector((state) => state.authReducer);
+   const authUser = session.data;
    return (
       <div className="h-full overflow-y-auto bg-gray-100 p-[15px]">
          {/* <div className="text-center">
@@ -31,16 +34,19 @@ export default function HomePage() {
             </h1>
          </div> */}
          <Card className="p-4">
-            <h2 className="text-[17px] font-semibold mb-2">Profile</h2>
+            <h2 className="text-[17px] font-bold mb-2 text-primary">Profile</h2>
             <div>
                <div className="mb-3 flex items-center gap-4">
-                  <Image //
-                     src="/images/person-placeholder.png"
-                     alt="profile"
-                     className="rounded-full  h-[75px] md:h-[100px] w-[75px] md:w-[100px]"
+                  <AvatarProfile //
+                     src={authUser?.profile?.avatar}
+                     fallBackTxt={`${authUser?.profile.first_name} ${authUser?.profile.last_name}`}
+                     height="120px"
+                     width="120px"
                   />
                   <div>
-                     <span className="text-[20px] md:text-4xl font-bold capitalize flex items-center gap-3">ritesh goswami</span>
+                     <span className="text-[20px] md:text-4xl font-bold capitalize flex items-center gap-3">
+                        {authUser?.profile.first_name} {authUser?.profile.last_name}
+                     </span>
                      <div className="text-md md:text-xl mb-2 text-gray-600">react develpoer</div>
                   </div>
                </div>
@@ -48,7 +54,7 @@ export default function HomePage() {
                   <div className="col-span-12 md:col-span-4">
                      <span className="text-[12px] md:text-[16px] flex gap-3 items-center">
                         <span className="font-semibold">Email :</span>
-                        <span className="inline-block">ryitesh94@gmail.com</span>
+                        <span className="inline-block">{authUser?.email}</span>
                      </span>
                   </div>
                   <div className="col-span-12 md:col-span-4">
@@ -68,16 +74,13 @@ export default function HomePage() {
                      </span>
                   </div>
                </div>
-               <span className="text-[12px] md:text-[15px] text-gray-600 block mt-3">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident enim repellendus quam, suscipit eligendi, ipsum perspiciatis nihil vel adipisci cum corrupti quod recusandae et
-                  voluptates error cumque porro! Nostrum, atque!
-               </span>
+               <span className="text-[12px] md:text-[15px] text-gray-600 block mt-3">{authUser?.profile.about}</span>
             </div>
          </Card>
 
          {/* Skill */}
          <Card className="mt-2 p-4">
-            <h2 className="text-[17px] font-semibold mb-2">Skills</h2>
+            <h2 className="text-[17px] font-bold mb-2 text-primary">Skills</h2>
             <div className="flex items-center mt-2 gap-3 flex-wrap">
                {["react", "java", "python"]?.map((skill, idx) => (
                   <Badge //
@@ -91,7 +94,7 @@ export default function HomePage() {
          </Card>
          {/* workspaces */}
          <Card className="mt-2 p-4">
-            <h2 className="text-[17px] font-semibold mb-2">Workspaces</h2>
+            <h2 className="text-[17px] font-bold mb-2 text-primary">Workspaces</h2>
             <div className="grid grid-cols-12 gap-4">
                {workspaces?.map((workspace) => {
                   return (

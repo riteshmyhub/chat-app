@@ -13,13 +13,14 @@ const ChatModule = () => {
    const screen = useMediaQuery();
    const ContactsScreen = screen?.md ? EmptyChat : ContactsPage;
    const ChannelsScreen = screen?.md ? EmptyChat : ChannelsPage;
+   const SearchScreen = screen?.md ? EmptyChat : SearchPage;
    return (
       <Routes>
          <Route element={<ChatLayout />}>
             <Route index element={<Navigate to="contacts" replace />} />
             <Route path="contacts" element={<ContactsScreen />} />
             <Route path="channels" element={<ChannelsScreen />} />
-            <Route path="search-contact" element={<EmptyChat />} />
+            <Route path="search-contact" element={<SearchScreen />} />
             <Route path="contacts/:id" element={<SingleContactPage />} />
             <Route path="channels/:id" element={<SingleChannelPage />} />
          </Route>
