@@ -8,7 +8,7 @@ export function AsideSheet({ children }: Props) {
    const { custom: isSm } = useMediaQuery("(max-width: 776px)");
    if (isSm) {
       return (
-         <SheetContent side="left" className="flex flex-col p-0">
+         <SheetContent side="left" className="flex flex-col p-0 bg-white">
             {children}
          </SheetContent>
       );

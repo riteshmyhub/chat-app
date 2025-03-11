@@ -1,5 +1,5 @@
 import { useMediaQuery } from "@/shared/hooks";
-import { CircleUserRoundIcon, MessagesSquareIcon, HomeIcon, BellDotIcon } from "lucide-react";
+import { CircleUserRoundIcon, MessagesSquareIcon, HomeIcon, BriefcaseBusinessIcon } from "lucide-react";
 import { Link, useLocation } from "react-router";
 import { useAppSelector } from "@/api/store";
 import { AvatarProfile } from "..";
@@ -46,9 +46,9 @@ export function TabNavigation() {
             badge={unreadMessages?.length}
          />
          <Tab //
-            pathname="/notification"
-            Icon={BellDotIcon}
-            title="notification"
+            pathname="/workspaces"
+            Icon={BriefcaseBusinessIcon}
+            title="workspaces"
          />
          <Tab //
             pathname="/account"

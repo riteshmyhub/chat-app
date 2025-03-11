@@ -17,7 +17,11 @@ export default function ContactsPage() {
       <div className="bg-[#F3F4F6] h-full overflow-hidden">
          <div className="p-2 flex items-center justify-between">
             <span className="text-4xl font-medium capitalize block">Chats</span>
-            <SearchIcon size={22} onClick={() => navigate("/chat/search-contact")} />
+            <button //
+               onClick={() => navigate("/chat/search-contact")}
+               className="rounded-full text-primary border-2 border-primary p-2">
+               <SearchIcon size={14} strokeWidth={3}  />
+            </button>
          </div>
          <ChatTabs />
          <div className="bg-white p-[15px] mt-[20px] rounded-t-[40px] h-screen">

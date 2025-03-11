@@ -16,7 +16,7 @@ export default function ChatTabs() {
             {...(Boolean(userMessages) ? { "data-badge": userMessages } : {})}
             onClick={() => navigate("/chat/contacts")}
             variant={pathname.includes("contacts") ? "theme" : "ghost"}
-            className={`rounded-2xl text-xs font-semibold px-5 ${!pathname.includes("contacts") && "border border-primary text-primary bg-white"}`}>
+            className={`rounded-2xl text-xs font-medium px-5 h-7 ${!pathname.includes("contacts") && "border border-primary text-primary bg-white"}`}>
             Contacts
          </Button>
          <Button //
@@ -24,7 +24,7 @@ export default function ChatTabs() {
             {...(Boolean(channelMessages) ? { "data-badge": channelMessages } : {})}
             onClick={() => navigate("/chat/channels")}
             variant={pathname.includes("channels") ? "theme" : "ghost"}
-            className={`rounded-2xl text-xs font-semibold px-5 ${!pathname.includes("channels") && "border border-primary text-primary bg-white"}`}>
+            className={`rounded-2xl text-xs font-medium px-5 h-7 ${!pathname.includes("channels") && "border border-primary text-primary bg-white"}`}>
             Channels
          </Button>
       </div>

@@ -17,7 +17,11 @@ export default function ChannelsPage() {
       <div className="bg-[#F3F4F6] h-full overflow-hidden">
          <div className="flex items-center justify-between p-2">
             <span className="text-4xl font-medium capitalize block">Channels</span>
-            <PlusIcon size={22} onClick={() => setToggle(true)} />
+            <button //
+               onClick={() => setToggle(true)}
+               className="rounded-full text-primary border-2 border-primary p-2">
+               <PlusIcon size={14} strokeWidth={3} />
+            </button>
             <AlertDialog open={toggle}>
                <AlertDialogContent className="bg-transparent shadow-none">
                   <div className="bg-white p-3 rounded-lg">

@@ -3,8 +3,7 @@ import NotFoundPage from "../404/not-found.page";
 import OverviewPage from "./overview/overview.page";
 import { AsideSheet, Header, RouterLink } from "@/shared/components";
 import { Sheet, SheetTrigger } from "@/shared/ui/sheet";
-import { BriefcaseBusinessIcon, CalendarIcon, FileClockIcon, GaugeIcon, MenuIcon } from "lucide-react";
-import WorkspacesPage from "./workspaces/workspaces.page";
+import { CalendarIcon, FileClockIcon, GaugeIcon, MenuIcon } from "lucide-react";
 import ApplyLeavePage from "./apply-leave/apply-leave.page";
 import AttendancePage from "./attendance/attendance.page";
 
@@ -14,7 +13,6 @@ export default function EmployeeModule() {
          <Route element={<EmployeeLayout />}>
             <Route index element={<Navigate to="overview" replace />} />
             <Route path="overview" element={<OverviewPage />} />
-            <Route path="workspaces" element={<WorkspacesPage />} />
             <Route path="leave" element={<ApplyLeavePage />} />
             <Route path="attendance" element={<AttendancePage />} />
          </Route>
@@ -27,7 +25,6 @@ function EmployeeLayout() {
    const { pathname } = useLocation();
    const titles: any = {
       "/employee/overview": "Overview",
-      "/employee/workspaces": "Workspaces",
       "/employee/leave": "Leave",
       "/employee/attendance": "Attendance",
    };
@@ -60,11 +57,6 @@ function EmployeeLayout() {
                         <RouterLink path="/employee/attendance" className="px-3 py-3 transition-all hover:text-primary" activeClass="border-r-4 border-primary bg-gray-100 text-primary" replace>
                            <SheetTrigger className="flex items-center gap-3 capitalize">
                               <FileClockIcon size={20} /> Attendance
-                           </SheetTrigger>
-                        </RouterLink>
-                        <RouterLink path="/employee/workspaces" className="px-3 py-3 transition-all hover:text-primary" activeClass="border-r-4 border-primary bg-gray-100 text-primary" replace>
-                           <SheetTrigger className="flex items-center gap-3 capitalize">
-                              <BriefcaseBusinessIcon size={20} /> Workspaces
                            </SheetTrigger>
                         </RouterLink>
                         <RouterLink path="/employee/leave" className="px-3 py-3 transition-all hover:text-primary" activeClass="border-r-4 border-primary bg-gray-100 text-primary" replace>
