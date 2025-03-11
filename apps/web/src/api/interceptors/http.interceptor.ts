@@ -30,7 +30,7 @@ export default class HttpInterceptor {
 
    protected clear = async () => {
       localStorage.clear();
-      setTimeout(() => window.location.replace("/auth/login"), 500);
+      window.location.replace("/auth/login");
    };
 
    protected errorMessage = (error: any) => {
@@ -73,5 +73,8 @@ export default class HttpInterceptor {
 
    protected get http(): AxiosInstance {
       return new HttpInterceptor().privateAxios;
+   }
+   protected get publicHttp(): AxiosInstance {
+      return axios.create({ baseURL: this.BASE_URL });
    }
 }

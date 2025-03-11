@@ -10,7 +10,7 @@ export function Avatar({ src, fallBackTxt, width = "50px", height = "50px", isOn
    const txt = fallBackTxt?.split(" ");
    return (
       <AvatarUi className="h-[50px] w-[50px] relative inline-block overflow-visible" {...(isOnline ? { "data-online": true } : {})} style={{ height, width }}>
-         <AvatarImage src={src} className="rounded-full object-contain bg-gray-200" />
+         <AvatarImage src={src} className="rounded-full object-contain bg-gray-200 border" />
          <AvatarFallback className="uppercase">
             {txt?.[0]?.[0]}
             {txt?.[1]?.[0]}

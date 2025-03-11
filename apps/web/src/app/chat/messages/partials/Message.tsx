@@ -27,11 +27,11 @@ export default function Message({ message, me, members }: Props) {
             <div>
                {!me &&
                   message.isChannel && ( //
-                     <small className="text-primary block text-start pb-2 text-xs font-semibold ">
+                     <small className="block text-start pb-2 text-xs font-semibold ">
                         {person?.profile?.first_name} {person?.profile?.last_name}
                      </small>
                   )}
-               <div className="p-2" style={{ background: me ? "var(--primary)" : "white" }}>
+               <div className="p-2" style={{ background: me ? "var(--primary)" : "#F5F7F9" }}>
                   {Boolean(message?.attachments?.length) && ( //
                      <MediaViewer mediaList={message?.attachments} />
                   )}
