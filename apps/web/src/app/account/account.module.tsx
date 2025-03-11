@@ -4,6 +4,7 @@ import SettingsMenu from "./partials/SettingsMenu";
 import ProfilePage from "./profile/profile.page";
 import NotFoundPage from "../404/not-found.page";
 import AppInfoPage from "./info/page";
+import { Header } from "@/shared/components";
 
 export default function AccountModule() {
    const screen = useMediaQuery();
@@ -18,7 +19,10 @@ export default function AccountModule() {
       </Routes>
    );
 }
-
+const titles: any = {
+   "/account/app-info": "App Info",
+   "/account/profile": "Profile",
+};
 function AccountLayout() {
    const screen = useMediaQuery();
    const { pathname } = useLocation();
@@ -30,7 +34,10 @@ function AccountLayout() {
                <SettingsMenu />
             </aside>
             <main className="flex-1 h-full">
-               <Outlet />
+               <Header title={titles[pathname]} back="/account" />
+               <div className="overflow-y-auto" style={{ height: "calc(100vh - 65px)" }}>
+                  <Outlet />
+               </div>
             </main>
          </div>
       );
@@ -38,9 +45,12 @@ function AccountLayout() {
    return (
       <div>
          {pathname?.split("/")[2] ? ( //
-            <div>
-               <Outlet />
-            </div>
+            <>
+               <Header title={titles[pathname]} back="/account" />
+               <div className="overflow-y-auto" style={{ height: "calc(100vh - 65px)" }}>
+                  <Outlet />
+               </div>
+            </>
          ) : (
             <SettingsMenu />
          )}

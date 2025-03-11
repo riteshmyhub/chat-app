@@ -65,6 +65,21 @@ const useSchema = new mongoose.Schema({
       about: {
          type: String,
       },
+      skills: {
+         type: [String],
+      },
+      linkedin_username: {
+         type: String,
+         trim: true,
+      },
+      total_experience: {
+         type: Number,
+         default: 0,
+      },
+      dateOfJoining: {
+         type: Date,
+         default: Date.now,
+      },
    },
    contacts: [
       {

@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload({ useTempFiles: false }));
 app.use("/api/v1", routes);
 
-const client = path.join(__dirname, "..", "..", "frontend", "dist");
+const client = path.join(__dirname, "..", "..", "web", "dist");
 if (fs.existsSync(client + "/index.html")) {
    app.use(express.static(client));
    app.use("*", (req, res) => {

@@ -16,8 +16,8 @@ const Tab = ({ Icon, pathname, badge, title }: { Icon: any; pathname: string; ti
          to={pathname} //
          className="flex flex-col items-center"
          {...(badge ? { "data-badge": badge } : {})}>
-         <span className={`px-5 py-2 rounded-2xl ${isActive ? "bg-primary text-secondary" : "bg-white text-gray-400"}`}>
-            <Icon size={25} className="mx-auto" strokeWidth={1} />
+         <span className={`px-5 py-2 rounded-3xl ${isActive ? "bg-primary text-secondary" : "bg-white text-gray-400"}`}>
+            <Icon size={22} className="mx-auto" strokeWidth={1} />
          </span>
          <small className={`text-xs capitalize ${isActive ? "text-primary font-semibold" : "text-gray-400"}`}>{title}</small>
       </Link>

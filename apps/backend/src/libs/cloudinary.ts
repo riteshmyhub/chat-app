@@ -10,10 +10,10 @@ function init() {
    });
 }
 
-type UploadType = { file: any; options: UploadApiOptions };
-async function uploadFile({ file, options }: UploadType) {
-   const base64 = `data:${file?.mimetype};base64,${file?.data.toString("base64")}`;
-   const src = await cloudinary.uploader.upload(base64, options);
+type UploadType = { file: any; options: UploadApiOptions; base64?: boolean };
+async function uploadFile({ file, options, base64 }: UploadType) {
+   const data = base64 ? `data:${file?.mimetype};base64,${file?.data?.toString("base64")}` : file;
+   const src = await cloudinary.uploader.upload(data, options);
    return src;
 }
 

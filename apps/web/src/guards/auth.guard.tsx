@@ -1,6 +1,5 @@
 import { useAppSelector } from "@/api/store";
 import ProfilePage from "@/app/account/profile/profile.page";
-import { Card } from "@/shared/ui/card";
 import { Navigate, Outlet } from "react-router";
 
 export default function AuthGuard() {
@@ -10,10 +9,10 @@ export default function AuthGuard() {
    }
    if (!session.data?.profile?.first_name) {
       return (
-         <div className="h-screen absolute top-0 left-0 bg-white z-20 flex items-end md:items-center justify-center w-full">
-            <Card className="md:w-[600px]">
+         <div className="h-screen absolute top-0 left-0 bg-gray-200 z-20 flex items-end md:items-center justify-center w-full overflow-y-auto">
+            <div className="md:w-[600px] bg-white rounded-xl">
                <ProfilePage createProfile />
-            </Card>
+            </div>
          </div>
       );
    }

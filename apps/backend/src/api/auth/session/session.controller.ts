@@ -1,6 +1,5 @@
 import createHttpError from "http-errors";
 import { Request, Response, NextFunction } from "express";
-import Sound from "../../../models/sound.model";
 
 type ReqBody = {};
 

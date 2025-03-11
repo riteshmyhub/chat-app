@@ -26,7 +26,7 @@ export default function HomePage() {
    const { session } = useAppSelector((state) => state.authReducer);
    const authUser = session.data;
    return (
-      <div className="h-full overflow-y-auto bg-gray-100 p-[15px]">
+      <div className="h-full overflow-y-auto bg-gray-100">
          {/* <div className="text-center">
             <img src="https://www.witmates.com/static/media/logo.6ff17bef1e5cf3a6e888.webp" alt="logo" height={100} width={200} className="mx-auto d-block my-4" />
             <h1 className="text-2xl font-normal mb-2">
@@ -47,7 +47,7 @@ export default function HomePage() {
                      <span className="text-[20px] md:text-4xl font-bold capitalize flex items-center gap-3">
                         {authUser?.profile.first_name} {authUser?.profile.last_name}
                      </span>
-                     <div className="text-md md:text-xl mb-2 text-gray-600">react develpoer</div>
+                     <div className="text-md md:text-xl mb-2 text-gray-600">{authUser?.profile?.designation|| "-"}</div>
                   </div>
                </div>
                <div className="grid grid-cols-12 text-sm gap-2 mt-3">
@@ -61,8 +61,8 @@ export default function HomePage() {
                      <span className="text-[12px] md:text-[16px] flex gap-3 items-center">
                         <span className="font-semibold">linkedin Username :</span>
                         <span className="inline-block">
-                           <a href={`https://www.linkedin.com/in/linkedin`} target="_blank" rel="noopener noreferrer" className="inline-block underline">
-                              linkedin
+                           <a href={`https://www.linkedin.com/in/${authUser?.profile?.linkedin_username}`} target="_blank" rel="noopener noreferrer" className="inline-block underline">
+                              {authUser?.profile?.linkedin_username}
                            </a>
                         </span>
                      </span>
@@ -70,7 +70,7 @@ export default function HomePage() {
                   <div className="col-span-12 md:col-span-4">
                      <span className="text-[12px] md:text-[16px] flex gap-3 items-center">
                         <span className="font-semibold">Work Experience :</span>
-                        <span className="inline-block">3 year</span>
+                        <span className="inline-block">{authUser?.profile?.total_experience} year</span>
                      </span>
                   </div>
                </div>
@@ -82,7 +82,7 @@ export default function HomePage() {
          <Card className="mt-2 p-4">
             <h2 className="text-[17px] font-bold mb-2 text-primary">Skills</h2>
             <div className="flex items-center mt-2 gap-3 flex-wrap">
-               {["react", "java", "python"]?.map((skill, idx) => (
+               {authUser?.profile?.skills?.map((skill, idx) => (
                   <Badge //
                      variant="outline"
                      key={`employee-profile-skill-${idx}`}
