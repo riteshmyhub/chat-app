@@ -20,7 +20,7 @@ export default function ContactsPage() {
             <SearchIcon size={22} onClick={() => navigate("/chat/search-contact")} />
          </div>
          <ChatTabs />
-         <div className="bg-white p-[15px] mt-[20px] rounded-t-[25px] h-screen">
+         <div className="bg-white p-[15px] mt-[20px] rounded-t-[40px] h-screen">
             {contact?.isLoading ? (
                <React.Fragment>
                   {[1, 2].map((_, idx) => (

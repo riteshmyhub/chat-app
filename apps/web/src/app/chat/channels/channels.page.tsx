@@ -27,7 +27,7 @@ export default function ChannelsPage() {
             </AlertDialog>
          </div>
          <ChatTabs />
-         <div className="bg-white p-[15px] mt-[20px] rounded-t-[25px] h-screen">
+         <div className="bg-white p-[15px] mt-[20px] rounded-t-[40px] h-screen">
             {channel?.isLoading ? (
                <React.Fragment>
                   {[1, 2].map((_, idx) => (
