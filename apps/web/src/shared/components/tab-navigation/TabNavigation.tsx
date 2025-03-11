@@ -30,12 +30,12 @@ export function TabNavigation() {
    const { unreadMessages } = useAppSelector((state) => state.messageReducer);
 
    return (
-      <ul className={screen.md ? "flex flex-col justify-start gap-5 border-r w-[90px] py-4" : "flex flex-row justify-evenly gap-3 h-[75px] border-t items-center"}>
+      <ul className={screen.md ? "flex flex-col justify-start gap-5 border-r w-[90px] py-4 bg-white" : "flex flex-row justify-evenly gap-3 h-[75px] border-t items-center bg-white relative z-10"}>
          <Link to="/" className="hidden flex-col items-center md:flex">
             <AvatarProfile src={session.data?.profile?.avatar} fallBackTxt={`${session.data?.profile?.first_name} ${session.data?.profile?.last_name}`} height="60px" width="60px" />
          </Link>
          <Tab //
-            pathname="/"
+            pathname="/employee"
             Icon={HomeIcon}
             title="home"
          />

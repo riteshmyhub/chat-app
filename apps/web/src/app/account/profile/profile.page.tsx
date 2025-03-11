@@ -150,7 +150,7 @@ export default function ProfilePage({ createProfile }: { createProfile?: boolean
                                     </div>
                                  </div>
                                  {formik.values?.skills?.map((_: any, idx: number) => (
-                                    <div key={`profile-skill-${idx}`} className="col-span-4 md:col-span-4 flex items-center gap-2 mb-2">
+                                    <div key={`profile-skill-${idx}`} className="col-span-6 md:col-span-4 flex items-center gap-2 mb-2">
                                        <Field //
                                           as={Input}
                                           name={`skills.${idx}`}

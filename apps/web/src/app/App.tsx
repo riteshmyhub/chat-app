@@ -40,6 +40,9 @@ export default function App() {
       "/chat/channels/",
       "/account/profile",
       "/account/app-info",
+      "/employee/workspaces",
+      "/employee/attendance",
+      "/employee/leave"
    ];
 
    if (paths.find((path) => pathname.includes(path) && (pathname.includes("auth") || !screen.md))) {
