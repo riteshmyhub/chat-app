@@ -11,6 +11,14 @@ export interface IMessage {
    _id: string;
    isRead: boolean;
 }
+
+export interface IUnreadMessage {
+   chat: string;
+   _id: string;
+   content: string;
+   createdAt: string;
+   isChannel: boolean;
+}
 export interface IAttachment {
    src: string | undefined;
    type: string;

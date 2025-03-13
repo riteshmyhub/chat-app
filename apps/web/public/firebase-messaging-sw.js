@@ -20,7 +20,7 @@ messaging.onBackgroundMessage((payload) => {
    console.log(payload);
    self.registration.showNotification(payload.notification.title, {
       body: payload.notification.body,
-      icon: "/vite.svg", // Path to your app's icon
+      icon: "/icons/icon.png", // Path to your app's icon
       data: {
          date: payload.data?.date,
          url: payload.data?.url,

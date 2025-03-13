@@ -32,8 +32,8 @@
 [data-badge]::before {
    content: attr(data-badge);
    position: absolute;
-   top: -5px;
-   right: -5px;
+   top: -8px;
+   right: -1px;
    background: green;
    height: 21px;
    width: 21px;

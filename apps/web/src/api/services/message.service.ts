@@ -1,6 +1,6 @@
 import { ActionReducerMapBuilder, createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import HttpInterceptor from "../interceptors/http.interceptor";
-import { IMessage } from "../types/chat.type";
+import { IMessage, IUnreadMessage } from "../types/chat.type";
 import ENDPOINTS from "../endpoint/endpoint";
 
 const initialState = {
@@ -8,7 +8,7 @@ const initialState = {
       isLoading: true,
       list: [] as IMessage[],
    },
-   unreadMessages: [] as IMessage[],
+   unreadMessages: JSON.parse(localStorage.getItem("unreadMessages") || ("[]" as string)) as IUnreadMessage[],
 };
 
 class MessageService extends HttpInterceptor {
@@ -32,7 +32,8 @@ class MessageService extends HttpInterceptor {
             state.message.list = messages;
             /*----remove unread messages-----*/
             const chatID = action.meta.arg;
-            state.unreadMessages = state.unreadMessages?.filter((message) => message?.chat !== chatID);
+            state.unreadMessages = state?.unreadMessages?.filter((message) => message?.chat !== chatID);
+            localStorage.setItem("unreadMessages", JSON.stringify(state.unreadMessages));
          });
          builder.addCase(this.api.rejected, (state) => {
             state.message.isLoading = false;
@@ -49,7 +50,15 @@ class MessageService extends HttpInterceptor {
             Array.isArray(payload) ? (state.message.list = payload) : state.message.list.push(payload);
          },
          setUnreadMessages(state, { payload }: PayloadAction<IMessage>) {
-            state.unreadMessages.push(payload);
+            const attachments = payload.attachments || [];
+            state.unreadMessages.push({
+               chat: payload.chat,
+               _id: payload._id,
+               content: attachments?.length ? `[${attachments.length}] files send` : payload?.content,
+               createdAt: payload.createdAt,
+               isChannel: payload.isChannel,
+            });
+            localStorage.setItem("unreadMessages", JSON.stringify(state.unreadMessages));
          },
       },
       extraReducers: (builder) => {

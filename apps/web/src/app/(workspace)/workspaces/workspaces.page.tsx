@@ -2,11 +2,6 @@ import { useNavigate } from "react-router";
 
 const workspaces = [
    {
-      id: 1,
-      name: "Zavo App",
-      image: "https://cdn.learnwoo.com/wp-content/uploads/2019/10/How-Magento-is-Beneficial-for-E-commerce-Business.jpg",
-   },
-   {
       id: 2,
       name: "UPI Zone",
       image: "https://static.businessworld.in/Picture1_20250201185810_original_image_40.webp",

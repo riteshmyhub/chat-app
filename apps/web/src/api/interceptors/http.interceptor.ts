@@ -30,7 +30,9 @@ export default class HttpInterceptor {
 
    protected clear = async () => {
       localStorage.clear();
-      window.location.replace("/auth/login");
+      setTimeout(() => {
+         window.location.replace("/auth/login");
+      }, 50);
    };
 
    protected errorMessage = (error: any) => {

@@ -12,6 +12,32 @@ export default defineConfig({
             clientsClaim: true,
             skipWaiting: true,
          },
+         manifest: {
+            name: "Your App Name",
+            short_name: "App",
+            description: "Your app description",
+            theme_color: "#ffffff",
+            background_color: "#ffffff",
+            display: "standalone",
+            icons: [
+               {
+                  src: "/icons/icon-192x192.png",
+                  sizes: "192x192",
+                  type: "image/png",
+               },
+               {
+                  src: "/icons/icon-512x512.png",
+                  sizes: "512x512",
+                  type: "image/png",
+               },
+               {
+                  src: "/icons/icon-512x512-maskable.png",
+                  sizes: "512x512",
+                  type: "image/png",
+                  purpose: "maskable",
+               },
+            ],
+         },
       }),
    ],
    resolve: {

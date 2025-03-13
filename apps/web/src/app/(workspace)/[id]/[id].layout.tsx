@@ -4,9 +4,16 @@ import { AsideSheet, Header, RouterLink } from "@/shared/components";
 import { Sheet, SheetTrigger } from "@/shared/ui/sheet";
 import { useMemo } from "react";
 import { Progress } from "@/shared/ui/progress";
+import projectMock from "./mocks/projects";
 
 export default function WorkspaceLayout() {
    const { pathname } = useLocation();
+
+   const percentage = useMemo(() => {
+      const total_sprints = projectMock?.sprints ?? [];
+      const completed_sprints = total_sprints.filter((sprint) => sprint.isCompleted);
+      return total_sprints.length > 0 ? Math.min((completed_sprints.length / total_sprints.length) * 100, 100) : 0;
+   }, [projectMock]);
 
    const title = useMemo(() => {
       switch (true) {
@@ -38,8 +45,8 @@ export default function WorkspaceLayout() {
                            </div>
                         </div>
                         <div className="flex items-center mt-1 gap-3">
-                           <span className="text-xs font-semibold">60%</span>
-                           <Progress value={60} className="w-full h-1 " />
+                           <span className="text-xs font-semibold">{percentage.toFixed()}%</span>
+                           <Progress value={percentage} className="w-full h-1 " />
                         </div>
                      </div>
                      <nav className="grid items-start text-md md:text-sm font-medium mt-5">
@@ -53,21 +60,21 @@ export default function WorkspaceLayout() {
                            </SheetTrigger>
                         </RouterLink>
                         <RouterLink //
-                           path="features"
-                           className="px-3 py-3 transition-all hover:text-primary rounded-lg"
-                           activeClass="bg-white bg-gray-100 text-primary"
-                           replace>
-                           <SheetTrigger className="flex items-center gap-3 capitalize">
-                              <TableOfContentsIcon size={18} /> features
-                           </SheetTrigger>
-                        </RouterLink>
-                        <RouterLink //
                            path="sprints"
                            className="px-3 py-3 transition-all hover:text-primary rounded-lg"
                            activeClass="bg-white bg-gray-100 text-primary"
                            replace>
                            <SheetTrigger className="flex items-center gap-3 capitalize">
                               <RouteIcon size={18} /> sprints
+                           </SheetTrigger>
+                        </RouterLink>
+                        <RouterLink //
+                           path="features"
+                           className="px-3 py-3 transition-all hover:text-primary rounded-lg"
+                           activeClass="bg-white bg-gray-100 text-primary"
+                           replace>
+                           <SheetTrigger className="flex items-center gap-3 capitalize">
+                              <TableOfContentsIcon size={18} /> features
                            </SheetTrigger>
                         </RouterLink>
                         <RouterLink //

@@ -47,7 +47,6 @@ export default function App() {
       `/workspaces/${pathname.split("/")[2]}/sprints`,
       `/workspaces/${pathname.split("/")[2]}/stories`
    ];
-   console.log();
 
    if (paths.find((path) => pathname.includes(path) && (pathname.includes("auth") || !screen.md))) {
       return <AppRoutes />;
